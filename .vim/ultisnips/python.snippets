@@ -1,0 +1,132 @@
+snippet #! "Hashbang" b
+#!/usr/bin/env python3
+
+$0
+endsnippet
+
+snippet imp "Import" b
+import ${1:module}
+$0
+endsnippet
+
+snippet docs "Module docstring" b
+"""
+File: ${1:`Filename('$1.py', 'foo.py')`}
+Author: ${2:`g:snips_author`}
+Description: ${3}
+"""
+$0
+endsnippet
+
+snippet if "Condition if" b
+if ${1:condition}:
+	${VISUAL}$0
+endsnippet
+
+snippet el "Condition else" b
+else:
+	${VISUAL}$0
+endsnippet
+
+snippet eli "Condition elif" b
+elif ${1:condition}:
+	${VISUAL}$0
+endsnippet
+
+snippet wh "While loop" b
+while ${1:condition}:
+	${VISUAL}$0
+endsnippet
+
+snippet for "For loop" b
+for ${1:needle} in ${2:haystack}:
+	${VISUAL}$0
+endsnippet
+
+snippet wi "With" b
+with ${1:with_item}:
+	${VISUAL}$0
+endsnippet
+
+snippet class "Class" b
+class ${1:ClassName}:
+	def __init__(self, ${4:arg}):
+		${5:super($1, self).__init__()}
+		self.$4 = $4
+		$0
+endsnippet
+
+snippet def "Function" b
+def ${1:fname}(${2:`indent('.') ? 'self' : ''`}):
+	$0
+endsnippet
+
+snippet deff "Function" b
+def ${1:fname}(${2:`indent('.') ? 'self' : ''`}):
+	"""${3:docstring for $1}"""
+	$0
+endsnippet
+
+snippet defs "Class function" b
+def ${1:mname}(self, ${2:arg}):
+	$0
+endsnippet
+
+snippet prop "Property" b
+@property
+def ${1:foo}():
+	return self._$1
+endsnippet
+
+snippet ld "Lambda" b
+${1:var} = lambda ${2:vars}: $0
+endsnippet
+
+snippet . "self" i
+	self.$0
+endsnippet
+
+snippet try "Try/Except" b
+try:
+	${1:pass}
+except ${2:Exception}, ${3:e}:
+	${4:raise $3}
+endsnippet
+
+snippet try "Try/Except/Else" b
+try:
+	${1:pass}
+except ${2:Exception}, ${3:e}:
+	${4:raise $3}
+else:
+	${5:pass}
+endsnippet
+
+snippet try "Try/Except/Finally" b
+try:
+	${1:pass}
+except ${2:Exception}, ${3:e}:
+	${4:raise $3}
+finally:
+	${5:pass}
+endsnippet
+
+snippet try "Try/Except/Else/Finally" b
+try:
+	${1:pass}
+except ${2:Exception}, ${3:e}:
+	${4:raise $3}
+else:
+	${5:pass}
+finally:
+	${6:pass}
+endsnippet
+
+snippet ifm "If main" b
+if __name__ == "__main__":
+	${VISUAL}$0
+endsnippet
+
+snippet _ "Magic" i
+__${1:init}__$0
+endsnippet

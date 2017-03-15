@@ -1,0 +1,191 @@
+global !p
+import os
+import re
+params_cre = re.compile("\w.*?\s(\w+)(?:,|$)")
+def class_name(file_name):
+	return os.path.splitext(file_name)[0]
+def doc_method(snip, params, ret, throws=None):
+	if len(params):
+		for p in params_cre.findall(params):
+			snip += " * @param " + p
+	if not ret.endswith("void"):
+		snip += " * @return"
+	if throws:
+		for t in throws.split(","):
+			snip += " * @throws " + t.strip()
+endglobal
+
+snippet pc "public class" b
+/**
+ * ${1:undocumented class}
+ *
+ * @author `!v g:snips_author`
+ */
+public class `!p snip.rv = class_name(fn)` {
+	$0
+}
+endsnippet
+
+snippet pce "public class extends" b
+/**
+ * ${1:undocumented class}
+ *
+ * @author `!v g:snips_author`
+ */
+public class `!p snip.rv = class_name(fn)` extends ${1:Parent} {
+	$0
+}
+endsnippet
+
+snippet pci "public class implements" b
+/**
+ * ${1:undocumented class}
+ *
+ * @author `!v g:snips_author`
+ */
+public class `!p snip.rv = class_name(fn)` implements ${1:Iface} {
+	$0
+}
+endsnippet
+
+snippet cl "class" b
+/**
+ * ${1:undocumented class}
+ *
+ * @author `!v g:snips_author`
+ */
+class ${1:ClassName} {
+	$0
+}
+endsnippet
+
+snippet pin "public interface" b
+/**
+ * ${1:undocumented interface}
+ *
+ * @author `!v g:snips_author`
+ */
+public interface ${1:IfaceName} {
+	$0
+}
+endsnippet
+
+snippet in "interface" b
+/**
+ * ${1:undocumented interface}
+ *
+ * @author `!v g:snips_author`
+ */
+interface ${1:IfaceName} {
+	$0
+}
+endsnippet
+
+snippet main "" b
+public static void main(String[] args) {
+	$0
+}
+endsnippet
+
+snippet fun "class method" b
+/**
+ * ${5:undocumented method}`!p doc_method(snip, t[4], t[2])`
+ */
+${1:public} ${2:void} ${3:method}(${4}) {
+	$0
+}
+endsnippet
+
+snippet funt "class method with throws" b
+/**
+ * ${6:undocumented method}`!p doc_method(snip, t[4], t[2], t[5])`
+ */
+${1:public} ${2:void} ${3:method}(${4}) throws ${5:Exception} {
+	$0
+}
+endsnippet
+
+snippet afun "class method" b
+/**
+ * ${5:undocumented method}`!p doc_method(snip, t[4], t[2])`
+ */
+abstract ${1:public} ${2:void} ${3:method}(${4});$0
+endsnippet
+
+snippet var "class field" b
+/** ${4:undocumented field} */
+${1:public} ${2:Object} ${3:field};$0
+endsnippet
+
+snippet . "this" b
+this$0
+endsnippet
+
+snippet if "" b
+if (${1:/* condition */}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet el "" b
+else {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet do "" b
+do {
+	${VISUAL}$0
+} while (${1:/* condition */});
+endsnippet
+
+snippet wh "" b
+while (${1:/* condition */}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet for "" b
+for (${2:i} = 0; $2 < ${1:count}; $2${3:++}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet switch "" b
+switch (${1:variable}) {
+	case '${2:value}':
+		${3:// code...}
+		break;
+	$0
+	default:
+		${4:// code...}
+		break;
+}
+endsnippet
+
+snippet case "" b
+case '${1:value}':
+	${2:// code...}
+	break;
+endsnippet
+
+snippet try "try-catch" b
+try {
+	${VISUAL}$0
+} catch(${1:Exception} ${2:e}) {
+}
+endsnippet
+
+snippet tryf "try-catch-finally" b
+try {
+	${VISUAL}$0
+} catch(${1:Exception} ${2:e}) {
+} finally {
+}
+endsnippet
+
+snippet /* "JavaDoc" b
+/**
+ * $0
+ */
+endsnippet

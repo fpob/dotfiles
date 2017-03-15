@@ -1,0 +1,99 @@
+[submodule ".oh-my-zsh/custom/themes/powerlevel9k"]
+	path = .oh-my-zsh/custom/themes/powerlevel9k
+	url = https://github.com/bhilburn/powerlevel9k.git
+[submodule ".vim/bundle/airline"]
+	path = .vim/bundle/airline
+	url = https://github.com/bling/vim-airline.git
+[submodule ".vim/bundle/ctrlp"]
+	path = .vim/bundle/ctrlp
+	url = https://github.com/kien/ctrlp.vim
+[submodule ".vim/bundle/delimitmate"]
+	path = .vim/bundle/delimitmate
+	url = https://github.com/raimondi/delimitmate
+[submodule ".vim/bundle/easymotion"]
+	path = .vim/bundle/easymotion
+	url = https://github.com/easymotion/vim-easymotion
+[submodule ".vim/bundle/editorconfig"]
+	path = .vim/bundle/editorconfig
+	url = https://github.com/editorconfig/editorconfig-vim.git
+[submodule ".vim/bundle/indent-guides"]
+	path = .vim/bundle/indent-guides
+	url = https://github.com/nathanaelkane/vim-indent-guides
+[submodule ".vim/bundle/molokai"]
+	path = .vim/bundle/molokai
+	url = https://github.com/tomasr/molokai
+[submodule ".vim/bundle/multiple-cursors"]
+	path = .vim/bundle/multiple-cursors
+	url = https://github.com/terryma/vim-multiple-cursors
+[submodule ".vim/bundle/nerdtree"]
+	path = .vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule ".vim/bundle/repeat"]
+	path = .vim/bundle/repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule ".vim/bundle/signature"]
+	path = .vim/bundle/signature
+	url = https://github.com/kshenoy/vim-signature
+[submodule ".vim/bundle/surround"]
+	path = .vim/bundle/surround
+	url = https://github.com/tpope/vim-surround
+[submodule ".vim/bundle/tagbar"]
+	path = .vim/bundle/tagbar
+	url = https://github.com/majutsushi/tagbar.git
+[submodule ".vim/bundle/trailing-whitespace"]
+	path = .vim/bundle/trailing-whitespace
+	url = https://github.com/bronson/vim-trailing-whitespace
+[submodule ".vim/bundle/gutentags"]
+	path = .vim/bundle/gutentags
+	url = https://github.com/ludovicchabant/vim-gutentags
+[submodule ".vim/bundle/javacompleteNew"]
+	path = .vim/bundle/javacompleteNew
+	url = https://github.com/artur-shaik/vim-javacomplete2
+[submodule ".vim/bundle/phpcomplete"]
+	path = .vim/bundle/phpcomplete
+	url = https://github.com/shawncplus/phpcomplete.vim.git
+[submodule ".vim/bundle/youcompleteme"]
+	path = .vim/bundle/youcompleteme
+	url = https://github.com/valloric/youcompleteme
+[submodule ".vim/bundle/fugitive"]
+	path = .vim/bundle/fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule ".vim/bundle/gitgutter"]
+	path = .vim/bundle/gitgutter
+	url = https://github.com/airblade/vim-gitgutter
+[submodule ".vim/bundle/html5"]
+	path = .vim/bundle/html5
+	url = https://github.com/othree/html5.vim
+[submodule ".vim/bundle/javascript"]
+	path = .vim/bundle/javascript
+	url = https://github.com/pangloss/vim-javascript
+[submodule ".vim/bundle/jinja"]
+	path = .vim/bundle/jinja
+	url = https://github.com/lepture/vim-jinja.git
+[submodule ".vim/bundle/less"]
+	path = .vim/bundle/less
+	url = https://github.com/groenewege/vim-less.git
+[submodule ".vim/bundle/markdown"]
+	path = .vim/bundle/markdown
+	url = https://github.com/hallison/vim-markdown.git
+[submodule ".vim/bundle/python-pep8-indent"]
+	path = .vim/bundle/python-pep8-indent
+	url = https://github.com/hynek/vim-python-pep8-indent.git
+[submodule ".vim/bundle/python-syntax"]
+	path = .vim/bundle/python-syntax
+	url = https://github.com/hdima/python-syntax
+[submodule ".vim/bundle/gtk-syntax"]
+	path = .vim/bundle/gtk-syntax
+	url = https://github.com/vim-scripts/gtk-vim-syntax
+[submodule ".vim/bundle/nginx-syntax"]
+	path = .vim/bundle/nginx-syntax
+	url = https://github.com/evanmiller/nginx-vim-syntax.git
+[submodule ".vim/bundle/scripts"]
+	path = .vim/bundle/scripts
+	url = git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git
+[submodule ".vim/bundle/zsh"]
+	path = .vim/bundle/zsh
+	url = https://github.com/clones/vim-zsh.git
+[submodule ".vim/bundle/ultisnips"]
+	path = .vim/bundle/ultisnips
+	url = https://github.com/sirver/ultisnips

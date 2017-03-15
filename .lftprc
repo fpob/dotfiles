@@ -1,0 +1,6 @@
+# Prikaz, ktery se provede pred ukoncenim lftp
+set cmd:at-exit "bye"
+
+set cmd:ls-default "ls -lhD"
+
+set prompt "\[\e[33m\e[40m\] \s \[\e[93m\] \u\@\h \[\e[30m\e[44m\] \w \[\e[34m\e[49m\]\[\e[0m\] "

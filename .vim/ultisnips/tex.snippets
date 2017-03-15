@@ -1,0 +1,177 @@
+global !p
+import unicodedata
+import re
+LABEL_CRE = re.compile(r'[^a-zA-Z0-9]+')
+def label(s):
+	return LABEL_CRE.sub('-', unicodedata.normalize('NFKD', s).encode('ASCII', 'ignore').lower()).strip('-')
+endglobal
+
+
+snippet begin "begin-end" b
+\\begin{${1:env}}
+	${VISUAL}$0
+\\end{${1/^([^}]+).*$/$1/}}
+endsnippet
+
+
+snippet part "Part" b
+\\part{${1:part name}} % {{{
+\\label{prt:`!p snip.rv = label(t[1])`}
+
+${VISUAL}$0
+
+% part `!p snip.rv = label(t[1])` }}}
+endsnippet
+
+
+snippet cha "Chapter" b
+\\chapter{${1:chapter name}} % {{{
+\\label{cha:`!p snip.rv = label(t[1])`}
+
+${VISUAL}$0
+
+% chapter `!p snip.rv = label(t[1])` }}}
+endsnippet
+
+
+snippet sec "Section" b
+\\section{${1:section name}} % {{{
+\\label{sec:`!p snip.rv = label(t[1])`}
+
+${VISUAL}$0
+
+% section `!p snip.rv = label(t[1])` }}}
+endsnippet
+
+
+snippet sub "Sub Section" b
+\\subsection{${1:subsection name}} % {{{
+\\label{sub:`!p snip.rv = label(t[1])`}
+
+${VISUAL}$0
+
+% subsection `!p snip.rv = label(t[1])` }}}
+endsnippet
+
+
+snippet subs "Sub Sub Section" b
+\\subsubsection{${1:subsubsection name}} % {{{
+\\label{ssub:`!p snip.rv = label(t[1])`}
+
+${VISUAL}$0
+
+% subsubsection `!p snip.rv = label(t[1])` }}}
+endsnippet
+
+
+snippet par "Paragraph" b
+\\paragraph{${1:paragraph name}} % {{{
+\\label{par:`!p snip.rv = label(t[1])`}
+
+${VISUAL}$0
+
+% paragraph `!p snip.rv = label(t[1])` }}}
+endsnippet
+
+
+snippet subp "Sub Paragraph" b
+\\subparagraph{${1:subparagraph name}} % {{{
+\\label{subp:`!p snip.rv = label(t[1])`}
+
+${VISUAL}$0
+
+% subparagraph `!p snip.rv = label(t[1])` }}}
+endsnippet
+
+
+snippet tab "tabular" b
+\\begin{${1:tabular}}{${2:c}}
+	${VISUAL}$0
+\\end{$1}
+endsnippet
+
+
+snippet ali "align(ed)" b
+\\begin{align${1:ed}}
+	${VISUAL}$0
+\\end{align$1}
+endsnippet
+
+
+snippet gat "gather(ed)" b
+\\begin{gather${1:ed}}
+	${VISUAL}$0
+\\end{gather$1}
+endsnippet
+
+
+snippet eq "equation" b
+\\begin{equation}
+	$0
+\\end{equation}
+endsnippet
+
+
+snippet \ "unnumbered equation" b
+\\[
+	$0
+\\]
+endsnippet
+
+
+snippet enum "enumerate" b
+\\begin{enumerate}
+	\\item $0
+\\end{enumerate}
+endsnippet
+
+
+snippet item "itemize" b
+\\begin{itemize}
+	\\item $0
+\\end{itemize}
+endsnippet
+
+
+snippet desc "description" b
+\\begin{description}
+	\\item[${1}] ${2}$0
+\\end{description}
+endsnippet
+
+
+snippet figure "float with figure" b
+\\begin{figure}
+	\\centering
+	\\includegraphics{${1}}
+	\\caption{${2}}
+	\\label{fig:${3}}
+\\end{figure}$0
+endsnippet
+
+
+snippet table "float with table" b
+\\begin{table}
+	\\centering
+	\\begin{tabular}{${1}}
+		$0
+	\\end{tabular}
+	\\caption{${2}}
+	\\label{${3}}
+\\end{table}
+endsnippet
+
+
+
+#snippet itd
+#	\\item[${1:description}] ${2:item}$0
+#snippet figure
+#	${1:Figure}~\\ref{${2:fig:}}
+#snippet table
+#	${1:Table}~\\ref{${2:tab:}}
+#snippet listing
+#	${1:Listing}~\\ref{${2:list}}
+#snippet section
+#	${1:Section}~\\ref{${2:sec:}}
+#snippet page
+#	${1:page}~\\pageref{${2}}

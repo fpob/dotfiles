@@ -1,0 +1,23 @@
+snippet project "Zakladni struktura projektu" b
+<project name="${1:Name}" default="build" basedir=".">
+  <description>
+    ${2:description...}
+  </description>
+
+  <property name="src" location="src" />
+  <property name="build" location="build" />
+
+  <target name="init">
+    <mkdir dir="\$\{build\}" />
+  </target>
+
+  <target name="build" depends="init">
+    <javac srcdir="\$\{src\}" destdir="\$\{build\}"
+      includeantruntime="false" />
+  </target>
+
+  <target name="clean">
+    <delete dir="\$\{build\}" />
+  </target>
+</project>
+endsnippet

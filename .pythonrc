@@ -1,0 +1,24 @@
+from pprint import pprint
+from imp import reload
+import hashlib
+
+try:
+    import readline
+except ImportError:
+    print("Module readline not available.")
+else:
+    import rlcompleter
+    readline.parse_and_bind("tab: complete")
+
+def m_avg(*args):
+    """Vypocita aritmeticky prumer, rozptyl a smerodatnou odchylku."""
+    data = args if len(args) > 1 or hasattr(args[0], "__iter__") else args[0]
+    avg = sum(data) / len(data)
+    var = sum(map(lambda x: (x - avg)**2, data)) / len(data)
+    sd = var**0.5
+    return avg, var, sd
+
+def hash_str(algorithm, string):
+    return hashlib.new(algorithm, string.encode('utf-8')).hexdigest()
+
+# vim:ft=python

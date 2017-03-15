@@ -1,0 +1,150 @@
+global !p
+def c_to_h(filename):
+	if filename.endswith(".c"):
+		return filename[:-1] + "h"
+	elif filename.endswith(".cc"):
+		return filename[:-2] + "hh"
+	return filename
+def once_def(filename):
+	return filename.upper().replace(".", "_")
+endglobal
+
+snippet main "main function" b
+int main(int argc, const char **argv)
+{
+	$0
+	return 0;
+}
+endsnippet
+
+snippet inc "include system" b
+#include <${1:stdio.h}>
+endsnippet
+
+snippet Inc "include user" b
+#include "${1:`!p snip.rv = c_to_h(fn)`}"
+endsnippet
+
+# #ifndef ... #define ... #endif
+snippet Def "#ifndef #define" b
+#ifndef $1
+#define ${1:SYMBOL} ${2:value}
+#endif
+endsnippet
+
+snippet #def "#define" b
+#define
+endsnippet
+
+snippet #ifdef "" b
+#ifdef ${1:FOO}
+${VISUAL}$0
+#endif
+endsnippet
+
+snippet #if ""
+#if ${1:FOO}
+${VISUAL}$0
+#endif
+endsnippet
+
+snippet #if0 "#if 0 comment" b
+#if 0
+${VISUAL}$0
+#endif /* 0 */
+endsnippet
+
+snippet once "Header Include-Guard" b
+#ifndef ${1:`!p snip.rv = once_def(fn)`}
+#define $1
+
+${VISUAL}$0
+
+#endif /* $1 */
+endsnippet
+
+snippet if "" b
+if (${1:/* condition */}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet el "" b
+else {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet do "" b
+do {
+	${VISUAL}$0
+} while (${1:/* condition */});
+endsnippet
+
+snippet wh "" b
+while (${1:/* condition */}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet for "" b
+for (${2:i} = 0; $2 < ${1:count}; $2${3:++}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet switch "" b
+switch (${1:variable}) {
+	case '${2:value}':
+		${3:// code...}
+		break;
+	$0
+	default:
+		${4:// code...}
+		break;
+}
+endsnippet
+
+snippet case "" b
+case '${1:value}':
+	${2:// code...}
+	break;
+endsnippet
+
+# Function
+snippet fun "" b
+${1:void} ${2:function_name}(${3})
+{
+	$0
+}
+endsnippet
+
+# Function Declaration
+snippet fund "" b
+${1:void} ${2:function_name}(${3});
+endsnippet
+
+# Struct
+snippet struct "" b
+struct ${1:name} {
+	$0
+};
+endsnippet
+
+snippet enum "" b
+enum ${2:name} {
+	$0
+};
+endsnippet
+
+snippet pr
+printf("${1:%s}\\n"${2});
+endsnippet
+
+snippet fpr
+fprintf(${1:stderr}, "${2:%s}\\n"${3});
+endsnippet
+
+snippet atr "GNU attribute"
+__attribute__((${1}))
+endsnippet

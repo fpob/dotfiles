@@ -1,0 +1,62 @@
+[user]
+	name = Filip Pobořil
+	email = "tsuki@fpob.eu"
+	signingkey = "109D5640"
+
+[core]
+	editor = vim
+	autocrlf = input
+
+[push]
+	default = matching
+
+[alias]
+	s = status
+	a = add
+    au = add -u
+	ap = add --patch
+
+	c = commit
+	sc = commit -sS     # signed commit
+
+	l = log --oneline --graph --decorate --all --date-order
+	ll = log --show-signature --graph --decorate --all --date-order
+	ls = log --oneline --graph --decorate --all --stat --date-order
+	lg = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset) - %C(cyan)%ai%C(reset)%C(bold green)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an [%G?]%C(reset)' --all
+
+	pa = push origin --all
+	po = push origin HEAD
+    pd = push origin --delete
+    pu = push upstream HEAD
+
+	b = branch
+    bd = branch --delete
+
+	ch = checkout
+
+	m = merge --no-ff
+	mf = merge --ff
+
+	d = diff
+	dc = diff --cached
+	du = diff @{upstream}
+    dd = !git-daydiff
+
+    rs = remote show
+    rso = remote show origin
+    rsu = remote show upstream
+
+    sub = submodule
+
+	stash-unapply = !git stash show -p | git apply -R
+
+    ffs = flow feature start
+    ffc = flow feature checkout
+    fff = flow feature finish --fetch --no-ff
+    fbs = flow bugfix start
+    fbc = flow bugfix checkout
+    fbf = flow bugfix finish --fetch --no-ff
+    fhs = flow hotfix start
+    fhf = flow hotfix finish --fetch --no-ff
+    frs = flow release start
+    frf = flow release finish --fetch --no-ff
