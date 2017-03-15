@@ -5,8 +5,7 @@ cd "$HOME"
 
 # Install Oh My Zsh
 [[ ! -n $ZSH ]] && ZSH=$HOME/.oh-my-zsh
-[[ -d $ZSH ]] && exit
-git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$ZSH"
+[[ ! -d $ZSH ]] && git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$ZSH"
 
 # Init submodules
 yadm submodule update --recursive --init
