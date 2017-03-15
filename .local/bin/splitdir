@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+
+import click
+import os
+
+@click.command()
+@click.option("-c", "--chars", default=2,
+              help="Počet prvních znaků podle kterých se rozděluje")
+@click.option("-o", "--offset", default=0,
+              help="Přeskočit N znaků od začátku názvu souboru")
+@click.option("-d", "--depth", default=1,
+              help="Hloubka rozdělení")
+@click.option("-n", "--dry-run", is_flag=True, default=False,
+              help="Nepřesunovat jen vypsat přesuny")
+@click.argument("directory", type=click.Path(exists=True, file_okay=False),
+                default=".")
+def splitdir(directory, chars, offset, depth, dry_run):
+    """
+    Rozdělí soubory v zadaném adresáři do podadresářů podle části jejich názvů,
+    např. podle prvních dvou znaků.
+    """
+
+    for file in os.listdir(directory):
+        if not os.path.isfile(os.path.join(directory, file)):
+            continue
+        parts = [file.lower()[i+offset:i+offset+chars] for i in range(depth)]
+        parts.append(file)
+        file_new = os.path.join(directory, *parts)
+        if dry_run:
+            click.echo("'%s' -> '%s'" % (click.format_filename(file),
+                                         click.format_filename(file_new)))
+        else:
+            file = os.path.join(directory, file)
+            try:
+                os.renames(file, file_new)
+            except OSError:
+                try:
+                    os.rename(file, file + "~")
+                    os.renames(file + "~", file_new)
+                except OSError:
+                    if os.path.exists(file + "~"):
+                        os.rename(file + "~", file)
+
+if __name__ == "__main__":
+    splitdir()

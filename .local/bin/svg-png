@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+if [[ $1 = '--help' ]] ; then
+    cat <<EOF
+Použití: `basename $0` [-b BACKGROUND] [-w WIDTH] [-h HEIGHT] [OUTPUT [INPUT]]
+
+Převodník svg obrázků do png.
+
+Parametry:
+    -b BACKGROUND   barva pozadí, viz „man inkscape“, výchozí: transparent
+    -w WIDTH        šířka výstupního obrázku
+    -h HEIGHT       výška výstupního obrázku
+    OUTPUT          výstupní soubor, výchozí: stdout
+    INPUT           vstupní soubor, výchozí: stdin
+EOF
+    exit
+fi
+
+TMP_SVG=`mktemp svg-png_XXXXXX.svg`
+TMP_PNG=`mktemp svg-png_XXXXXX.png`
+trap 'rm -f $TMP_SVG $TMP_PNG' EXIT
+
+while getopts b:w:h: opt ; do
+    case "$opt" in
+        b)  background=$OPTARG ;;
+        w)  width=$OPTARG ;;
+        h)  height=$OPTARG ;;
+        *)  echo "Neznámá volba" ;;
+    esac
+done
+((OPTIND--))
+shift $OPTIND
+
+if [[ -z $2 ]] ; then
+    cat > $TMP_SVG
+fi
+
+inkscape -z ${background:+-b $background} ${width:+-w $width} ${height:+-h $height} \
+    -e "${1:-$TMP_PNG}" "${2:-$TMP_SVG}" &>/dev/null
+
+[[ $? -gt 0 ]] && exit 1
+
+if [[ -z $1 ]] ; then
+    cat $TMP_PNG
+fi

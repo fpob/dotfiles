@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+bitrate='320k'
+output=
+
+if [[ $1 = '--help' ]] ; then
+    cat << EOF
+Usage: `basename $0` [-o DIR] FILE [FILE ...]
+
+Zkonvertuje zadané audio soubory na formát mp3. Výstupní soubory budou ve
+stejném adresáři jako zrojové soubory.
+
+Options:
+    -b BITRATE  bitrate výstupní mp3 (default: $bitrate)
+EOF
+    exit ${1:-0}
+fi
+
+while getopts b:o: opt ; do
+    case "$opt" in
+        b)  bitrate=$OPTARG ;;
+        o)  output=$OPTARG ;;
+        *)  print_help 1 ;;
+    esac
+done
+((OPTIND--))
+shift $OPTIND
+
+if [[ -n $output ]] ; then
+    [[ ! -d $output ]] && mkdir -p $output
+fi
+
+if [[ -z $1 ]] ; then
+    echo "Nebyl zadán žádný soubor k převedení"
+    exit 127
+fi
+
+for src in "${@}" ; do
+    mime=`mimetype --output-format %m "$src"`
+    if `grep -q '^audio' <<< $mime` ; then
+        if [[ -n $output ]] ; then
+            dst="$output/`basename "${src/%.*/.mp3}"`"
+        else
+            dst="${src/%.*/.mp3}"
+        fi
+        ffmpeg -i "$src" -codec:a libmp3lame -b:a $bitrate "$dst"
+    else
+        echo "'$src' není audio soubor (mime: '$mime')" >&2
+    fi
+done

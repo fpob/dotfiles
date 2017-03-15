@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+if [[ $1 = '--help' ]] ; then
+    cat <<EOF
+Použití: `basename $0` URL
+         `basename $0` < seznam-url.txt
+
+Stáhne zadaný soubor z Mega nebo seznam souborů zadaných na standardním vstupu,
+jeden odkaz na jeden řádek.
+EOF
+    exit
+fi
+
+if [[ "$1" ]] ; then
+    megadl "$1"
+else
+    while read url ; do megadl "$url" ; done
+fi

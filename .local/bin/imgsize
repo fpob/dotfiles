@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+
+import click
+from PIL import Image
+
+@click.command()
+@click.argument("files", nargs=-1, type=click.Path(exists=True, dir_okay=False))
+def imgsize(files):
+    """Vypíše rozměry zadaných obrázků ve formátu TSV; šířka výška soubor."""
+    for file in files:
+        image = Image.open(file)
+        click.echo(("%d\t%d\t" % image.size) + file)
+
+if __name__ == "__main__":
+    imgsize()

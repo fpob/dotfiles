@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+#
+# Vypálí .iso obraz disku na CD/DVD
+#
+
+cdrom=/dev/cdrom
+
+if [[ $0 = '--help' ]] ; then
+    cat << EOF
+Použití: `basename $0` <disk.iso>
+
+Vypálí .iso obraz disku na CD/DVD ($cdrom)
+EOF
+    exit 0
+fi
+
+[ ! -f "$1" ] && { echo "Soubor obrazu neexistuje" >&2 ; exit 1 ; }
+[ ! -b "$cdrom" ] && { echo "Speciální blokové zařízení $cdrom neexistuje" >&2 ; exit 1 ; }
+
+sudo wodim -eject -tao speed=0 dev=$cdrom -v -data "$1"

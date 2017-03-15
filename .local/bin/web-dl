@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if [[ $1 = '--help' ]] ; then
+    cat << EOF
+Použití: `basename $0` URL [CUT-DIRS]
+
+Stáhne celou webovou stránku, včetně podstránek.
+CUT-DIRS viz man wget: --cut-dirs.
+EOF
+
+wget --random-wait -r -p -nH -e robots=off -U mozilla --cut-dirs=${2:-0} \
+    --no-parent --content-disposition "$1"

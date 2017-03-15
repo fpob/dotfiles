@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+
+import click
+import os
+
+def rename(old, new, dry_run=False):
+    if old != new:
+        if dry_run:
+            click.echo("{}\t{}".format(old, new))
+        else:
+            os.renames(old, new)
+
+@click.command()
+@click.option("-s", "--separator", default="__",
+              help="Oddělovač, kterým se nahradí oddělovač adresářové cesty")
+@click.option("-r", "--reverse", is_flag=True, default=False,
+              help="Reverzní operace - rozdělení do podadresářů")
+@click.option("-d", "--dry-run", is_flag=True, default=False,
+              help="Nepřesunovat, pouze vypsat co by se přesunovalo, formát: tsv")
+@click.argument("directory", type=click.Path(file_okay=False, exists=True),
+                default=".")
+def flatten(directory, separator, reverse, dry_run):
+    """
+    Zploští adresářovou strukturu. Rekurzivně vyhledá v zadaném adresáři
+    soubory a přesune je do daného adresáře. Přesunované soubory přejmenuje
+    podle jejich relativní cesty s nahrazením oddelovače adresářů zadaným
+    oddělovačem. Prázdné adresáře odstraňuje.
+
+    Přidáním příznaku -r / --reverse lze provést revezní operaci - podle
+    zadaného oddělovače rozdělit soubory v zadaném adresáři do podadresářů.
+    Neprochází se rekurzivně, ale může vytvořit více než jedno zanoření
+    adresářů.
+    """
+
+    if reverse:
+        for file in os.listdir(directory):
+            path = os.path.join(directory, file)
+            new_path = os.path.join(directory, file.replace(separator, os.sep))
+            rename(path, new_path, dry_run)
+
+    else:
+        for root, dirs, files in os.walk(directory):
+            for file in files:
+                path = os.path.join(root, file)
+                rel_path = os.path.relpath(path, directory)
+                new_path = os.path.join(directory, rel_path.replace(os.sep, separator))
+                rename(path, new_path, dry_run)
+
+if __name__ == "__main__":
+    flatten()

@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+help_msg () {
+    cat <<EOF
+Použití: `basename $0` [-r RATE] [-t TITLE] [-s SCALE] [-c COLUMNS] \\
+         <INPUT> [OUTPUT]
+
+Pro zadané video vygeneruje obrázek s náhledy z videa.
+
+Používá příkazy „ffmpeg“ a „montage“.
+
+Parametry:
+    INPUT       vstupní video soubor
+    OUTPUT      výstupní soubor obrázku s náhledem
+                (výchozí: vstupní soubor se změněnou příponou na „png“)
+    -r RATE     intervaly, ve kterých bude vytvořen screenshot
+                (výchozí: 1/300 = 5 minut)
+    -t TITLE    nadpis, který bude ve výsledném obrázku
+                (výchozí: vstupní soubor bez přípony)
+    -s SCALE    šířka screenshotů
+                (výchozí: 320)
+    -c COLUMNS  počet sloupců (= počet screenshotů v jednom řádku)
+                (výchozí: automaticky)
+EOF
+    exit $1
+}
+
+error () {
+    [[ -n $2 ]] && echo $2 >&2
+    exit $1
+}
+
+confirm () {
+    read -e -p "${1:-Potvrdit} (y/n) "
+    if [[ -n $REPLY ]] ; then
+        [[ $REPLY = y || $REPLY = yes ]]
+    else
+        [[ $2 = y || $2 = yes ]]
+    fi
+}
+
+[[ $1 = '--help' ]] && help_msg 0
+
+TEMP=`mktemp -d "/tmp/video-preview.XXXXXX"`
+trap 'rm -rf $TEMP' EXIT
+
+while getopts "r:t:s:c:" o; do
+    case "$o" in
+        r) RATE=$OPTARG ;;
+        t) TITLE=$OPTARG ;;
+        s) SCALE=$OPTARG ;;
+        c) TILE=$OPTARG ;;
+    esac
+done
+shift $((OPTIND-1))
+
+[[ -z $1 ]] && help_msg 1
+
+INPUT=$1
+OUTPUT=${2:-${INPUT%.*}.png}
+TITLE=${TITLE:-${INPUT%.*}}
+RATE=${RATE:-1/300}
+SCALE=${SCALE:-320}
+TILE=
+
+! which ffmpeg montage &>/dev/null \
+    && error 127 'Příkaz „ffmpeg“ nebo „montage“ neexistuje'
+
+[[ ! -f $INPUT ]] && error 1 "Soubor „$INPUT“ neexistuje"
+
+if [[ -f $OUTPUT ]] ; then
+    confirm 'Výstupní soubor už existuje, odstranit?' \
+        && rm -f "$OUTPUT" || exit
+fi
+
+ffmpeg -i "$INPUT" -r $RATE -vf scale=-1:$SCALE -vcodec png $TEMP/%04d.png
+montage -title "$TITLE" -geometry +4+4 ${TILE:+-tile $TILE} $TEMP/* "$OUTPUT"

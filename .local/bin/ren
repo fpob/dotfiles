@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+
+import click
+import unicodedata
+import os
+import re
+import hashlib
+
+
+ASCIIZE_CRE = re.compile(r"[^a-zA-Z0-9/]+")
+
+def asciize(string):
+    return ASCIIZE_CRE.sub("-", unicodedata.normalize("NFKD", string)).strip("-").encode("ASCII", "ignore").decode("ASCII")
+
+def create_new_name(file, new_name):
+    ext = os.path.splitext(file)[1]
+    return os.path.join(os.path.dirname(file), new_name + ext)
+
+
+@click.group()
+def ren():
+    pass
+
+
+@ren.command("ascii")
+@click.argument("files", nargs=-1,
+                type=click.Path(exists=True, resolve_path=True, dir_okay=False))
+def ren_ascii(files):
+    """Odstraní z názvu souborů ne-ASCII znaky."""
+    for src in files:
+        dst = os.path.join(os.path.dirname(src), asciize(os.path.basename(src)))
+        if src != dst and not os.path.exists(dst):
+            os.rename(src, dst)
+
+
+@ren.command("md5")
+@click.argument("files", nargs=-1,
+                type=click.Path(exists=True, resolve_path=True, dir_okay=False))
+def ren_md5(files):
+    """Přejmenuje soubory podle jejich MD5 kontrolního součtu."""
+    for src in files:
+        md5 = hashlib.md5()
+        with open(src, "rb") as f:
+            while True:
+                chunk = f.read(2048)
+                if not chunk:
+                    break
+                md5.update(chunk)
+        dst = create_new_name(src, md5.hexdigest())
+        if src != dst and not os.path.exists(dst):
+            os.rename(src, dst)
+
+
+@ren.command("seq")
+@click.option("-s", "--start", default=1, help="První číslo sekvence, výchozí: 1")
+@click.option("-f", "--format", default="%d", help="Formát názvu souboru, výchozí: %d")
+@click.argument("files", nargs=-1,
+                type=click.Path(exists=True, resolve_path=True, dir_okay=False))
+def ren_seq(files, start, format):
+    """Přejmenuje titulky číselnou sekvencí se zadaným formátem."""
+    rename_primary = list()
+    rename_secondary = list()
+
+    for i, src in enumerate(files, start):
+        dst = create_new_name(src, format % i)
+        if src != dst:
+            rename_primary.append((src, dst))
+
+    # Bezne prejmenovani, novy nazev nekoliduje s existujicim souborem.
+    for src, dst in rename_primary:
+        if not os.path.exists(dst):
+            os.rename(src, dst)
+        else:
+            rename_secondary.append((src, dst))
+
+    # Prejmenovani pokud novy nazev koliduje s existujicim souborem, obvykle
+    # pokud se zvysuji cisla (00 -> 01, 01 -> 02, 02 -> 03) - staci soubory
+    # prejmenovavat v obracenem poradi.
+    for src, dst in reversed(rename_secondary):
+        if not os.path.exists(dst):
+            os.rename(src, dst)
+        else:
+            click.echo("rename({}, {}): cíl už existuje".format(src, dst))
+
+
+if __name__ == "__main__":
+    ren()

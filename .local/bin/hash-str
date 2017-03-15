@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+
+import click
+import hashlib
+
+__doc__ = """
+Vypočítá a vypíše hash zadaného řetězce.
+
+Dostuné algoritmy: {}
+""".format(", ".join(sorted(hashlib.algorithms_available, key=str.lower)))
+
+@click.command(help=__doc__)
+@click.argument("algorithm", type=click.Choice(hashlib.algorithms_available))
+@click.argument("string")
+def hash_str(algorithm, string):
+    click.echo(hashlib.new(algorithm, string.encode("utf-8")).hexdigest())
+
+if __name__ == "__main__":
+    hash_str()
