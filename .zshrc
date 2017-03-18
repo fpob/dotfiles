@@ -164,6 +164,10 @@ alias mdv='mdv -t 884.0134'
 alias youtube-dl='youtube-dl --prefer-ffmpeg --merge-output-format mkv'
 alias yt-dl='youtube-dl -f bestvideo+bestaudio'
 
+# Copy & Paste Clipboard
+alias ci='xclip -i -sel c'
+alias co='xclip -o -sel c'
+
 # Global aliasses
 alias -g L='|less'
 alias -g G='|grep'
@@ -171,7 +175,6 @@ alias -g T='|tail'
 alias -g H='|head'
 alias -g W='|wc'
 alias -g N='&>/dev/null'
-alias -g C='|xclip -i -sel c'
 
 # Functions ----------------------------------------------------------------{{{1
 
@@ -184,9 +187,4 @@ function man () {
         LESS_TERMCAP_ue=$'\E[0m' \
         LESS_TERMCAP_us=$'\E[04;34m' \
         man "$@"
-}
-
-function repair-perms () {
-    find ${1:-.} -type d -exec chmod 755 {} \;
-    find ${1:-.} -type f -exec chmod 644 {} \;
 }

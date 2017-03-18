@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+if [[ $1 == '--help' ]] ; then
+    cat <<EOF
+Použití: `basename $0` [-x] [DIR [DIR ...]]
+
+Nastaví na souborech a adresářích oprávnění odpovídající aktuálnímu nastavení
+umask a vlastníka a skupinu aktuálního uživatele. Sockety, fronty aj. nemění.
+
+Parametry:
+    -x   Nezachovávat u souborů příznak spuštění
+    DIR  Adresář ve kterém se budou měnit oprávnění, výchozí: \$PWD
+EOF
+    exit
+fi
+
+FMOD=$(umask -S | sed 's/x/X/g')
+DMOD=$(umask -S)
+[[ -z $UID ]] && UID=$(id -u)
+[[ -z $GID ]] && GID=$(id -g)
+OWN="$UID:$GID"
+
+while getopts x opt ; do
+    case $opt in
+        x) FMOD=$(umask -S | sed 's/x//g') ;;
+    esac
+done
+shift $((OPTIND-1))
+
+sanitize () {
+    find "$1" \( -type f -o -type d \) -exec chown "$OWN" {} \;
+    find "$1" -type f -exec chmod "$FMOD" {} \;
+    find "$1" -type d -exec chmod "$DMOD" {} \;
+}
+
+if [[ $# -eq 0 ]] ; then
+    sanitize .
+else
+    for f ; do sanitize "$f" ; done
+fi
