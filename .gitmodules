@@ -97,3 +97,9 @@
 [submodule ".vim/bundle/ultisnips"]
 	path = .vim/bundle/ultisnips
 	url = https://github.com/sirver/ultisnips
+[submodule ".tmux/plugins/resurrect"]
+	path = .tmux/plugins/resurrect
+	url = https://github.com/tmux-plugins/tmux-resurrect
+[submodule ".tmux/plugins/continuum"]
+	path = .tmux/plugins/continuum
+	url = https://github.com/tmux-plugins/tmux-continuum.git
