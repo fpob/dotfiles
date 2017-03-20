@@ -1,11 +1,16 @@
-[[ $TERM = 'xterm' ]] && export TERM="xterm-256color"
+# Term ---------------------------------------------------------------------{{{1
+
+case $TERM in
+    xterm*) export TERM="xterm-256color" ;;
+esac
 
 # Tmux ---------------------------------------------------------------------{{{1
 
 # If not in tmux and not in mc subshell
 if [[ -z $TMUX && -z $MC_SID ]] ; then
     if [[ -n $SSH_CONNECTION ]] ; then
-        tmux attach -t default || tmux new -s default
+        # If session "main" exists then attach otherwise create
+        tmux new -A -s main
     fi
 fi
 
