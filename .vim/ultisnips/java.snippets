@@ -13,7 +13,16 @@ def doc_method(snip, params, ret, throws=None):
 	if throws:
 		for t in throws.split(","):
 			snip += " * @throws " + t.strip()
+def package(file_path):
+	if file_path.startswith("src/"):
+		file_path = file_path[4:]
+	file_path = os.path.dirname(file_path)
+	return file_path.replace(os.sep, ".")
 endglobal
+
+snippet pack "package" b
+package ${1:`!p snip.rv = package(path)`};
+endsnippet
 
 snippet pc "public class" b
 /**
