@@ -118,7 +118,7 @@ bindkey -s '\el' 'l\n'
 # Aliasses -----------------------------------------------------------------{{{1
 
 # Remove all aliases
-unalias -a
+unalias -m '*'
 
 # Colors
 alias ls="ls -v --color=auto"
