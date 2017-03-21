@@ -103,3 +103,9 @@
 [submodule ".tmux/plugins/continuum"]
 	path = .tmux/plugins/continuum
 	url = https://github.com/tmux-plugins/tmux-continuum.git
+[submodule ".tmux/plugins/prefix-highlight"]
+	path = .tmux/plugins/prefix-highlight
+	url = https://github.com/tmux-plugins/tmux-prefix-highlight.git
+[submodule ".tmux/plugins/yank"]
+	path = .tmux/plugins/yank
+	url = https://github.com/tmux-plugins/tmux-yank.git
