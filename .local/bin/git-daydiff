@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-for i in `seq 0 14` ; do
-    b=`git diff --shortstat "@{ $i day ago }"`
-    [[ $b != $a ]] && echo $i day ago $b
-    a=$b
-done
