@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+daystat () {
+    date_start="`date -d "$1" +%F` 00:00"
+    date_end="`date -d "$1 + 1 day" +%F` 23:59"
+    commit_start=`git log --after="$date_start" --before="$date_end" --format=%H | head -n1`
+    commit_end=`git log --after="$date_start" --before="$date_end" --format=%H | tail -n1`
+    [[ -n $commit_start && -n $commit_end ]] \
+        && stat=`git --no-pager diff --shortstat $commit_end~..$commit_start 2>/dev/null`
+    [[ $? -eq 0 ]] && echo "`date -d "$1" +%F`  $stat"
+}
+
+for i in `seq 0 14` ; do
+    daystat "now - $i day"
+done
