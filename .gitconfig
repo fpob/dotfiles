@@ -24,7 +24,7 @@
 	ls = log --oneline --graph --decorate --all --stat --date-order
 	lg = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset) - %C(cyan)%ai%C(reset)%C(bold green)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an [%G?]%C(reset)' --all
 
-	pa = push origin --all
+	pa = push origin --all --follow-tags
 	po = push origin HEAD
     pd = push origin --delete
     pu = push upstream HEAD
@@ -56,6 +56,6 @@
     fbc = flow bugfix checkout
     fbf = flow bugfix finish --fetch --no-ff
     fhs = flow hotfix start
-    fhf = flow hotfix finish --fetch --no-ff
+    fhf = flow hotfix finish --fetch
     frs = flow release start
     frf = flow release finish --fetch --no-ff
