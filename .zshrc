@@ -181,15 +181,12 @@ alias -g H='|head'
 alias -g W='|wc'
 alias -g N='&>/dev/null'
 
-# Functions ----------------------------------------------------------------{{{1
+# Color man pages ----------------------------------------------------------{{{1
 
-function man () {
-    env LESS_TERMCAP_mb=$'\E[41m' \
-        LESS_TERMCAP_md=$'\E[01;32m' \
-        LESS_TERMCAP_me=$'\E[0m' \
-        LESS_TERMCAP_se=$'\E[0m' \
-        LESS_TERMCAP_so=$'\E[01;31m' \
-        LESS_TERMCAP_ue=$'\E[0m' \
-        LESS_TERMCAP_us=$'\E[04;34m' \
-        man "$@"
-}
+export LESS_TERMCAP_mb=$'\E[41m'
+export LESS_TERMCAP_md=$'\E[01;32m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;31m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[04;34m'
