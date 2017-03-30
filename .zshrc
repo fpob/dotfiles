@@ -103,8 +103,16 @@ function prompt_anime_aid () {
     [[ -f .aid ]] && "${1}_prompt_segment" "$0" "$2" cyan black "a`cat .aid`"
 }
 
+function prompt_parent () {
+    local parent=$(ps -p $PPID -o comm=)
+    case $parent in
+        ranger|vim)
+            "${1}_prompt_segment" "$0" "$2" black yellow "$parent" ;;
+    esac
+}
+
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status root_indicator context dir)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(anime_aid vcs virtualenv background_jobs ssh)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(anime_aid vcs virtualenv background_jobs ssh parent)
 POWERLEVEL9K_STATUS_VERBOSE=false
 
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
