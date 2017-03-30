@@ -1,45 +1,45 @@
 [user]
-	name = Filip Pobořil
-	email = "tsuki@fpob.eu"
-	signingkey = "109D5640"
+    name = Filip Pobořil
+    email = "tsuki@fpob.eu"
+    signingkey = "109D5640"
 
 [core]
-	editor = vim
-	autocrlf = input
+    editor = vim
+    autocrlf = input
 
 [push]
-	default = matching
+    default = matching
 
 [alias]
-	s = status
-	a = add
+    s = status
+    a = add
     au = add -u
-	ap = add --patch
+    ap = add --patch
 
-	c = commit
-	sc = commit -sS     # signed commit
+    c = commit
+    sc = commit -sS     # signed commit
 
-	l = log --oneline --graph --decorate --all --date-order
-	ll = log --show-signature --graph --decorate --all --date-order
-	ls = log --oneline --graph --decorate --all --stat --date-order
-	lg = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset) - %C(cyan)%ai%C(reset)%C(bold green)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an [%G?]%C(reset)' --all
+    l = log --oneline --graph --decorate --all --date-order
+    ll = log --show-signature --graph --decorate --all --date-order
+    ls = log --oneline --graph --decorate --all --stat --date-order
+    lg = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset) - %C(cyan)%ai%C(reset)%C(bold green)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an [%G?]%C(reset)' --all
 
-	pa = push origin --all --follow-tags
-	po = push origin HEAD
+    pa = push origin --all --follow-tags
+    po = push origin HEAD
     pd = push origin --delete
     pu = push upstream HEAD
 
-	b = branch
+    b = branch
     bd = branch --delete
 
-	ch = checkout
+    ch = checkout
 
-	m = merge --no-ff
-	mf = merge --ff
+    m = merge --no-ff
+    mf = merge --ff
 
-	d = diff
-	dc = diff --cached
-	du = diff @{upstream}
+    d = diff
+    dc = diff --cached
+    du = diff @{upstream}
 
     rs = remote show
     rso = remote show origin
@@ -47,7 +47,7 @@
 
     sub = submodule
 
-	stash-unapply = !git stash show -p | git apply -R
+    stash-unapply = !git stash show -p | git apply -R
 
     ffs = flow feature start
     ffc = flow feature checkout

@@ -1,7 +1,0 @@
-#compdef tv
-#autoload
-
-local -a tv_list
-tv_list=("${(f)$(tv -f tsv | awk 'BEGIN { FS = "\t" } { gsub(" ", "\\ ", $2); print $1 "\\:" $2 }')}")
-
-_arguments "1:TV:(($tv_list))"

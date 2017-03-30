@@ -64,7 +64,7 @@ case "$extension" in
         ;; # fall back to highlight/cat if the text browsers fail
 
     tsv)
-        column -t -s $'\t' "$path" && exit 5
+        try column -t -s $'\t' "$path" && { dump | trim; exit 5; || exit 2
         ;;
 
     deb)
@@ -78,7 +78,7 @@ case "$mimetype" in
         ;;
 
     image/*|video/*|audio/*)
-        exiftool "$path" && exit 5 || exit 1
+        try exiftool "$path" && { dump | trim; exit 5; } || exit 1
         ;;
 esac
 

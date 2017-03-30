@@ -57,7 +57,7 @@ def ren_md5(files):
 @click.argument("files", nargs=-1,
                 type=click.Path(exists=True, resolve_path=True, dir_okay=False))
 def ren_seq(files, start, format):
-    """Přejmenuje titulky číselnou sekvencí se zadaným formátem."""
+    """Přejmenuje soubory číselnou sekvencí se zadaným formátem."""
     rename_primary = list()
     rename_secondary = list()
 

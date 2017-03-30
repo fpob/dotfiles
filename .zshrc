@@ -26,10 +26,12 @@ manpath=(~/.local/man $manpath)
 typeset -gU manpath
 
 # Function path
-#fpath=($ZSH_CUSTOM/completions $ZSH_CUSTOM/functions $fpath)
-#typeset -U fpath
+# ~/.oh-my-zsh/custom/fpath.zsh
 
 # Variables ----------------------------------------------------------------{{{1
+
+# Parent process name
+PARENT=$(ps -p $PPID -o comm=)
 
 # hide this user from prompt
 export DEFAULT_USER="fpob"
@@ -104,19 +106,16 @@ function prompt_anime_aid () {
 }
 
 function prompt_parent () {
-    local parent=$(ps -p $PPID -o comm=)
-    case $parent in
+    case $PARENT in
         ranger|vim)
-            "${1}_prompt_segment" "$0" "$2" black yellow "$parent" ;;
+            "${1}_prompt_segment" "$0" "$2" black yellow "$PARENT" ;;
     esac
 }
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status root_indicator context dir)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(anime_aid vcs virtualenv background_jobs ssh parent)
 POWERLEVEL9K_STATUS_VERBOSE=false
-
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
-
 POWERLEVEL9K_ROOT_ICON=$'\u2622'
 
 # Bindkey ------------------------------------------------------------------{{{1
@@ -153,10 +152,6 @@ alias py='python3'
 alias pyc='py3compile'
 alias pydoc='pydoc3'
 
-alias gdb='gdb -q'
-alias bc='bc -ql'
-alias octave='octave -q --no-gui'
-
 # Task Spooler
 alias ts='tsp'
 
@@ -171,15 +166,15 @@ alias mkdir='nocorrect mkdir -p'
 alias mv='nocorrect mv'
 alias tcpdump='sudo tcpdump'
 
-alias tsv="column -t -s$'\t'"
-
-alias mdv='mdv -t 884.0134'
-alias youtube-dl='youtube-dl --prefer-ffmpeg --merge-output-format mkv'
-alias yt-dl='youtube-dl -f bestvideo+bestaudio'
-
 # Copy & Paste Clipboard
 alias ci='xclip -i -sel c'
 alias co='xclip -o -sel c'
+
+alias tsv="column -t -s$'\t'"
+alias mdv='mdv -t 884.0134'
+alias gdb='gdb -q'
+alias bc='bc -ql'
+alias octave='octave -q --no-gui'
 
 # Global aliasses
 alias -g L='|less'
@@ -188,6 +183,11 @@ alias -g T='|tail'
 alias -g H='|head'
 alias -g W='|wc'
 alias -g N='&>/dev/null'
+
+# Start new instance only if it is not running in current shell
+case $PARENT in
+    ranger|vim) alias $PARENT='exit' ;;
+esac
 
 # Color man pages ----------------------------------------------------------{{{1
 

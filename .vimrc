@@ -1,11 +1,6 @@
-"
-" ~/.vimrc : Vim config file
-"
-
-execute pathogen#infect()
-
 " Nastavení ----------------------------------------------------------------{{{1
 
+execute pathogen#infect()
 set nocompatible
 
 " Historie, zálohy
@@ -138,8 +133,7 @@ augroup vimrc
 
     autocmd BufNewFile * set fileformat=unix
     autocmd Filetype man,help setlocal colorcolumn=0
-    autocmd BufNewFile Makefile setlocal noexpandtab
-    autocmd BufNewFile *.sh exe "normal i#!/usr/bin/env basho"
+    autocmd BufNewFile *.sh execute "normal i#!/usr/bin/env basho"
 
     " Automatické uložení a načtení viewů (foldy, pozice kurzoru, ...)
     autocmd BufLeave,VimLeave *
@@ -150,9 +144,6 @@ augroup vimrc
         \   if expand('%') != '' && &buftype !~ 'nofile'
         \|    silent loadview
         \|  endif
-
-    " Pridani souboru tagu podle typu souboru
-    autocmd BufEnter * exec "setlocal tags+=" . &filetype . ".tags"
 
     " Vymazání bufferu `q` po spuštění
     autocmd VimEnter * let @q=''
@@ -238,37 +229,12 @@ noremap <Leader>y "+y
 noremap <Leader>p "+p
 noremap <Leader>P "+P
 
-" Easymotion ... noremap nefunguje!
+" easymotion ---------------------------------------------------------------{{{1
+
 nmap <Leader>f <Plug>(easymotion-bd-f)
 nmap <Leader>F <Plug>(easymotion-overwin-f)
 nmap <Leader>s <Plug>(easymotion-bd-f2)
 nmap <Leader>S <Plug>(easymotion-overwin-f2)
-
-" Airline
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
-
-" Javacomplete
-nmap <leader>jI <Plug>(JavaComplete-Imports-AddMissing)
-nmap <leader>jR <Plug>(JavaComplete-Imports-RemoveUnused)
-nmap <leader>ji <Plug>(JavaComplete-Imports-AddSmart)
-nmap <leader>jii <Plug>(JavaComplete-Imports-Add)
-nmap <leader>jM <Plug>(JavaComplete-Generate-AbstractMethods)
-nmap <leader>jA <Plug>(JavaComplete-Generate-Accessors)
-nmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
-nmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
-nmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-nmap <leader>jts <Plug>(JavaComplete-Generate-ToString)
-nmap <leader>jeq <Plug>(JavaComplete-Generate-EqualsAndHashCode)
-nmap <leader>jc <Plug>(JavaComplete-Generate-Constructor)
-nmap <leader>jcc <Plug>(JavaComplete-Generate-DefaultConstructor)
 
 " airline ------------------------------------------------------------------{{{1
 
@@ -321,6 +287,16 @@ let g:airline#extensions#tabline#tabs_label = 't'
 let g:airline#extensions#tabline#show_close_button = 0
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#fnamemod = ':t'
+
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
 
 " NERDTree -----------------------------------------------------------------{{{1
 
@@ -404,8 +380,23 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 " phpcomplete
 let g:phpcomplete_parse_docblock_comments = 1
 
+" javacomplete
 au FileType java setlocal omnifunc=javacomplete#Complete
 let g:JavaComplete_EnableDefaultMappings = 0
+nmap <leader>jI <Plug>(JavaComplete-Imports-AddMissing)
+nmap <leader>jR <Plug>(JavaComplete-Imports-RemoveUnused)
+nmap <leader>ji <Plug>(JavaComplete-Imports-AddSmart)
+nmap <leader>jii <Plug>(JavaComplete-Imports-Add)
+nmap <leader>jM <Plug>(JavaComplete-Generate-AbstractMethods)
+nmap <leader>jA <Plug>(JavaComplete-Generate-Accessors)
+nmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
+nmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
+nmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
+nmap <leader>jts <Plug>(JavaComplete-Generate-ToString)
+nmap <leader>jeq <Plug>(JavaComplete-Generate-EqualsAndHashCode)
+nmap <leader>jc <Plug>(JavaComplete-Generate-Constructor)
+nmap <leader>jcc <Plug>(JavaComplete-Generate-DefaultConstructor)
+
 
 " gutentags ----------------------------------------------------------------{{{1
 

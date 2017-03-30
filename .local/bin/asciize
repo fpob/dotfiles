@@ -2,7 +2,7 @@
 
 if [[ $1 == '--help' ]] ; then
     cat <<EOF
-Použití: `basename $0` [-f FROM_ENCONDING] [-i INPUT] [-o OUTPUT]
+Použití: `basename $0` [-f FROM_ENCONDING] [INPUT [OUTPUT]]
 
 Převede text na ASCII, ne-ASCII znaky nahrazuje ASCII ekvivalenty
 (ě → e, ý → y, ...).
@@ -11,16 +11,16 @@ EOF
     exit
 fi
 
-input=-
-output=-
 from=utf-8
 
 while getopts f:o:i: opt ; do
     case $opt in
         f) from=$OPTARG ;;
-        i) input=$OPTARG ;;
-        o) output=$OPTARG ;;
     esac
 done
+shift $((--OPTIND))
+
+input=${1:--}
+output=${2:--}
 
 iconv -f $from -t ascii//TRANSLIT -o "$output" "$input"
