@@ -64,12 +64,16 @@ case "$extension" in
         ;; # fall back to highlight/cat if the text browsers fail
 
     tsv)
-        try column -t -s $'\t' "$path" && { dump | trim; exit 5; || exit 2
+        try column -t -s $'\t' "$path" && { dump | trim; exit 5; } || exit 2
         ;;
 
     deb)
         try dpkg --info "$path" && { dump | trim; exit 5; } || exit 1
         ;;
+
+    md|markdown)
+        try mdv -t 884.0134 -c $width -u i "$path" && { dump | trim; exit 5; }
+        ;; # fall back to highlight/cat
 esac
 
 case "$mimetype" in
