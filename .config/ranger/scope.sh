@@ -1,16 +1,4 @@
 #!/usr/bin/env bash
-# {{{
-# Meanings of exit codes:
-# code | meaning    | action of ranger
-# -----+------------+-------------------------------------------
-# 0    | success    | success. display stdout as preview
-# 1    | no preview | failure. display no preview at all
-# 2    | plain text | display the plain content of the file
-# 3    | fix width  | success. Don't reload when width changes
-# 4    | fix height | success. Don't reload when height changes
-# 5    | fix both   | success. Don't ever reload
-# 6    | image      | success. display the image $cached points to as an image preview
-# }}}
 
 path="$1"    # Full path of the selected file
 width="$2"   # Width of the preview pane (number of fitting characters)
