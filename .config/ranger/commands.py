@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from ranger.api.commands import *
 from ranger.core.loader import CommandLoader
 import os
