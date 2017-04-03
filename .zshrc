@@ -25,9 +25,6 @@ MANPATH=`env MANPATH= manpath`
 manpath=(~/.local/man $manpath)
 typeset -gU manpath
 
-# Function path
-# ~/.oh-my-zsh/custom/fpath.zsh
-
 # Variables ----------------------------------------------------------------{{{1
 
 # Parent process name
@@ -90,6 +87,9 @@ add-zsh-hook precmd  omz_termsupport_precmd
 add-zsh-hook preexec omz_termsupport_preexec
 
 source $ZSH/oh-my-zsh.sh
+
+fpath=($ZSH_CUSTOM/completions $ZSH_CUSTOM/functions $fpath)
+typeset -Ug fpath
 
 # Reinicializace doplnovani, kvuli vlastnim doplnovani
 autoload -Uz compinit
