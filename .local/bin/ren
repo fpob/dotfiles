@@ -10,7 +10,7 @@ import hashlib
 ASCIIZE_CRE = re.compile(r"[^a-zA-Z0-9/]+")
 
 def asciize(string):
-    return ASCIIZE_CRE.sub("-", unicodedata.normalize("NFKD", string)).strip("-").encode("ASCII", "ignore").decode("ASCII")
+    return ASCIIZE_CRE.sub("-", unicodedata.normalize("NFKD", string).encode("ASCII", "ignore").decode("ASCII")).strip("-")
 
 def create_new_name(file, new_name):
     ext = os.path.splitext(file)[1]
@@ -28,7 +28,8 @@ def ren():
 def ren_ascii(files):
     """Odstraní z názvu souborů ne-ASCII znaky."""
     for src in files:
-        dst = os.path.join(os.path.dirname(src), asciize(os.path.basename(src)))
+        file_name = os.path.splitext(os.path.basename(src))[0]
+        dst = create_new_name(src, asciize(file_name))
         if src != dst and not os.path.exists(dst):
             os.rename(src, dst)
 
