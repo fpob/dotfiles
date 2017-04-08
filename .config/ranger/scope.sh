@@ -59,6 +59,10 @@ case "$extension" in
         try dpkg --info "$path" && { dump | trim; exit 5; } || exit 1
         ;;
 
+    txt)
+        cat "$path" | trim; exit 5
+        ;;
+
     md|markdown)
         try mdv -t 884.0134 -c $width -u i "$path" && { dump | trim; exit 5; }
         ;; # fall back to highlight/cat

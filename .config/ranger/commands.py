@@ -54,3 +54,10 @@ class unar(Command):
                                 descr=trim("{} {}".format(self.line, file.path)))
             obj.signal_bind("after", refresh)
             self.fm.loader.add(obj)
+
+
+class tmux(Command):
+    def execute(self):
+        if not "TMUX" in os.environ:
+            return self.fm.notify("Not in tmux", bad=True)
+        self.fm.execute_console("shell " + self.line)
