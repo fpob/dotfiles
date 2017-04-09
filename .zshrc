@@ -80,6 +80,8 @@ COMPLETION_WAITING_DOTS="true"
 # Pluginy
 plugins=(sudo zsh_reload git git-flow autojump taskwarrior
          python pip virtualenvwrapper django gulp bower composer)
+# custom
+plugins+=(cheat ranger)
 
 # Pridani podpory precmd a preexec, bez toho nefunguje theme powerlevel9k
 autoload -U add-zsh-hook
