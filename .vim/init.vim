@@ -145,7 +145,7 @@ augroup vimrc
         \|  endif
     autocmd BufRead *
         \   if expand('%') != '' && &buftype !~ 'nofile'
-        \|    silent loadview
+        \|    silent! loadview
         \|  endif
 
     " Vymazání bufferu `q` po spuštění
