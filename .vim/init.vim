@@ -56,7 +56,9 @@ set wildmode=longest:full,full
 set wildignore+=*.o,*~,*.pyc,__pycache__/,.git/
 
 " Nevydávát otravné zvuky!
-set belloff=all
+if v:version >= 800
+    set belloff=all
+endif
 set noerrorbells
 set novisualbell
 
