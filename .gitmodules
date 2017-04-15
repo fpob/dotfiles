@@ -93,7 +93,7 @@
 	url = git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git
 [submodule ".vim/bundle/zsh"]
 	path = .vim/bundle/zsh
-	url = https://github.com/clones/vim-zsh.git
+	url = https://github.com/chrisbra/vim-zsh.git
 [submodule ".vim/bundle/ultisnips"]
 	path = .vim/bundle/ultisnips
 	url = https://github.com/sirver/ultisnips
