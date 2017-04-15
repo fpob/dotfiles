@@ -12,8 +12,6 @@ def trim(string, length=200):
 
 
 class tar(Command):
-    """:tar OPTIONS"""
-
     def execute(self):
         cwd = self.fm.thisdir
         original_path = cwd.path
@@ -40,7 +38,11 @@ class tar(Command):
 
 
 class unar(Command):
-    """:unar OPTIONS"""
+    """
+    :unar OPTIONS
+
+    Extract selected archives.
+    """
 
     def execute(self):
         original_path = self.fm.thisdir.path
@@ -61,3 +63,14 @@ class tmux(Command):
         if not "TMUX" in os.environ:
             return self.fm.notify("Not in tmux", bad=True)
         self.fm.execute_console("shell " + self.line)
+
+
+class take(Command):
+    """
+    :take DIR_NAME
+
+    mkdir & cd
+    """
+    def execute(self):
+        self.fm.execute_console("mkdir " + self.rest(1))
+        self.fm.execute_console("cd " + self.rest(1))
