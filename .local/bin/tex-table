@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+[[ $1 = --help ]] && {
+    cat <<EOF
+Usage: $(basename $0) [-s SEPARATOR] [FILE]
+
+Converts tsv/csv/... table to LaTeX table.
+EOF
+    exit
+}
+
+while getopts s: opt ; do
+    case "$opt" in
+        s)  FS=$OPTARG ;;
+    esac
+done
+shift $((--OPTIND))
+
+input=$1
+[[ -z $input ]] && {
+    input=`mktemp tex-table-XXXXXX`
+    trap 'rm -f $input' EXIT
+    cat > $input
+}
+
+[[ -z $FS ]] && case $input in
+    *.tsv) FS=$'\t' ;;
+    *.csv) FS='.' ;;
+    *) FS=$'\t' ;;
+esac
+
+echo '\begin{table}'
+awk 'BEGIN{FS="'"$FS"'"};NR==1{printf("  \\begin{tabular}{");while(i++<NF)printf("c");printf("}\n")}' "$input"
+
+# the $1=$1 is to rebuild the record, using the current OFS
+awk 'BEGIN{FS="'"$FS"'";OFS=" \t& ";ORS=" \t\\\\\n"};{printf("    ");$1=$1;print}' "$input" | column -t -s$'\t'
+
+cat <<"EOF"
+  \end{tabular}
+  \caption{Table...}
+  \label{tab:}
+\end{table}
+EOF
