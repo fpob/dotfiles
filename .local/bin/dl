@@ -24,7 +24,7 @@ youtube () {
     youtube-dl --prefer-ffmpeg --merge-output-format mkv -f bestvideo+bestaudio "$1"
 }
 
-if [[ -n "$2" ]] ; then
+if [[ -n $2 ]] ; then
     $1 "$2"
 else
     while read url ; do

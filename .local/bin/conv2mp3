@@ -37,14 +37,18 @@ fi
 
 for src in "${@}" ; do
     mime=`mimetype --output-format %m "$src"`
-    if `grep -q '^audio' <<< $mime` ; then
-        if [[ -n $output ]] ; then
-            dst="$output/`basename "${src/%.*/.mp3}"`"
-        else
-            dst="${src/%.*/.mp3}"
-        fi
-        ffmpeg -i "$src" -codec:a libmp3lame -b:a $bitrate "$dst"
-    else
-        echo "'$src' není audio soubor (mime: '$mime')" >&2
-    fi
+    case $mime in
+        audio/*|video/*)
+            if [[ -n $output ]] ; then
+                dst="$output/`basename "${src/%.*/.mp3}"`"
+            else
+                dst="${src/%.*/.mp3}"
+            fi
+            ffmpeg -i "$src" -codec:a libmp3lame -b:a $bitrate "$dst"
+            ;;
+
+        *)
+            echo "'$src' není audio ani video soubor (mime: '$mime')" >&2
+            ;;
+    esac
 done
