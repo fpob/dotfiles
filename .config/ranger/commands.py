@@ -8,7 +8,7 @@ import shlex
 
 def trim(string, length=200):
     if len(string) > length:
-        return string[:200] + "…"
+        return string[:length] + "…"
     return string
 
 
@@ -60,10 +60,12 @@ class unar(Command):
 
 
 class tmux(Command):
+    escape_macros_for_shell = True
+
     def execute(self):
         if not "TMUX" in os.environ:
             return self.fm.notify("Not in tmux", bad=True)
-        self.fm.execute_console("shell " + self.line)
+        self.fm.execute_command(self.line)
 
 
 class take(Command):
@@ -99,7 +101,6 @@ class trash(Command):
         if files:
             obj = CommandLoader(args=[self.TRASH_CMD, "--"] + files, descr="Trash")
             self.fm.loader.add(obj)
-
 
     def tab(self, tabnum):
         return self._tab_directory_content()
