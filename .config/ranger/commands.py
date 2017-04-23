@@ -3,6 +3,7 @@
 from ranger.api.commands import *
 from ranger.core.loader import CommandLoader
 import os
+import shlex
 
 
 def trim(string, length=200):
@@ -71,6 +72,34 @@ class take(Command):
 
     mkdir & cd
     """
+
     def execute(self):
         self.fm.execute_console("mkdir " + self.rest(1))
         self.fm.execute_console("cd " + self.rest(1))
+
+
+class trash(Command):
+    """
+    :trash
+
+    Move selection or files passed in arguments to trash.
+    """
+
+    TRASH_CMD = "trash"      # trash-cli
+    #TRASH_CMD = "gvfs-trash" # gvfs-bin
+
+    allow_abbrev = False
+    escape_macros_for_shell = True
+
+    def execute(self):
+        if self.rest(1):
+            files = shlex.split(self.rest(1))
+        else:
+            files = [file.path for file in self.fm.thistab.get_selection()]
+        if files:
+            obj = CommandLoader(args=[self.TRASH_CMD, "--"] + files, descr="Trash")
+            self.fm.loader.add(obj)
+
+
+    def tab(self, tabnum):
+        return self._tab_directory_content()
