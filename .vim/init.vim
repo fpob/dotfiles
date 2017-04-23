@@ -111,6 +111,10 @@ if !has('nvim')
     set cryptmethod=blowfish2
 endif
 
+if has('unnamedplus')
+    set clipboard=unnamedplus
+endif
+
 " Vlastní dokumentace, pokud adresář existuje
 if isdirectory($HOME . "/.vim/doc")
     helptags $HOME/.vim/doc
@@ -233,6 +237,10 @@ nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 noremap <Leader>y "+y
 noremap <Leader>p "+p
 noremap <Leader>P "+P
+
+nnoremap <silent> yd :let @+=expand("%:p:h")<Cr>
+nnoremap <silent> yp :let @+=expand("%:p")<Cr>
+nnoremap <silent> yn :let @+=expand("%:t")<Cr>
 
 " easymotion ---------------------------------------------------------------{{{1
 
