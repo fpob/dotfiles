@@ -12,5 +12,3 @@ yadm submodule update --recursive --init
 
 # Init vim
 make -C .vim init
-
-ln -s $HOME/.vim $HOME/.config/nvim
