@@ -84,5 +84,19 @@ def ren_seq(files, start, format):
             click.echo("rename({}, {}): cíl už existuje".format(src, dst))
 
 
+@ren.command("win")
+@click.option("-r", "--replacement", default="",
+              help="Znak, kterým se nevalidní znaky nahradí")
+@click.argument("files", nargs=-1,
+                type=click.Path(exists=True, resolve_path=True, dir_okay=False))
+def ren_win(replacement, files):
+    """Přejmenuje soubory pro Window$."""
+    win_invalid_cre = re.compile(r'[\x00-\x1f/?<>\\:*|"^]')
+    for src in files:
+        name = os.path.basename(src)
+        dst = create_new_name(src, win_invalid_cre.sub(replacement, name).rstrip("."))
+        os.rename(src, dst)
+
+
 if __name__ == "__main__":
     ren()
