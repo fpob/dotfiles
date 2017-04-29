@@ -1,43 +1,22 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-[[ $1 = --help ]] && {
-    cat <<EOF
-Usage: $(basename $0) [-s SEPARATOR] [FILE]
+import click
 
-Converts tsv/csv/... table to LaTeX table.
-EOF
-    exit
-}
+@click.command()
+@click.argument("file", type=click.File("r"))
+@click.option("-s", "--separator", default="\t")
+@click.option("-t", "--transpose", is_flag=True, default=False)
+@click.option("-f", "--column-format", default="%s")
+def tex_table(file, separator, transpose, column_format):
+    table = list()
+    for i, line in enumerate(file):
+        table.append([column_format % cell for cell in line.strip().split(separator)])
+    if transpose:
+        table = list(zip(*table))
+    click.echo(r"\begin{tabular}{" + "c" * len(table[0]) + "}")
+    for row in table:
+        click.echo("  " + " & ".join(row) + r" \\")
+    click.echo(r"\end{tabular}")
 
-while getopts s: opt ; do
-    case "$opt" in
-        s)  FS=$OPTARG ;;
-    esac
-done
-shift $((--OPTIND))
-
-input=$1
-[[ -z $input ]] && {
-    input=`mktemp tex-table-XXXXXX`
-    trap 'rm -f $input' EXIT
-    cat > $input
-}
-
-[[ -z $FS ]] && case $input in
-    *.tsv) FS=$'\t' ;;
-    *.csv) FS='.' ;;
-    *) FS=$'\t' ;;
-esac
-
-echo '\begin{table}'
-awk 'BEGIN{FS="'"$FS"'"};NR==1{printf("  \\begin{tabular}{");while(i++<NF)printf("c");printf("}\n")}' "$input"
-
-# the $1=$1 is to rebuild the record, using the current OFS
-awk 'BEGIN{FS="'"$FS"'";OFS=" \t& ";ORS=" \t\\\\\n"};{printf("    ");$1=$1;print}' "$input" | column -t -s$'\t'
-
-cat <<"EOF"
-  \end{tabular}
-  \caption{Table...}
-  \label{tab:}
-\end{table}
-EOF
+if __name__ == "__main__":
+    tex_table()
