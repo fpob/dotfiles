@@ -1,0 +1,183 @@
+# General settings/bindings ------------------------------------------------{{{1
+
+# Mod1 = Alt, Mod4 = Win
+set $mod Mod4
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Disable wariping (move mouse cursor to newly focused container)
+mouse_warping none
+
+# put workspace 1 on external display
+workspace 1 output HDMI1
+workspace 2 output LVDS1
+
+# Start terminal
+bindsym $mod+t exec mate-terminal
+bindsym $mod+Shift+t exec mate-terminal --profile=tmux
+
+# Start dmenu
+bindsym $mod+space exec rofi -show combi
+# bindsym $mod+space exec --no-startup-id i3-dmenu-desktop
+
+# Theme --------------------------------------------------------------------{{{1
+
+# Font for window titles
+font pango:Noto Sans 10
+
+# <border> <background> <text> <indicator> <child_border>
+client.focused          #D64937 #D64937 #222222 #D64937 #555555
+client.unfocused        #555555 #444444 #999999
+client.focused_inactive #555555 #444444 #EEEEEE
+client.urgent           #F0544C #444444 #F0544C
+
+# Window/layout bindings ---------------------------------------------------{{{1
+
+# Kill focused window
+bindsym $mod+q kill
+#bindsym --release button2 kill
+bindsym $mod+button2 kill
+
+# Change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Split in horizontal/vertical orientation
+bindsym $mod+v split v
+bindsym $mod+b split h
+
+# Enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# Toggle tiling/floating
+bindsym $mod+Shift+space floating toggle
+
+# Change focus between tiling/floating windows
+bindsym $mod+o focus mode_toggle
+
+# Focus the parent/child container
+bindsym $mod+a focus parent
+bindsym $mod+d focus child
+
+# Mark/Goto
+bindsym $mod+m exec i3-input -F 'mark --toggle "%s"' -l 1 -P 'Mark: '
+bindsym $mod+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+
+# Workspace bindings -------------------------------------------------------{{{1
+
+# Switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+bindsym $mod+n workspace next
+bindsym $mod+p workspace prev
+
+# i3 bindings --------------------------------------------------------------{{{1
+
+# Take command and send it to i3
+bindsym $mod+Shift+semicolon exec i3-input
+
+# Reload the configuration file
+bindsym $mod+Shift+c reload
+
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# Exit i3 (logs you out of your X session)
+#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# Resize mode --------------------------------------------------------------{{{1
+
+# Resize window (you can also use the mouse for that)
+mode "resize" {
+    bindsym h resize shrink width 5 px or 5 ppt
+    bindsym j resize grow height 5 px or 5 ppt
+    bindsym k resize shrink height 5 px or 5 ppt
+    bindsym l resize grow width 5 px or 5 ppt
+
+    bindsym Left resize shrink width 5 px or 5 ppt
+    bindsym Down resize grow height 5 px or 5 ppt
+    bindsym Up resize shrink height 5 px or 5 ppt
+    bindsym Right resize grow width 5 px or 5 ppt
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Bar ----------------------------------------------------------------------{{{1
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+    position bottom
+    font pango:Noto Sans,FontAwesome 10
+
+    status_command $HOME/.config/conky/conky-i3bar
+
+    #tray_output primary
+    tray_output none    # use mate-panel tray
+
+    colors {
+        background #444444
+        statusline #ffffff
+        separator #666666
+
+        focused_workspace  #d64937 #d64937 #ffffff
+        active_workspace   #d64937 #d64937 #ffffff
+        inactive_workspace #444444 #444444 #ffffff
+        urgent_workspace   #444444 #444444 #ffffff
+    }
+}
+
+# Window settings ----------------------------------------------------------{{{1
+
+for_window [class="Tilda"] floating enable
+
+# Autostart appliactions ---------------------------------------------------{{{1
+
+# Swap CapsLock and Escape
+exec --no-startup-id setxkbmap -option caps:escape
