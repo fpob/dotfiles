@@ -21,14 +21,19 @@ bindsym $mod+Shift+t exec mate-terminal --profile=tmux
 bindsym $mod+space exec rofi -show combi
 # bindsym $mod+space exec --no-startup-id i3-dmenu-desktop
 
+# Screenshot
+bindsym Print exec mate-screenshot
+bindsym Ctrl+Print exec mate-screenshot --window
+bindsym $mod+Print exec mate-screenshot --interactive
+
 # Theme --------------------------------------------------------------------{{{1
 
 # Font for window titles
 font pango:Noto Sans 10
 
 # <border> <background> <text> <indicator> <child_border>
-client.focused          #D64937 #D64937 #222222 #D64937 #555555
-client.unfocused        #555555 #444444 #999999
+client.focused          #555555 #F0544C #EEEEEE #F0544C #555555
+client.unfocused        #555555 #444444 #AAAAAA
 client.focused_inactive #555555 #444444 #EEEEEE
 client.urgent           #F0544C #444444 #F0544C
 
@@ -36,7 +41,6 @@ client.urgent           #F0544C #444444 #F0544C
 
 # Kill focused window
 bindsym $mod+q kill
-#bindsym --release button2 kill
 bindsym $mod+button2 kill
 
 # Change focus
@@ -125,9 +129,6 @@ bindsym $mod+Shift+c reload
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
-# Exit i3 (logs you out of your X session)
-#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-
 # Resize mode --------------------------------------------------------------{{{1
 
 # Resize window (you can also use the mouse for that)
@@ -158,18 +159,18 @@ bar {
 
     status_command $HOME/.config/conky/conky-i3bar
 
-    #tray_output primary
     tray_output none    # use mate-panel tray
 
     colors {
         background #444444
-        statusline #ffffff
-        separator #666666
+        statusline #EEEEEE
+        separator  #666666
 
-        focused_workspace  #d64937 #d64937 #ffffff
-        active_workspace   #d64937 #d64937 #ffffff
-        inactive_workspace #444444 #444444 #ffffff
-        urgent_workspace   #444444 #444444 #ffffff
+        # <border> <background> <text>
+        focused_workspace  #F0544C #F0544C #EEEEEE
+        active_workspace   #F0544C #F0544C #EEEEEE
+        inactive_workspace #444444 #444444 #EEEEEE
+        urgent_workspace   #444444 #444444 #F0544C
     }
 }
 
