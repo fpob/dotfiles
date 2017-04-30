@@ -16,71 +16,71 @@ endsnippet
 
 snippet part "Part" b
 \\part{${1:part name}} % {{{
-\\label{prt:`!p snip.rv = label(t[1])`}
+\\label{prt:${2:`!p snip.rv = label(t[1])`}}
 
 ${VISUAL}$0
 
-% part `!p snip.rv = label(t[1])` }}}
+% part $2 }}}
 endsnippet
 
 
 snippet cha "Chapter" b
 \\chapter{${1:chapter name}} % {{{
-\\label{cha:`!p snip.rv = label(t[1])`}
+\\label{cha:${2:`!p snip.rv = label(t[1])`}}
 
 ${VISUAL}$0
 
-% chapter `!p snip.rv = label(t[1])` }}}
+% chapter $2 }}}
 endsnippet
 
 
 snippet sec "Section" b
 \\section{${1:section name}} % {{{
-\\label{sec:`!p snip.rv = label(t[1])`}
+\\label{sec:${2:`!p snip.rv = label(t[1])`}}
 
 ${VISUAL}$0
 
-% section `!p snip.rv = label(t[1])` }}}
+% section $2 }}}
 endsnippet
 
 
 snippet sub "Sub Section" b
 \\subsection{${1:subsection name}} % {{{
-\\label{sub:`!p snip.rv = label(t[1])`}
+\\label{sub:${2:`!p snip.rv = label(t[1])`}}
 
 ${VISUAL}$0
 
-% subsection `!p snip.rv = label(t[1])` }}}
+% subsection $2 }}}
 endsnippet
 
 
 snippet subs "Sub Sub Section" b
 \\subsubsection{${1:subsubsection name}} % {{{
-\\label{ssub:`!p snip.rv = label(t[1])`}
+\\label{ssub:${2:`!p snip.rv = label(t[1])`}}
 
 ${VISUAL}$0
 
-% subsubsection `!p snip.rv = label(t[1])` }}}
+% subsubsection $2 }}}
 endsnippet
 
 
 snippet par "Paragraph" b
 \\paragraph{${1:paragraph name}} % {{{
-\\label{par:`!p snip.rv = label(t[1])`}
+\\label{par:${2:`!p snip.rv = label(t[1])`}}
 
 ${VISUAL}$0
 
-% paragraph `!p snip.rv = label(t[1])` }}}
+% paragraph $2 }}}
 endsnippet
 
 
 snippet subp "Sub Paragraph" b
 \\subparagraph{${1:subparagraph name}} % {{{
-\\label{subp:`!p snip.rv = label(t[1])`}
+\\label{subp:${2:`!p snip.rv = label(t[1])`}}
 
 ${VISUAL}$0
 
-% subparagraph `!p snip.rv = label(t[1])` }}}
+% subparagraph $2 }}}
 endsnippet
 
 
@@ -160,18 +160,3 @@ snippet table "float with table" b
 	\\label{${3}}
 \\end{table}
 endsnippet
-
-
-
-#snippet itd
-#	\\item[${1:description}] ${2:item}$0
-#snippet figure
-#	${1:Figure}~\\ref{${2:fig:}}
-#snippet table
-#	${1:Table}~\\ref{${2:tab:}}
-#snippet listing
-#	${1:Listing}~\\ref{${2:list}}
-#snippet section
-#	${1:Section}~\\ref{${2:sec:}}
-#snippet page
-#	${1:page}~\\pageref{${2}}
