@@ -19,7 +19,7 @@ bindsym $mod+Shift+t exec mate-terminal --profile=tmux
 
 # Start dmenu
 bindsym $mod+space exec rofi -show combi
-# bindsym $mod+space exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+slash exec rofi -show window
 
 # Screenshot
 bindsym Print exec mate-screenshot
