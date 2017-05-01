@@ -32,7 +32,7 @@ bindsym $mod+Print exec mate-screenshot --interactive
 font pango:Noto Sans 10
 
 # <border> <background> <text> <indicator> <child_border>
-client.focused          #555555 #F0544C #EEEEEE #F0544C #555555
+client.focused          #555555 #F0544C #FFFFFF #F0544C #555555
 client.unfocused        #555555 #444444 #AAAAAA
 client.focused_inactive #555555 #444444 #EEEEEE
 client.urgent           #F0544C #444444 #F0544C
@@ -167,8 +167,8 @@ bar {
         separator  #666666
 
         # <border> <background> <text>
-        focused_workspace  #F0544C #F0544C #EEEEEE
-        active_workspace   #F0544C #F0544C #EEEEEE
+        focused_workspace  #F0544C #F0544C #FFFFFF
+        active_workspace   #F0544C #F0544C #FFFFFF
         inactive_workspace #444444 #444444 #EEEEEE
         urgent_workspace   #444444 #444444 #F0544C
     }
