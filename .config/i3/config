@@ -170,7 +170,7 @@ bar {
         focused_workspace  #F0544C #F0544C #FFFFFF
         active_workspace   #F0544C #F0544C #FFFFFF
         inactive_workspace #444444 #444444 #EEEEEE
-        urgent_workspace   #444444 #444444 #F0544C
+        urgent_workspace   #F0544C #444444 #F0544C
     }
 }
 
