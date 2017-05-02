@@ -1,5 +1,8 @@
 # General settings/bindings ------------------------------------------------{{{1
 
+# https://github.com/i3/i3/issues/2523
+# Numlock is the Mod2 key. When it’s enabled, Mod2 is pressed.
+
 # Mod1 = Alt, Mod4 = Win
 set $mod Mod4
 
@@ -41,7 +44,8 @@ client.urgent           #F0544C #444444 #F0544C
 
 # Kill focused window
 bindsym $mod+q kill
-bindsym $mod+button2 kill
+bindsym --release button2 kill
+bindsym --release Mod2+button2 kill
 
 # Change focus
 bindsym $mod+h focus left
@@ -77,6 +81,8 @@ bindsym $mod+e layout toggle split
 
 # Toggle tiling/floating
 bindsym $mod+Shift+space floating toggle
+bindsym button3 floating toggle
+bindsym Mod2+button3 floating toggle
 
 # Change focus between tiling/floating windows
 bindsym $mod+o focus mode_toggle
