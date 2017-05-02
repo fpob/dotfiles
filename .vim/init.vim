@@ -442,6 +442,10 @@ let g:indent_guides_auto_colors = 0
 autocmd VimEnter,ColorScheme * hi IndentGuidesOdd guibg=#242828
 autocmd VimEnter,ColorScheme * hi IndentGuidesEven guibg=#202525
 
+" trailing-whitespace ------------------------------------------------------{{{1
+
+let g:extra_whitespace_ignored_filetypes = ['mail']
+
 " Vdebug -------------------------------------------------------------------{{{1
 
 let g:vdebug_keymap = {
