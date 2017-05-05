@@ -1,20 +1,25 @@
 set editor = `echo \$EDITOR`
 
 set imap_keepalive = 300                # Keep connection by polling
-set mail_check = 300                    # How often to check for new mail
+set mail_check = 120                    # How often to check for new mail
+set timeout = 300
 set mail_check_stats = yes
 set use_from = yes
 set send_charset = "utf-8"
 set header_cache = ~/.cache/mutt        # Store message headers locally
 set message_cachedir = ~/.cache/mutt    # Store messages locally
 
+# Local account
+folder-hook "local" "source ~/.mutt/account.local"
+macro index <f4> '<enter-command>source ~/.mutt/account.local<enter><change-folder>!<enter>'
+
 # Accounts
 folder-hook "eva-00" "source ~/.mutt/account.eva-00"
 folder-hook "gmail" "source ~/.mutt/account.gmail"
 folder-hook "vut-fit" "source ~/.mutt/account.vut-fit"
-macro index <f5> '<sync-mailbox><enter-command>source ~/.mutt/account.eva-00<enter><change-folder>!<enter>'
-macro index <f6> '<sync-mailbox><enter-command>source ~/.mutt/account.gmail<enter><change-folder>!<enter>'
-macro index <f7> '<sync-mailbox><enter-command>source ~/.mutt/account.vut-fit<enter><change-folder>!<enter>'
+macro index <f5> '<enter-command>source ~/.mutt/account.eva-00<enter><change-folder>!<enter>'
+macro index <f6> '<enter-command>source ~/.mutt/account.gmail<enter><change-folder>!<enter>'
+macro index <f7> '<enter-command>source ~/.mutt/account.vut-fit<enter><change-folder>!<enter>'
 
 # Default account
 source ~/.mutt/account.eva-00
@@ -23,15 +28,19 @@ bind pager j next-line
 bind pager k previous-line
 bind attach,index,pager \CD next-page
 bind attach,index,pager \CU previous-page
-bind pager g top
+bind pager gg top
 bind pager G bottom
-bind attach,index g first-entry
+bind attach,index gg first-entry
 bind attach,index G last-entry
 
 bind index,pager B sidebar-toggle-visible
 bind index,pager \CJ sidebar-next
 bind index,pager \CK sidebar-prev
 bind index,pager \CL sidebar-open
+
+macro index,pager gl '<change-folder>-<enter>'
+macro index,pager gi '<change-folder>!<enter>'
+macro index,pager gs '<change-folder><<enter>'
 
 # Show in threads
 set sort = threads
@@ -50,3 +59,6 @@ set sidebar_indent_string="  "  # Indent with two spaces
 # Wrap long lines
 set wrap = 120
 set smart_wrap = yes
+
+auto_view text/html
+alternative_order text/plain text/html text/enriched

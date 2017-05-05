@@ -19,6 +19,6 @@ mailboxes +INBOX
 set realname = $my_name
 set from = $my_mail
 set smtp_url = smtps://$my_user:$my_pass@eva-00.fpob.eu:465/
-set signature=""
+set signature =
 
 # vim: ft=muttrc
