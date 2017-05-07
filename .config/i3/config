@@ -186,5 +186,8 @@ for_window [class="Tilda"] floating enable
 
 # Autostart appliactions ---------------------------------------------------{{{1
 
+# Start X compositor
+exec --no-startup-id compton -d
+
 # Swap CapsLock and Escape
 exec --no-startup-id setxkbmap -option caps:escape
