@@ -46,9 +46,6 @@
 [submodule ".vim/bundle/gutentags"]
 	path = .vim/bundle/gutentags
 	url = https://github.com/ludovicchabant/vim-gutentags
-[submodule ".vim/bundle/javacompleteNew"]
-	path = .vim/bundle/javacompleteNew
-	url = https://github.com/artur-shaik/vim-javacomplete2
 [submodule ".vim/bundle/phpcomplete"]
 	path = .vim/bundle/phpcomplete
 	url = https://github.com/shawncplus/phpcomplete.vim.git
@@ -109,3 +106,6 @@
 [submodule ".tmux/plugins/yank"]
 	path = .tmux/plugins/yank
 	url = https://github.com/tmux-plugins/tmux-yank.git
+[submodule ".vim/bundle/vimtex"]
+	path = .vim/bundle/vimtex
+	url = https://github.com/lervag/vimtex.git

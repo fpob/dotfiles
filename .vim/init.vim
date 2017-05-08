@@ -393,24 +393,6 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 " phpcomplete
 let g:phpcomplete_parse_docblock_comments = 1
 
-" javacomplete
-au FileType java setlocal omnifunc=javacomplete#Complete
-let g:JavaComplete_EnableDefaultMappings = 0
-nmap <leader>jI <Plug>(JavaComplete-Imports-AddMissing)
-nmap <leader>jR <Plug>(JavaComplete-Imports-RemoveUnused)
-nmap <leader>ji <Plug>(JavaComplete-Imports-AddSmart)
-nmap <leader>jii <Plug>(JavaComplete-Imports-Add)
-nmap <leader>jM <Plug>(JavaComplete-Generate-AbstractMethods)
-nmap <leader>jA <Plug>(JavaComplete-Generate-Accessors)
-nmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
-nmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
-nmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-nmap <leader>jts <Plug>(JavaComplete-Generate-ToString)
-nmap <leader>jeq <Plug>(JavaComplete-Generate-EqualsAndHashCode)
-nmap <leader>jc <Plug>(JavaComplete-Generate-Constructor)
-nmap <leader>jcc <Plug>(JavaComplete-Generate-DefaultConstructor)
-
-
 " gutentags ----------------------------------------------------------------{{{1
 
 let g:gutentags_project_root = ['tags']
@@ -418,10 +400,6 @@ let g:gutentags_project_root = ['tags']
 let g:gutentags_ctags_exclude = ['vendor', 'temp', 'log', 'tests', 'doc']
 let g:gutentags_ctags_executable = 'ctags'
 let g:gutentags_ctags_executable_php = 'php-ctags'
-
-"let g:auto_ctags_filetype_mode = 1
-"let g:auto_ctags_tags_args = '-R --fields=+aimlS --languages=php --sort=yes'
-"let g:auto_ctags_tags_args = '--recurse --sort=yes --fields=+aiklmnsS'
 
 " python -------------------------------------------------------------------{{{1
 
@@ -445,24 +423,3 @@ autocmd VimEnter,ColorScheme * hi IndentGuidesEven guibg=#202525
 " trailing-whitespace ------------------------------------------------------{{{1
 
 let g:extra_whitespace_ignored_filetypes = ['mail']
-
-" Vdebug -------------------------------------------------------------------{{{1
-
-let g:vdebug_keymap = {
-\   "run" : "<S-F5>",
-\   "run_to_cursor" : "<S-F9>",
-\   "step_over" : "<S-F2>",
-\   "step_into" : "<S-F3>",
-\   "step_out" : "<S-F4>",
-\   "close" : "<S-F6>",
-\   "detach" : "<S-F7>",
-\   "set_breakpoint" : "<S-F10>",
-\   "get_context" : "<S-F11>",
-\   "eval_under_cursor" : "<S-F12>",
-\   "eval_visual" : "<Leader>e",
-\}
-
-" Změna otravně zářivě zeleného pozadí breakpointu
-hi default DbgBreakptLine guibg=#003300
-hi default DbgBreakptSign guibg=#007700
-
