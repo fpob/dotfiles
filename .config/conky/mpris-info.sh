@@ -10,7 +10,7 @@ if [[ $status == playing ]] ; then
         $1=""
         gsub(/^\s+/, "", $0)
         if (length($0) > 32)
-            print substr($0,0,32) "\\\\u2026"
+            print substr($0,0,32) "\\u2026"
         else
             print
     }'
