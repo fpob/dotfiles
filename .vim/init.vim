@@ -242,6 +242,8 @@ nnoremap <silent> yd :let @+=expand("%:p:h")<Cr>
 nnoremap <silent> yp :let @+=expand("%:p")<Cr>
 nnoremap <silent> yn :let @+=expand("%:t")<Cr>
 
+nnoremap <Leader>x :silent !chmod +x %<Cr>
+
 " easymotion ---------------------------------------------------------------{{{1
 
 nmap <Leader>f <Plug>(easymotion-bd-f)
