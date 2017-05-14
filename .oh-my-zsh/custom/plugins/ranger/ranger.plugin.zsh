@@ -1,9 +1,3 @@
-function ranger {
-    command ranger "$@"
-    # change tmux title back to zsh
-    [[ -n $TMUX ]] && printf '\033kzsh\033\\'
-}
-
 function ranger-cd {
     local tempfile="$(mktemp -t ranger.XXXXXX)"
     ranger --choosedir="$tempfile" "${@:-$(pwd)}"
