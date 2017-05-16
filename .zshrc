@@ -61,6 +61,15 @@ HISTFILE=$HOME/.zsh_history
 HISTSIZE=2500
 SAVEHIST=5000
 
+# Customize highlighting
+# https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]='none'
+ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=245'
+ZSH_HIGHLIGHT_STYLES[redirection]='fg=245'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=42'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
+
 # Oh My Zsh ----------------------------------------------------------------{{{1
 
 export ZSH=$HOME/.oh-my-zsh
