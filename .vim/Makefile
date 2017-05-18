@@ -4,6 +4,7 @@ default: clean
 
 init: youcompleteme
 	wget -P autoload https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+	mkdir tmp view
 
 youcompleteme:
 	git -C bundle/youcompleteme submodule update --recursive --init
