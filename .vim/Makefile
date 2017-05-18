@@ -2,7 +2,7 @@ PWD = $(shell pwd)
 
 default: clean
 
-init: youcompleteme
+init:
 	wget -P autoload https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 
 youcompleteme:
