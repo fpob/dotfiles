@@ -5,7 +5,13 @@ cd "$HOME"
 
 # Install Oh My Zsh
 [[ ! -n $ZSH ]] && ZSH=$HOME/.oh-my-zsh
-[[ ! -d $ZSH ]] && git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$ZSH"
+[[ ! -f $ZSH/oh-my-zsh.sh ]] && {
+    cd "$ZSH"
+    git init
+    git remote add origin 'https://github.com/robbyrussell/oh-my-zsh.git'
+    git pull origin master
+    cd "$HOME"
+}
 
 # Init submodules
 yadm submodule update --recursive --init
