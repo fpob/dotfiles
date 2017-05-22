@@ -92,20 +92,23 @@ set fileencodings=utf-8,iso-8859-2
 set t_Co=256
 set background=dark
 silent! colorscheme molokai     " Barevné schéma
-autocmd ColorScheme *
-    \   if g:colors_name ==? 'molokai'
-    \|      hi CursorLine guibg=#242828
-    \|      hi CursorColumn guibg=#242828
-    \|  endif
+
+autocmd ColorScheme molokai
+    \   hi CursorLine ctermbg=234 guibg=#242828
+    \|  hi CursorColumn ctermbg=234 guibg=#242828
+
+set spelllang=cs            " jazyk automatických oprav pravopisu
+if !has('gui')
+    " Underline spell errors
+    autocmd ColorScheme *
+        \   hi SpellBad cterm=underline
+        \|  hi SpellCap cterm=underline
+endif
 
 " Syntax
 syntax enable
 syntax on
 filetype plugin indent on
-
-" Ostatní
-set spelllang=cs            " jazyk automatických oprav pravopisu
-"set tags+=../tags           " soubor tagů i z nařazeného adresáře
 
 if !has('nvim')
     set cryptmethod=blowfish2
@@ -315,21 +318,13 @@ nmap <leader>9 <Plug>AirlineSelectTab9
 
 " NERDTree -----------------------------------------------------------------{{{1
 
-let NERDTreeIgnore = [
-\   '^__pycache__$[[dir]]'
-\]
+let NERDTreeIgnore = ['^__pycache__$[[dir]]']
 
 " Nezobrazovat napovedu
 let NERDTreeMinimalUI = 1
 
 " Pri mazani souboru automaticky zrusi stary buffer
 let NERDTreeAutoDeleteBuffer = 1
-
-" Close NERDTree if its only window open
-autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-" These two open NERDTree on start if no file specified on launch
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " CtrlP --------------------------------------------------------------------{{{1
 
@@ -356,7 +351,6 @@ endfunction
 let g:snips_author = Chomp(system('git config user.name 2>/dev/null'))
 let g:snips_author_email = Chomp(system('git config user.email 2>/dev/null'))
 
-"let g:UltiSnipsExpandTrigger = '<C-Cr>'
 let g:UltiSnipsSnippetDirectories = ["ultisnips"]
 
 " deliminate ---------------------------------------------------------------{{{1
@@ -365,13 +359,19 @@ let delimitMate_expand_cr = 1
 
 " Seznam parovych znacek
 let delimitMate_matchpairs = "(:),[:],{:}"
-au FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
+
+au FileType vim,html
+    \   let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
+
 au FileType m4,htmlm4
     \   let b:delimitMate_matchpairs = "(:),[:],{:},<:>,`:'"
     \|  let b:delimitMate_quotes = '"'
 
-" Povolit trojuvozovky v pythonu
-au FileType python let b:delimitMate_nesting_quotes = ['"', "'"]
+au FileType python
+    \   let b:delimitMate_nesting_quotes = ['"', "'"]
+
+au FileType markdown
+    \   let b:delimitMate_nesting_quotes = ['`']
 
 " YouCompleteMe & omnifuncs ------------------------------------------------{{{1
 
@@ -419,8 +419,9 @@ let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 
 let g:indent_guides_auto_colors = 0
-autocmd VimEnter,ColorScheme * hi IndentGuidesOdd guibg=#242828
-autocmd VimEnter,ColorScheme * hi IndentGuidesEven guibg=#202525
+autocmd VimEnter,ColorScheme *
+    \   hi IndentGuidesOdd ctermbg=235 guibg=#262626
+    \|  hi IndentGuidesEven ctermbg=235 guibg=#262626
 
 " trailing-whitespace ------------------------------------------------------{{{1
 
