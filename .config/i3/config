@@ -121,8 +121,13 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
+# Switch to next/prev workspace
 bindsym $mod+n workspace next
 bindsym $mod+p workspace prev
+
+# Move workspace to different monitor
+bindsym $mod+u move workspace to output left
+bindsym $mod+i move workspace to output right
 
 # i3 bindings --------------------------------------------------------------{{{1
 
