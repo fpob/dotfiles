@@ -175,7 +175,6 @@ alias tmux='tmux -2'
 alias man='nocorrect man'
 alias mkdir='nocorrect mkdir -p'
 alias mv='nocorrect mv'
-alias tcpdump='sudo tcpdump'
 
 # Copy & Paste Clipboard
 alias ci='xclip -i -sel c'

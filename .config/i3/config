@@ -126,8 +126,8 @@ bindsym $mod+n workspace next
 bindsym $mod+p workspace prev
 
 # Move workspace to different monitor
-bindsym $mod+u move workspace to output left
-bindsym $mod+i move workspace to output right
+bindsym $mod+Shift+bracketright move workspace to output right
+bindsym $mod+Shift+bracketleft move workspace to output left
 
 # i3 bindings --------------------------------------------------------------{{{1
 
