@@ -180,6 +180,9 @@ alias mv='nocorrect mv'
 alias ci='xclip -i -sel c'
 alias co='xclip -o -sel c'
 
+# Cut long lines
+alias cll='cut -c -$COLUMNS'
+
 alias tsv="column -t -s$'\t'"
 alias mdv='mdv -t 884.0134'
 alias gdb='gdb -q'

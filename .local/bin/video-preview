@@ -3,7 +3,7 @@
 help_msg () {
     cat <<EOF
 Použití: `basename $0` [-r RATE] [-t TITLE] [-s SCALE] [-c COLUMNS] \\
-         <INPUT> [OUTPUT]
+         [-f FFMPEG_ARGS] <INPUT> [OUTPUT]
 
 Pro zadané video vygeneruje obrázek s náhledy z videa.
 
@@ -44,12 +44,13 @@ confirm () {
 TEMP=`mktemp -d "/tmp/video-preview.XXXXXX"`
 trap 'rm -rf $TEMP' EXIT
 
-while getopts "r:t:s:c:" o; do
+while getopts "r:t:s:c:f:" o; do
     case "$o" in
         r) RATE=$OPTARG ;;
         t) TITLE=$OPTARG ;;
         s) SCALE=$OPTARG ;;
         c) TILE=$OPTARG ;;
+        f) FFMPEG_ARGS="$OPTARG"
     esac
 done
 shift $((OPTIND-1))
@@ -61,7 +62,6 @@ OUTPUT=${2:-${INPUT%.*}.png}
 TITLE=${TITLE:-${INPUT%.*}}
 RATE=${RATE:-1/300}
 SCALE=${SCALE:-320}
-TILE=
 
 ! which ffmpeg montage &>/dev/null \
     && error 127 'Příkaz „ffmpeg“ nebo „montage“ neexistuje'
@@ -73,5 +73,5 @@ if [[ -f $OUTPUT ]] ; then
         && rm -f "$OUTPUT" || exit
 fi
 
-ffmpeg -i "$INPUT" -r $RATE -vf scale=-1:$SCALE -vcodec png $TEMP/%04d.png
+ffmpeg $FFMPEG_ARGS -i "$INPUT" -r $RATE -vf scale=-1:$SCALE -vcodec png $TEMP/%04d.png
 montage -title "$TITLE" -geometry +4+4 ${TILE:+-tile $TILE} $TEMP/* "$OUTPUT"
