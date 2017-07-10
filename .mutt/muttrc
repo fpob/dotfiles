@@ -24,6 +24,8 @@ macro index <f7> '<enter-command>source ~/.mutt/account.vut-fit<enter><change-fo
 # Default account
 source ~/.mutt/account.eva-00
 
+bind pager,attach,index g noop
+
 bind pager j next-line
 bind pager k previous-line
 bind attach,index,pager \CD next-page

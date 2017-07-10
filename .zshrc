@@ -189,6 +189,8 @@ alias gdb='gdb -q'
 alias bc='bc -ql'
 alias octave='octave -q --no-gui'
 
+alias mt='multitail'
+
 # Global aliasses
 alias -g L='|less'
 alias -g G='|grep'
