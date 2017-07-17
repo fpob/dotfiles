@@ -1,0 +1,7 @@
+next_img j Right
+prev_img k Left
+
+toggle_fullscreen f
+
+save_image
+save_filelist
