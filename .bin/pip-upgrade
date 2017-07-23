@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+PIP=${PIP:-pip}
+
+$PIP list --format=freeze \
+    | grep -v '^\-e' \
+    | cut -d= -f1 \
+    | xargs -n1 $PIP install --upgrade
