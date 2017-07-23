@@ -91,24 +91,9 @@ set fileencodings=utf-8,iso-8859-2
 " Barvy
 set t_Co=256
 set background=dark
-silent! colorscheme molokai     " Barevné schéma
 
-autocmd ColorScheme molokai
-    \   hi CursorLine ctermbg=234 guibg=#242828
-    \|  hi CursorColumn ctermbg=234 guibg=#242828
-
-set spelllang=cs            " jazyk automatických oprav pravopisu
-if !has('gui')
-    " Underline spell errors
-    autocmd ColorScheme *
-        \   hi SpellBad cterm=underline
-        \|  hi SpellCap cterm=underline
-endif
-
-" Syntax
-syntax enable
-syntax on
-filetype plugin indent on
+" Jazyk oprav
+set spelllang=cs,en
 
 if !has('nvim')
     set cryptmethod=blowfish2
@@ -123,19 +108,36 @@ if isdirectory($HOME . "/.vim/doc")
     helptags $HOME/.vim/doc
 endif
 
+" Syntax
+syntax enable
+syntax on
+filetype plugin indent on
+
 " Nastavení GUI ------------------------------------------------------------{{{1
 
 if has('gui_running')
     " Nadpis okna
-    set title
-    set titlestring=Vim:\ %f\ %r%m
+    set title titlestring=Vim:\ %f\ %r%m
 
     " výchozí velikost okna
     set lines=40 columns=100
 
     set guioptions=acgit
-    set guifont=Hack\ 10
+    set guifont=Hack\ 9
 endif
+
+" ColorSchecme -------------------------------------------------------------{{{1
+
+autocmd ColorScheme molokai
+    \   hi CursorLine ctermbg=234 guibg=#242828
+    \|  hi CursorColumn ctermbg=234 guibg=#242828
+
+" Underline spell errors in terminal
+autocmd ColorScheme *
+    \   hi SpellBad cterm=underline
+    \|  hi SpellCap cterm=underline
+
+silent! colorscheme molokai     " Barevné schéma
 
 " Automatické příkazy ------------------------------------------------------{{{1
 

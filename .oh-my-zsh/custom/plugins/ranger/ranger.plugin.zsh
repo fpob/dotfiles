@@ -6,4 +6,4 @@ function ranger-cd {
 }
 
 # ranger-cd will fire for Ctrl+O
-bindkey -s '^O' 'ranger-cd\n'
+[[ $RANGER_LEVEL -eq 0 ]] && bindkey -s '^O' 'ranger-cd\n'

@@ -17,5 +17,5 @@ class MyLinemode(LinemodeBase):
         aid_file = os.path.join(fobj.path, ".aid")
         if os.path.isfile(aid_file):
             with open(aid_file, "r") as f:
-                return "https://anidb.net/a" + str(f.read())
+                return "https://anidb.net/a{}".format(f.read()).strip()
         raise NotImplementedError

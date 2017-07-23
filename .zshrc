@@ -17,7 +17,7 @@ fi
 # Paths --------------------------------------------------------------------{{{1
 
 # Bin path
-path=(~/.local/bin ~/.composer/vendor/bin $path)
+path=(~/.bin ~/.local/bin ~/.composer/vendor/bin $path)
 typeset -gU path
 
 # Man path
@@ -129,10 +129,6 @@ POWERLEVEL9K_STATUS_VERBOSE=false
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
 POWERLEVEL9K_ROOT_ICON=$'\u2622'
 
-# Bindkey ------------------------------------------------------------------{{{1
-
-bindkey -s '\el' 'l\n'
-
 # Aliasses -----------------------------------------------------------------{{{1
 
 # Remove all aliases
@@ -192,8 +188,8 @@ alias octave='octave -q --no-gui'
 alias mt='multitail'
 
 # Global aliasses
-alias -g L='|less'
-alias -g G='|grep'
+alias -g L='|less -FR'
+alias -g G='|grep -Pi'
 alias -g T='|tail'
 alias -g H='|head'
 alias -g W='|wc'

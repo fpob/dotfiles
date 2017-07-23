@@ -6,7 +6,7 @@ setlocal textwidth=80       " Automatické zalamování
 setlocal nolinebreak        " Zalamování na hranicích slov
 setlocal showbreak=         " Nijak neoznačovat vizuální zalomení řádku
 setlocal formatoptions+=t
-setlocal spell spelllang=cs " kontrola pravopisu
+setlocal spell              " kontrola pravopisu
 setlocal tabstop=2
 setlocal shiftwidth=2
 setlocal wrap
