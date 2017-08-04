@@ -74,7 +74,7 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
 
 export ZSH=$HOME/.oh-my-zsh
 
-if [[ -n $MC_SID ]] ; then
+if [[ -n $MC_SID || $TERM = 'linux' ]] ; then
     ZSH_THEME="simple"
 else
     ZSH_THEME="powerlevel9k/powerlevel9k"
