@@ -82,9 +82,6 @@
 [submodule ".vim/bundle/nginx-syntax"]
 	path = .vim/bundle/nginx-syntax
 	url = https://github.com/evanmiller/nginx-vim-syntax.git
-[submodule ".vim/bundle/scripts"]
-	path = .vim/bundle/scripts
-	url = git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git
 [submodule ".vim/bundle/zsh"]
 	path = .vim/bundle/zsh
 	url = https://github.com/chrisbra/vim-zsh.git
