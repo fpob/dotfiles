@@ -18,11 +18,16 @@ workspace 2 output LVDS1
 
 # Start terminal
 bindsym $mod+t exec mate-terminal
-bindsym $mod+Shift+t exec mate-terminal --profile=tmux
+
+# Start FileManager
+bindsym $mod+y exec caja
 
 # Start dmenu
 bindsym $mod+space exec rofi -show combi
 bindsym $mod+slash exec rofi -show window
+
+# Start appfinder
+bindsym $mod+F2 exec xfce4-appfinder
 
 # Screenshot
 bindsym Print exec mate-screenshot
@@ -35,9 +40,9 @@ bindsym $mod+Print exec mate-screenshot --interactive
 font pango:Noto Sans 10
 
 # <border> <background> <text> <indicator> <child_border>
-client.focused          #555555 #F0544C #FFFFFF #F0544C #555555
-client.unfocused        #555555 #444444 #AAAAAA
-client.focused_inactive #555555 #444444 #EEEEEE
+client.focused          #333333 #F0544C #FFFFFF #F0544C #333333
+client.unfocused        #333333 #444444 #AAAAAA
+client.focused_inactive #333333 #444444 #AAAAAA
 client.urgent           #F0544C #444444 #F0544C
 
 # Window/layout bindings ---------------------------------------------------{{{1
@@ -140,6 +145,24 @@ bindsym $mod+Shift+c reload
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
+# Mode System --------------------------------------------------------------{{{1
+
+set $cmd_lock ~/.config/i3/lock.sh
+set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (h) shutdown
+
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $cmd_lock, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $cmd_lock && systemctl suspend, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym h exec --no-startup-id systemctl poweroff -i, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+x mode "$mode_system"
+
 # Resize mode --------------------------------------------------------------{{{1
 
 # Resize window (you can also use the mouse for that)
@@ -168,31 +191,26 @@ bar {
     position bottom
     font pango:Noto Sans,FontAwesome 10
 
-    status_command $HOME/.config/conky/conky-i3bar
-
-    tray_output none    # use mate-panel tray
+    status_command ~/.config/conky/conky-i3bar
 
     colors {
-        background #444444
+        background #333333
         statusline #EEEEEE
-        separator  #666666
+        separator  #555555
 
         # <border> <background> <text>
         focused_workspace  #F0544C #F0544C #FFFFFF
         active_workspace   #F0544C #F0544C #FFFFFF
-        inactive_workspace #444444 #444444 #EEEEEE
-        urgent_workspace   #F0544C #444444 #F0544C
+        inactive_workspace #333333 #333333 #EEEEEE
+        urgent_workspace   #F0544C #333333 #F0544C
     }
 }
 
 # Window settings ----------------------------------------------------------{{{1
 
 for_window [class="Tilda"] floating enable
+for_window [class="Xfce4-appfinder"] floating enable
 
 # Autostart appliactions ---------------------------------------------------{{{1
 
-# Start X compositor
-exec --no-startup-id compton -b
-
-# Swap CapsLock and Escape
-exec --no-startup-id setxkbmap -option caps:escape
+exec --no-startup-id ~/.config/i3/autostart

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Settings Demon
+mate-settings-daemon &
+
+# Keyring
+gnome-keyring-daemon -sd --unlock &
+
+# Applets
+nm-applet &
+mate-volume-control-applet &
+mate-power-manager &
+
+# X compositor
+compton -b &
+
+# Dropdown terminal
+tilda &
+
+# Swap CapsLock and Escape
+setxkbmap -option caps:escape &
+
+# Wallpaper
+test -x ~/.fehbg && ~/.fehbg &
+
+# Applications
+test -x ~/.autostart && ~/.autostart &
