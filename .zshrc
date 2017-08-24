@@ -209,3 +209,18 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;31m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;34m'
+
+# direnv -------------------------------------------------------------------{{{1
+
+if which direnv &>/dev/null ; then
+
+    _direnv_hook() {
+      eval "$(direnv export zsh)";
+    }
+    typeset -ag precmd_functions;
+    if [[ -z ${precmd_functions[(r)_direnv_hook]} ]]; then
+      precmd_functions+=_direnv_hook;
+    fi
+
+fi
+

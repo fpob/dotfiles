@@ -190,6 +190,7 @@ bindsym $mod+r mode "resize"
 bar {
     position bottom
     font pango:Noto Sans,FontAwesome 10
+    tray_output primary
 
     status_command ~/.config/conky/conky-i3bar
 
