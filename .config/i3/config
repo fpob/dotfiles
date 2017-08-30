@@ -209,8 +209,10 @@ bar {
 
 # Window settings ----------------------------------------------------------{{{1
 
-for_window [class="Tilda"] floating enable
-for_window [class="Xfce4-appfinder"] floating enable
+for_window [class="(?i)tilda"] floating enable
+for_window [class="(?i)xfce4-appfinder"] floating enable
+
+for_window [class="(?i)firefox" tiling] border pixel 2
 
 # Autostart appliactions ---------------------------------------------------{{{1
 
