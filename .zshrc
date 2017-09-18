@@ -30,15 +30,12 @@ typeset -gU manpath
 # Parent process name
 PARENT=$(ps -p $PPID -o comm=)
 
-# hide this user from prompt
-export DEFAULT_USER="fpob"
-
 if [[ -n $SSH_CONNECTION || -n $MC_SID ]]; then
-    export BROWSER="lynx"
-    export EDITOR="vim"
+    export BROWSER=${BROWSER:-lynx}
+    export EDITOR=${EDITOR:-vim}
 else
-    export BROWSER="firefox"
-    export EDITOR="vim"
+    export BROWSER=${BROWSER:-firefox}
+    export EDITOR=${EDITOR:-vim}
 fi
 
 # Python startup script
@@ -87,7 +84,7 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
 # Pluginy
-plugins=(sudo zsh_reload git git-flow autojump taskwarrior
+plugins=(sudo zsh_reload git git-flow autojump taskwarrior redis-cli
          python pip virtualenvwrapper django gulp bower composer)
 # custom
 plugins+=(cheat ranger zsh-syntax-highlighting)
@@ -118,7 +115,7 @@ function prompt_anime_aid () {
 
 function prompt_parent () {
     case $PARENT in
-        ranger|vim)
+        ranger|vim|nvim)
             "${1}_prompt_segment" "$0" "$2" black yellow "$PARENT" ;;
     esac
 }
@@ -133,6 +130,8 @@ POWERLEVEL9K_ROOT_ICON=$'\u2622'
 
 # Remove all aliases
 unalias -m '*'
+
+alias e='$EDITOR'
 
 # Colors
 alias ls="ls -v --color=auto"
@@ -185,8 +184,6 @@ alias gdb='gdb -q'
 alias bc='bc -ql'
 alias octave='octave -q --no-gui'
 
-alias mt='multitail'
-
 # Global aliasses
 alias -g L='|less -FR'
 alias -g G='|grep -Pi'
@@ -197,7 +194,7 @@ alias -g N='&>/dev/null'
 
 # Start new instance only if it is not running in current shell
 case $PARENT in
-    ranger|vim) alias $PARENT='exit' ;;
+    ranger|vim|nvim) alias $PARENT='exit' ;;
 esac
 
 # Color man pages ----------------------------------------------------------{{{1

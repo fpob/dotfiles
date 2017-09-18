@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-PIP=${PIP:-pip}
+[[ $(basename $0) = 'pip3-upgrade' ]] \
+    && PIP=pip3 || PIP=pip
 
 $PIP list --format=freeze \
     | grep -v '^\-e' \

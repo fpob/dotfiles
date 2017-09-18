@@ -58,4 +58,4 @@
     fhs = flow hotfix start
     fhf = flow hotfix finish --fetch
     frs = flow release start
-    frf = flow release finish --fetch --no-ff
+    frf = flow release finish --fetch

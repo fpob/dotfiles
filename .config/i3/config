@@ -17,7 +17,7 @@ workspace 1 output HDMI1
 workspace 2 output LVDS1
 
 # Start terminal
-bindsym $mod+t exec mate-terminal
+bindsym $mod+t exec x-terminal-emulator
 
 # Start FileManager
 bindsym $mod+y exec caja
@@ -30,9 +30,8 @@ bindsym $mod+slash exec rofi -show window
 bindsym $mod+F2 exec xfce4-appfinder
 
 # Screenshot
-bindsym Print exec mate-screenshot
-bindsym Ctrl+Print exec mate-screenshot --window
-bindsym $mod+Print exec mate-screenshot --interactive
+bindsym Print exec xfce4-screenshooter
+bindsym Ctrl+Print exec xfce4-screenshooter --window
 
 # Theme --------------------------------------------------------------------{{{1
 

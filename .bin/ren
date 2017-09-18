@@ -1,102 +1,268 @@
 #!/usr/bin/env python3
 
-import click
-import unicodedata
 import os
-import re
 import hashlib
+import re
+import unicodedata
+import binascii
+import shlex
+import datetime
+import uuid
+import itertools
+import click
 
 
-ASCIIZE_CRE = re.compile(r"[^a-zA-Z0-9/]+")
+class LowerUpperFormat:
+    def __init__(self, value):
+        """value -- str or LazyCall"""
+        self.value = value
 
-def asciize(string):
-    return ASCIIZE_CRE.sub("-", unicodedata.normalize("NFKD", string).encode("ASCII", "ignore").decode("ASCII")).strip("-")
+    def __str__(self):
+        return str(self.value)
 
-def create_new_name(file, new_name):
-    ext = os.path.splitext(file)[1]
-    return os.path.join(os.path.dirname(file), new_name + ext)
-
-
-@click.group()
-def ren():
-    pass
-
-
-@ren.command("ascii")
-@click.argument("files", nargs=-1,
-                type=click.Path(exists=True, resolve_path=True, dir_okay=False))
-def ren_ascii(files):
-    """Odstraní z názvu souborů ne-ASCII znaky."""
-    for src in files:
-        file_name = os.path.splitext(os.path.basename(src))[0]
-        dst = create_new_name(src, asciize(file_name))
-        if src != dst and not os.path.exists(dst):
-            os.rename(src, dst)
+    def __format__(self, fmt):
+        if fmt == "l":
+            return str(self).lower()
+        elif fmt == "u":
+            return str(self).upper()
+        elif not fmt:
+            return str(self)
+        raise ValueError("Unknown format string")
 
 
-@ren.command("md5")
-@click.argument("files", nargs=-1,
-                type=click.Path(exists=True, resolve_path=True, dir_okay=False))
-def ren_md5(files):
-    """Přejmenuje soubory podle jejich MD5 kontrolního součtu."""
-    for src in files:
-        md5 = hashlib.md5()
-        with open(src, "rb") as f:
+class LazyCall:
+    def __init__(self, generator, *args, **kwargs):
+        self.generator = generator
+        self.args = args
+        self.kwargs = kwargs
+
+    def __call__(self):
+        if "result" not in self.__dict__:
+            self.result = self.generator(*self.args, **self.kwargs)
+        return self.result
+
+    def __repr__(self):
+        return repr(self())
+
+    def __str__(self):
+        return str(self())
+
+
+class LazyFileHash(LazyCall):
+    def __init__(self, algorithm, file_path):
+        if algorithm == "crc32":
+            super().__init__(self._file_crc32, file_path)
+        else:
+            super().__init__(self._file_hash, algorithm, file_path)
+
+    def __format__(self, fmt):
+        return LowerUpperFormat(self).__format__(fmt)
+
+    @staticmethod
+    def _file_hash(algorithm, file_path):
+        h = hashlib.new(algorithm)
+        with open(file_path, "rb") as f:
             while True:
-                chunk = f.read(2048)
-                if not chunk:
+                data = f.read(65536)
+                if not data:
                     break
-                md5.update(chunk)
-        dst = create_new_name(src, md5.hexdigest())
-        if src != dst and not os.path.exists(dst):
-            os.rename(src, dst)
+                h.update(data)
+        return h.hexdigest()
+
+    @staticmethod
+    def _file_crc32(file_path):
+        h = 0
+        with open(file_path, "rb") as f:
+            while True:
+                data = f.read(65536)
+                if not data:
+                    break
+                binascii.crc32(data, h)
+        return "{:08x}".format(h & 0xffffffff)
 
 
-@ren.command("seq")
-@click.option("-s", "--start", default=1, help="První číslo sekvence, výchozí: 1")
-@click.option("-f", "--format", default="%d", help="Formát názvu souboru, výchozí: %d")
-@click.argument("files", nargs=-1,
-                type=click.Path(exists=True, resolve_path=True, dir_okay=False))
-def ren_seq(files, start, format):
-    """Přejmenuje soubory číselnou sekvencí se zadaným formátem."""
-    rename_primary = list()
-    rename_secondary = list()
+class Sequence:
+    def __init__(self, start, step=1):
+        self._i = start
+        self.step = step
 
-    for i, src in enumerate(files, start):
-        dst = create_new_name(src, format % i)
-        if src != dst:
-            rename_primary.append((src, dst))
+    def __call__(self):
+        tmp = self._i
+        self._i += self.step
+        return tmp
 
-    # Bezne prejmenovani, novy nazev nekoliduje s existujicim souborem.
-    for src, dst in rename_primary:
-        if not os.path.exists(dst):
-            os.rename(src, dst)
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self()
+
+    def __str__(self):
+        return str(self())
+
+    def __format__(self, fmt):
+        return self().__format__(fmt)
+
+
+def asciize(file_name):
+    normalized = (unicodedata.normalize("NFKD", file_name)
+                  .encode("ASCII", "ignore").decode("ASCII"))
+    return re.sub(r"[^a-zA-Z0-9/]+", "-", normalized).strip("-")
+
+def windows(file_name):
+    re.sub(r'[\x00-\x1f/?<>\\:*|"^]', "_", file_name).rstrip(".")
+
+def path_split(file_path):
+    file_dir = os.path.dirname(file_path)
+    file_name = os.path.basename(file_path)
+    file_name, file_ext = os.path.splitext(file_name)
+    if file_ext in {".gz", ".xz", ".lzma", ".bz", ".bz2", ".Z"}:
+        file_name, second_ext = os.path.splitext(file_name)
+        file_ext = second_ext + file_ext
+    return file_dir, file_name, file_ext
+
+def rename_file(old, new, overwrite=False, dump=False):
+    if dump:
+        click.echo("{}\t{}\t{}".format("mv -f" if overwrite else "mv",
+                                       shlex.quote(old), shlex.quote(new)))
+    elif os.path.exists(new) and not overwrite:
+        click.echo(("Can't rename „{}“ to „{}“, file already exists"
+                    .format(old, new)), err=True)
+    else:
+        os.rename(old, new)
+
+
+@click.command()
+@click.option("-d", "--dump", is_flag=True, default=False,
+              help="Dont rename only print shell mv commands.")
+@click.option("-s", "--seq-start", default=0, type=int,
+              help="Sequence start (variable „i“).")
+@click.option("-p", "--parse", default='', type=re.compile, metavar="REGEX",
+              help="Parse original filename without extension. Python"
+                   " regular expression. Matches are added to variables.")
+@click.argument("fmt", metavar="FORMAT")
+@click.argument("files", type=click.Path(exists=True), nargs=-1)
+def main(dump, seq_start, parse, fmt, files):
+    """
+    FORMAT   - Python format string (str.format).
+
+    Format Variables:
+
+    \b
+    {N}      - original name without extension
+    {E}      - file extension with dot
+    {i}      - sequence, accepts number format specifiers (eg. {i:03d})
+    {now}    - script start date, format specifier is strftime format string
+               (default: '%Y-%m-%d %H:%M:%S.%f')
+    {ascii}  - asciized filename
+    {win}    - Window$ safe filename
+    {crc32}  - CRC32 hash (8x)
+    {md5}    - MD5 hash (32x)
+    {sha1}   - SHA1 hash (40x)
+    {sha256} - SHA256 hash (64x)
+    {uuid}   - UUID 4 (randomly generated)
+
+    Variables from parse regex overwrites values of these variables!
+
+    Name ({N}), extension ({E}) and variables from parse regex can be converted
+    to lower-case with format specifier ':l' and to upper-case with ':u'. This
+    also applies to all hashes, but they are by default lower-case.
+    """
+
+    files = [os.path.normpath(os.path.join(os.environ['PWD'],
+                                           os.path.expanduser(f)))
+             for f in files]
+
+    to_rename = list()
+
+    seq = Sequence(seq_start)
+    now = datetime.datetime.now()
+
+    for file in files:
+        file_dir, file_name, file_ext = path_split(file)
+
+        fmt_args = []
+        fmt_kwargs = {
+            "N": LowerUpperFormat(file_name),
+            "E": LowerUpperFormat(file_ext),
+            "i": seq,
+            "now": now,
+            "ascii": LazyCall(asciize, file),
+            "win": LazyCall(windows, file),
+            "crc32": LazyFileHash("crc32", file),
+            "md5": LazyFileHash("md5", file),
+            "sha1": LazyFileHash("sha1", file),
+            "sha256": LazyFileHash("sha256", file),
+            "uuid": LazyCall(uuid.uuid4)
+        }
+
+        parse_match = parse.search(file_name)
+        if parse_match:
+            fmt_args.extend([LowerUpperFormat(v)
+                             for v in parse_match.groups()])
+            fmt_kwargs.update({k: LowerUpperFormat(v)
+                               for k, v in parse_match.groupdict().items()})
+
+        try:
+            file_new_name = fmt.format(*fmt_args, **fmt_kwargs)
+        except KeyError as e:
+            click.echo("Undefined variable %s" % str(e), err=True)
+            raise click.Abort
+        except IndexError as e:
+            click.echo("Undefined match reference", err=True)
+            raise click.Abort
+
+        if "/" in file_new_name:
+            click.echo("Invalid filename „%s“ (contains „/“)" % file_new_name)
+            raise click.Abort
+
+        file_new = os.path.join(file_dir, file_new_name)
+        if file != file_new:
+            to_rename.append((file_dir, file, file_new))
+
+    for file_dir, files in itertools.groupby(
+            sorted(to_rename), key=lambda i: os.path.dirname(i[1])):
+        files = [i[1:] for i in files]
+        dir_content = ({os.path.join(file_dir, f) for f in os.listdir(file_dir)}
+                       - {old for old, new in files})
+
+        exists = False
+        overwrite = set()
+        new_names = set()
+        not_unique = set()
+
+        for old, new in files:
+            new_name = os.path.basename(new)
+            if os.path.exists(new):
+                exists = True
+            if new in dir_content:
+                overwrite.add(new_name)
+            if new_name in new_names:
+                not_unique.add(new_name)
+            new_names.add(new_name)
+
+        if not_unique:
+            msg = ("Some new file names in directory „{}“ are not unique:\n* {}"
+                   .format(file_dir, "\n* ".join(not_unique)))
+            click.echo(msg, err=True)
+
+        elif overwrite:
+            msg = ("Can't rename files in directory „{}“, some files would be "
+                   "overwriten:\n* {}".format(file_dir, "\n* ".join(overwrite)))
+            click.echo(msg, err=True)
+
+        elif exists:
+            suffix = "__ren-" + str(int(now.timestamp()))
+            for old, new in files:
+                rename_file(old, new + suffix, dump=dump)
+            for _, new in files:
+                rename_file(new + suffix, new, dump=dump)
+
         else:
-            rename_secondary.append((src, dst))
-
-    # Prejmenovani pokud novy nazev koliduje s existujicim souborem, obvykle
-    # pokud se zvysuji cisla (00 -> 01, 01 -> 02, 02 -> 03) - staci soubory
-    # prejmenovavat v obracenem poradi.
-    for src, dst in reversed(rename_secondary):
-        if not os.path.exists(dst):
-            os.rename(src, dst)
-        else:
-            click.echo("rename({}, {}): cíl už existuje".format(src, dst))
-
-
-@ren.command("win")
-@click.option("-r", "--replacement", default="",
-              help="Znak, kterým se nevalidní znaky nahradí")
-@click.argument("files", nargs=-1,
-                type=click.Path(exists=True, resolve_path=True, dir_okay=False))
-def ren_win(replacement, files):
-    """Přejmenuje soubory pro Window$."""
-    win_invalid_cre = re.compile(r'[\x00-\x1f/?<>\\:*|"^]')
-    for src in files:
-        name = os.path.basename(src)
-        dst = create_new_name(src, win_invalid_cre.sub(replacement, name).rstrip("."))
-        os.rename(src, dst)
+            for old, new in files:
+                rename_file(old, new, dump=dump)
 
 
 if __name__ == "__main__":
-    ren()
+    # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+    main(help_option_names=["-h", "--help"])
