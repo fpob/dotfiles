@@ -1,7 +1,7 @@
 set my_name = "Filip Pobořil"
 set my_user = fpob
 set my_mail = tsuki@fpob.eu
-set my_pass = "`~/.local/bin/passwords -k Mutt get eva-00`"
+set my_pass = "`passwords -k Mutt get eva-00`"
 
 # Receive options
 set imap_user = $my_user
