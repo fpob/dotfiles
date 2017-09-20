@@ -34,7 +34,7 @@ set lazyredraw      " nepřekreslovat u maker, reg. ...
 set number
 set ruler
 set list            " zobrazování bilých zn.
-set listchars=tab:›\  ",trail:~
+set listchars=tab:›\ ,nbsp:~
 set scrolloff=5     " 5ř při posunování
 set sidescrolloff=5 " 5zn pri posunování
 set cursorline
@@ -231,9 +231,6 @@ inoremap <Leader>' “
 inoremap <Leader>" “
 inoremap <Leader>- –
 inoremap <Leader>. …
-
-" Nezlomitelne mezery
-inoremap <Char-0xA0> <Space>
 
 " cd do adresare editovaneho souboru
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
