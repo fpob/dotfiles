@@ -1,7 +1,7 @@
 " Linux Coding
 syn match cLinuxError / \+\ze\t/     " spaces before tab
 syn match cLinuxError /\s\+$/        " trailing whitespaces
-syn match cLinuxError /\%81v.\+/     " virtual column 81 and more
+"syn match cLinuxError /\%81v.\+/     " virtual column 81 and more
 
 " Binary numbers
 syn match cBinary "0b[01]\+"
