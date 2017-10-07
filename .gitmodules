@@ -79,9 +79,6 @@
 [submodule ".vim/bundle/python-syntax"]
 	path = .vim/bundle/python-syntax
 	url = https://github.com/hdima/python-syntax
-[submodule ".vim/bundle/nginx-syntax"]
-	path = .vim/bundle/nginx-syntax
-	url = https://github.com/evanmiller/nginx-vim-syntax.git
 [submodule ".vim/bundle/zsh"]
 	path = .vim/bundle/zsh
 	url = https://github.com/chrisbra/vim-zsh.git
