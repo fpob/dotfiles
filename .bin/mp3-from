@@ -2,6 +2,7 @@
 
 bitrate='320k'
 output=
+map=
 
 if [[ $1 = '--help' ]] ; then
     cat << EOF
@@ -12,14 +13,16 @@ Zkonvertuje zadané audio/video soubory na mp3.
 Options:
     -o DIR      adresář, do kterého se uloží zkovertované soubory
     -b BITRATE  bitrate výstupní mp3 (default: $bitrate)
+    -m MAP      viz ffmpeg map
 EOF
-    exit ${1:-0}
+    exit
 fi
 
-while getopts b:o: opt ; do
+while getopts b:o:m: opt ; do
     case "$opt" in
         b)  bitrate=$OPTARG ;;
         o)  output=$OPTARG ;;
+        m)  map=$OPTARG ;;
         *)  echo "Neznámý parametr" >&2 ; exit 1 ;;
     esac
 done
@@ -41,7 +44,7 @@ for src in "${@}" ; do
         audio/*|video/*)
             dst=`python -c 'import sys, os; print(os.path.basename(os.path.splitext(sys.argv[1])[0]))' "$src"`.mp3
             [[ -n $output ]] && dst="$output/$dst"
-            echo ffmpeg -i "$src" -codec:a libmp3lame -b:a $bitrate "$dst"
+            ffmpeg -i "$src" ${map:+-map} $map -codec:a libmp3lame -b:a $bitrate "$dst"
             ;;
 
         *)

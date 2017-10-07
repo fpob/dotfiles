@@ -59,3 +59,5 @@
     fhf = flow hotfix finish --fetch
     frs = flow release start
     frf = flow release finish --fetch
+[credential]
+	helper = cache
