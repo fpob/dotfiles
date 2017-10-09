@@ -103,3 +103,6 @@
 [submodule ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
 	path = .oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule ".vim/bundle/gtk-syntax"]
+	path = .vim/bundle/gtk-syntax
+	url = https://github.com/vim-scripts/gtk-vim-syntax

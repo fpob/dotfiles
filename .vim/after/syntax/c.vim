@@ -1,12 +1,14 @@
-" Linux Coding
+" Linux Coding -------------------------------------------------------------{{{1
+
 syn match cLinuxError / \+\ze\t/     " spaces before tab
 syn match cLinuxError /\s\+$/        " trailing whitespaces
 "syn match cLinuxError /\%81v.\+/     " virtual column 81 and more
 
+" Syntax -------------------------------------------------------------------{{{1
+
 " Binary numbers
 syn match cBinary "0b[01]\+"
 syn match cBinaryError "0b[01]*[2-9a-zA-Z]\+[01]*"
-
 " Operators
 syn match cOperator	"\(<<\|>>\|[-+*/%&^|<>!=]\)="
 syn match cOperator	"<<\|>>\|&&\|||\|++\|--\|->"
@@ -15,15 +17,14 @@ syn match cOperator	"/[^/*=]"me=e-1
 syn match cOperator	"/$"
 syn match cOperator "&&\|||"
 syn match cOperator	"[][]"
-
 " Delimiters
 syn match cDelimiter    "[();\\]"
 syn match cBraces display "[{}]"
-
 " Booleans
 syn keyword cBoolean true false TRUE FALSE
 
-" Common header files {{{
+" Common header files ------------------------------------------------------{{{1
+
 " cpio.h {{{
 syn keyword cConstant C_IRUSR C_IWUSR C_IXUSR C_IRGRP C_IWGRP C_IXGRP C_IROTH
 syn keyword cConstant C_IWOTH C_IXOTH C_ISUID C_ISGID C_ISVTX C_ISDIR C_ISFIFO
@@ -80,8 +81,9 @@ syn keyword cType sem_t
 " assert.h {{{
 syn keyword cFunction assert
 " }}}
-" }}}
-" Common ANSI-standard functions {{{
+
+" Common ANSI-standard functions -------------------------------------------{{{1
+
 syn keyword cAnsiFunction	MULU_ DIVU_ MODU_ MUL_ DIV_ MOD_
 syn keyword cAnsiFunction	main typeof
 syn keyword cAnsiFunction	open close read write lseek dup dup2
@@ -249,8 +251,9 @@ syn keyword cAnsiFunction	cacosf cacos assert
 syn keyword cAnsiFunction	UINTMAX_C INTMAX_C UINT64_C
 syn keyword cAnsiFunction	UINT32_C UINT16_C UINT8_C
 syn keyword cAnsiFunction	INT64_C INT32_C INT16_C INT8_C
-" }}}
-" Common ANSI-standard Names {{{
+
+" Common ANSI-standard Names -----------------------------------------------{{{1
+
 syn keyword	cAnsiName	PRId8 PRIi16 PRIo32 PRIu64
 syn keyword	cAnsiName	PRId16 PRIi32 PRIo64 PRIuLEAST8
 syn keyword	cAnsiName	PRId32 PRIi64 PRIoLEAST8 PRIuLEAST16
@@ -297,10 +300,47 @@ syn keyword	cAnsiName	STDC FP_CONTRACT
 syn keyword	cAnsiName	and bitor not_eq xor
 syn keyword	cAnsiName	and_eq compl or xor_eq
 syn keyword	cAnsiName	bitand not or_eq
-" }}}
 
-" Hilinks
+" GTK Syntax Plugin --------------------------------------------------------{{{1
 
+let cairo_deprecated_errors = 1
+let gdkpixbuf_deprecated_errors = 1
+let glib_deprecated_errors = 1
+let gtk3_deprecated_errors = 1
+
+"runtime! syntax/atk.vim
+"runtime! syntax/atspi.vim
+runtime! syntax/cairo.vim
+"runtime! syntax/clutter.vim
+"runtime! syntax/colord.vim
+"runtime! syntax/dbusglib.vim
+"runtime! syntax/evince.vim
+"runtime! syntax/fftw3.vim
+runtime! syntax/gdkpixbuf.vim
+"runtime! syntax/gimp.vim
+runtime! syntax/glib.vim
+"runtime! syntax/gnomedesktop.vim
+"runtime! syntax/gobjectintrospection.vim
+"runtime! syntax/gstreamer.vim
+"runtime! syntax/gtk2.vim
+runtime! syntax/gtk3.vim
+"runtime! syntax/gtkglext.vim
+"runtime! syntax/gtksourceview.vim
+"runtime! syntax/gudev.vim
+"runtime! syntax/gusb.vim
+"runtime! syntax/jsonglib.vim
+"runtime! syntax/libgsf.vim
+"runtime! syntax/libnotify.vim
+"runtime! syntax/librsvg.vim
+"runtime! syntax/libsoup.vim
+"runtime! syntax/libunique.vim
+"runtime! syntax/libwnck.vim
+"runtime! syntax/pango.vim
+"runtime! syntax/poppler.vim
+"runtime! syntax/vte.vim
+"runtime! syntax/xlib.vim
+
+" Hilinks ------------------------------------------------------------------{{{1
 hi def link cLinuxError cError
 hi def link cBinary cNumber
 hi def link cBinaryError cError
