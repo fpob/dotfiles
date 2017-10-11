@@ -4,6 +4,7 @@ from ranger.api.commands import *
 from ranger.core.loader import CommandLoader
 import os
 import shlex
+import re
 
 
 def trim(string, length=200):
@@ -104,3 +105,66 @@ class trash(Command):
 
     def tab(self, tabnum):
         return self._tab_directory_content()
+
+
+class links(Command):
+    """
+    :links
+    :links *
+
+    Read links from links file (.links|_links|links|_links.txt|links.txt)
+    and open it in browser.
+    If there is only one link opens browser immediately, otherwise show
+    selection of loaded links.
+    """
+
+    FILE_NAMES = ('.links', '_links', 'links', '_links.txt', 'links.txt')
+    HINT_KEYS = tuple('asdfghjklqwertyuiopzxcvbnm')
+    LINK_CRE = re.compile('^\s*https?://.+/.*\s*$', re.I)
+
+    def _find_links_file(self):
+        selection = iter(self.fm.thistab.get_selection())
+        file_path = self._find_links_file_in(self.fm.thisdir.path)
+        while not file_path:
+            file = next(selection)
+            if file.is_directory:
+                file_path = self._find_links_file_in(file.path)
+        return file_path
+
+    def _find_links_file_in(self, directory):
+        for file in self.FILE_NAMES:
+            file_path = os.path.join(directory, file)
+            if os.path.isfile(file_path):
+                return file_path
+
+    def _parse_links_file(self, file_path):
+        links = list()
+        if file_path:
+            with open(file_path) as f:
+                links = [line.strip() for line in f
+                         if self.LINK_CRE.match(line)]
+        return links
+
+    def _get_links(self):
+        return dict(zip(self.HINT_KEYS,
+                        self._parse_links_file(self._find_links_file())))
+
+    def _draw_list(self):
+        links = self._get_links()
+        self.fm.ui.browser.draw_info = [" | ".join(i) for i in links.items()]
+
+    def execute(self):
+        links = self._get_links()
+        if self.arg(1):
+            self.fm.execute_command("$BROWSER '%s'" % links[self.arg(1)])
+        elif len(links) == 1:
+            self.fm.execute_command("$BROWSER '%s'" % links['a'])
+        else:
+            self._draw_list()
+            self.fm.open_console('links ')
+
+    def quick(self):
+        if self.arg(0) == 'links' and not self.arg(1):
+            self._draw_list()
+        if self.arg(1):
+            return True
