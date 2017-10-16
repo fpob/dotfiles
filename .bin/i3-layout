@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ -z "$1" -o -z "$2" ] ; then
+    echo "Usage: $(basename "$0") WORKSPACE LAYOUT" >&2
+    exit 2
+fi
+
+workspace=$1
+layout="$HOME/.config/i3/layouts/$2.json"
+
+if [ ! -f "$layout" ] ; then
+    echo "Layout file '$layout' not exists" >&2
+    exit 1
+fi
+
+i3-msg "workspace $workspace; append_layout $layout" >/dev/null
