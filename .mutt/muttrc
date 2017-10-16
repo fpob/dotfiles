@@ -9,6 +9,9 @@ set send_charset = "utf-8"
 set header_cache = ~/.cache/mutt        # Store message headers locally
 set message_cachedir = ~/.cache/mutt    # Store messages locally
 
+# Default account
+source ~/.mutt/account.local
+
 # Local account
 folder-hook "local" "source ~/.mutt/account.local"
 macro index <f4> '<enter-command>source ~/.mutt/account.local<enter><change-folder>!<enter>'
@@ -20,9 +23,6 @@ folder-hook "vut-fit" "source ~/.mutt/account.vut-fit"
 macro index <f5> '<enter-command>source ~/.mutt/account.eva-00<enter><change-folder>!<enter>'
 macro index <f6> '<enter-command>source ~/.mutt/account.gmail<enter><change-folder>!<enter>'
 macro index <f7> '<enter-command>source ~/.mutt/account.vut-fit<enter><change-folder>!<enter>'
-
-# Default account
-source ~/.mutt/account.eva-00
 
 bind pager,attach,index g noop
 

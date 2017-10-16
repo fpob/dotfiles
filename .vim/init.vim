@@ -424,4 +424,4 @@ autocmd VimEnter,ColorScheme *
 
 " trailing-whitespace ------------------------------------------------------{{{1
 
-let g:extra_whitespace_ignored_filetypes = ['mail']
+let g:extra_whitespace_ignored_filetypes = ['mail', 'gitcommit']
