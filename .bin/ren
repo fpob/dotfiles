@@ -12,25 +12,39 @@ import itertools
 import click
 
 
-class LowerUpperFormat:
-    def __init__(self, value):
-        """value -- str or LazyCall"""
-        self.value = value
+class lu_str(str):
+    """
+    String (str) extended by format specifier `:u` and `:l`.
 
-    def __str__(self):
-        return str(self.value)
+    Format specifier `:u` converts string to upper case and `:l` to lowercase,
+    eg. '{my_str:u}'. These two format specifiers can be added after standard
+    str format specifiers, eg. '{my_str:10s:u}' is valid.
+
+    >>> my_str = lu_str('Hello World!')
+    >>> '{:l}'.format(my_str)
+    'hello world!'
+    >>> '{:u}'.format(my_str)
+    'HELLO WORLD!'
+    >>> '{:>20s}'.format(my_str)
+    '        Hello World!'
+    >>> '{:>20s:l}'.format(my_str)
+    '        hello world!'
+    >>> '{:>20s:u}'.format(my_str)
+    '        HELLO WORLD!'
+    """
 
     def __format__(self, fmt):
+        if ':' in fmt:
+            str_fmt, lu_fmt = fmt.split(":")
+            return self.__format__(lu_fmt).__format__(str_fmt)
         if fmt == "l":
-            return str(self).lower()
+            return self.lower()
         elif fmt == "u":
-            return str(self).upper()
-        elif not fmt:
-            return str(self)
-        raise ValueError("Unknown format string")
+            return self.upper()
+        return super().__format__(fmt)
 
 
-class LazyCall:
+class LazyFormatVariable:
     def __init__(self, generator, *args, **kwargs):
         self.generator = generator
         self.args = args
@@ -41,61 +55,8 @@ class LazyCall:
             self.result = self.generator(*self.args, **self.kwargs)
         return self.result
 
-    def __repr__(self):
-        return repr(self())
-
-    def __str__(self):
-        return str(self())
-
-
-class LazyFileHash(LazyCall):
-    def __init__(self, algorithm, file_path):
-        if algorithm == "crc32":
-            super().__init__(self._file_crc32, file_path)
-        else:
-            super().__init__(self._file_hash, algorithm, file_path)
-
-    def __format__(self, fmt):
-        return LowerUpperFormat(self).__format__(fmt)
-
-    @staticmethod
-    def _file_hash(algorithm, file_path):
-        h = hashlib.new(algorithm)
-        with open(file_path, "rb") as f:
-            while True:
-                data = f.read(65536)
-                if not data:
-                    break
-                h.update(data)
-        return h.hexdigest()
-
-    @staticmethod
-    def _file_crc32(file_path):
-        h = 0
-        with open(file_path, "rb") as f:
-            while True:
-                data = f.read(65536)
-                if not data:
-                    break
-                h = binascii.crc32(data, h)
-        return "{:08x}".format(h & 0xffffffff)
-
-
-class Sequence:
-    def __init__(self, start, step=1):
-        self._i = start
-        self.step = step
-
-    def __call__(self):
-        tmp = self._i
-        self._i += self.step
-        return tmp
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        return self()
+    def __getattr__(self, name):
+        return getattr(self(), name)
 
     def __str__(self):
         return str(self())
@@ -104,13 +65,47 @@ class Sequence:
         return self().__format__(fmt)
 
 
-def asciize(file_name):
+def lazy_generator(function):
+    def decorator(*args, **kwargs):
+        return LazyFormatVariable(function, *args, **kwargs)
+    return decorator
+
+
+@lazy_generator
+def filename_asciize(file_name):
     normalized = (unicodedata.normalize("NFKD", file_name)
                   .encode("ASCII", "ignore").decode("ASCII"))
     return re.sub(r"[^a-zA-Z0-9/]+", "-", normalized).strip("-")
 
-def windows(file_name):
+
+@lazy_generator
+def filename_windows(file_name):
     re.sub(r'[\x00-\x1f/?<>\\:*|"^]', "_", file_name).rstrip(".")
+
+
+@lazy_generator
+def file_hash(algorithm, file_path):
+    h = hashlib.new(algorithm)
+    with open(file_path, "rb") as f:
+        while True:
+            data = f.read(65536)
+            if not data:
+                break
+            h.update(data)
+    return lu_str(h.hexdigest())
+
+
+@lazy_generator
+def file_crc32(file_path):
+    h = 0
+    with open(file_path, "rb") as f:
+        while True:
+            data = f.read(65536)
+            if not data:
+                break
+            h = binascii.crc32(data, h)
+    return lu_str("{:08x}".format(h & 0xffffffff))
+
 
 def path_split(file_path):
     file_dir = os.path.dirname(file_path)
@@ -120,6 +115,7 @@ def path_split(file_path):
         file_name, second_ext = os.path.splitext(file_name)
         file_ext = second_ext + file_ext
     return file_dir, file_name, file_ext
+
 
 def rename_file(old, new, overwrite=False, dump=False):
     if dump:
@@ -169,13 +165,14 @@ def main(dump, seq_start, parse, fmt, files):
     also applies to all hashes, but they are by default lower-case.
     """
 
+    # os.path.realpath() resolves symlinks which is unacceptable
     files = [os.path.normpath(os.path.join(os.environ['PWD'],
                                            os.path.expanduser(f)))
              for f in files]
 
     to_rename = list()
 
-    seq = Sequence(seq_start)
+    seq = itertools.count(seq_start)
     now = datetime.datetime.now()
 
     for file in files:
@@ -183,25 +180,23 @@ def main(dump, seq_start, parse, fmt, files):
 
         fmt_args = []
         fmt_kwargs = {
-            "N": LowerUpperFormat(file_name),
-            "E": LowerUpperFormat(file_ext),
-            "i": seq,
+            "N": lu_str(file_name),
+            "E": lu_str(file_ext),
+            "i": next(seq),
             "now": now,
-            "ascii": LazyCall(asciize, file),
-            "win": LazyCall(windows, file),
-            "crc32": LazyFileHash("crc32", file),
-            "md5": LazyFileHash("md5", file),
-            "sha1": LazyFileHash("sha1", file),
-            "sha256": LazyFileHash("sha256", file),
-            "uuid": LazyCall(uuid.uuid4)
+            "ascii": filename_asciize(file),
+            "win": filename_windows(file),
+            "crc32": file_crc32(file),
+            "md5": file_hash("md5", file),
+            "sha1": file_hash("sha1", file),
+            "sha256": file_hash("sha256", file),
+            "uuid": uuid.uuid4(),
         }
 
         parse_match = parse.search(file_name)
         if parse_match:
-            fmt_args.extend([LowerUpperFormat(v)
-                             for v in parse_match.groups()])
-            fmt_kwargs.update({k: LowerUpperFormat(v)
-                               for k, v in parse_match.groupdict().items()})
+            fmt_args.extend([lu_str(v) for v in parse_match.groups()])
+            fmt_kwargs.update({k: lu_str(v) for k, v in parse_match.groupdict().items()})
 
         try:
             file_new_name = fmt.format(*fmt_args, **fmt_kwargs)
@@ -210,6 +205,9 @@ def main(dump, seq_start, parse, fmt, files):
             raise click.Abort
         except IndexError as e:
             click.echo("Undefined match reference", err=True)
+            raise click.Abort
+        except ValueError as e:
+            click.echo(e, err=True)
             raise click.Abort
 
         if "/" in file_new_name:
