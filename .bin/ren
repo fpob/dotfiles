@@ -77,7 +77,7 @@ class LazyFileHash(LazyCall):
                 data = f.read(65536)
                 if not data:
                     break
-                binascii.crc32(data, h)
+                h = binascii.crc32(data, h)
         return "{:08x}".format(h & 0xffffffff)
 
 
