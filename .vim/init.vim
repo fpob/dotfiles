@@ -194,10 +194,14 @@ nnoremap <S-Cr> o<Esc>
 nnoremap Y y$
 
 " Přepínaní panelů/bufferů
-nnoremap <Left> <Esc>gT
-nnoremap <Right> <Esc>gt
+nnoremap <Left> gT
+nnoremap <Right> gt
 nnoremap <Up> :bp<Cr>
 nnoremap <Down> :bn<Cr>
+nnoremap <C-h> gT
+nnoremap <C-l> gt
+nnoremap <C-k> :bp<Cr>
+nnoremap <C-j> :bn<Cr>
 
 " Foldy
 nnoremap <Space> za
@@ -245,6 +249,15 @@ nnoremap <silent> yp :let @+=expand("%:p")<Cr>
 nnoremap <silent> yn :let @+=expand("%:t")<Cr>
 
 nnoremap <Leader>x :silent !chmod +x %<Cr>
+
+if has('nvim')
+    nnoremap <Leader>t :terminal<Cr>
+    nnoremap <Leader>T :terminal<Space>
+else
+    nnoremap <Leader>t :terminal ++close ++curwin<Cr>
+    nnoremap <Leader>T :terminal ++curwin<Space>
+    vnoremap <Leader>t :terminal<Cr>
+endif
 
 " easymotion ---------------------------------------------------------------{{{1
 

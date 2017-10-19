@@ -230,16 +230,20 @@ Editace~
 
 Výběry~
 
-aw    a word - slovo, včetně mezer
+aw    all word - slovo, včetně mezer
 iw    inner word - slovo kromě mezer
-aW    a Word - „slovo“ (něco co neobsahuje mezery), včetně mezer
+aW    all Word - „slovo“ (něco co neobsahuje mezery), včetně mezer
 iW    inner Word - „slovo“ kromě mezer
-ab    a block - blok mezi kulatými závorkami, včetně
+ab    all block - blok mezi kulatými závorkami, včetně
 ib    inner block - ab kromě závorek
-aB    a Block - blok mezi složenými závorkami, včetně
+aB    all Block - blok mezi složenými závorkami, včetně
 iB    inner Block - aB kromě závorek
-at    a tag - blok mezi špičatými závorkami, včetně
+at    all tag - blok mezi špičatými závorkami, včetně
 it    inner tag - at kromě závorek
+as    all sentence - věta, vč. mezer
+is    inner sentence - věta
+ap    all paragraph - odstavec, včetne okrajů (nový řádek)
+ip    inner paragraph - odstavec, jen text
 
 Mazání~
 
@@ -294,7 +298,11 @@ Ostatní~
 <C-g>   Zobrazí název souboru a pozici
 g<C-g>  Zobrazí sloupec kurzoru, řádek, ...
 ga      Zobrazí ASCII hodnotu znaku pod kurzorem
+g8      Zobrazí UTF-8 hodnotu znaku pod kurzorem
 gf      Otevře soubor jehož název je pod kruzorem
+guu     Převede celý řádek na malé písmena
+gUU     Převede celý řádek na velké písmena
+<C-d>   Při doplňovaní zobrazí celý seznam možností
 
 ------------------------------------------------------------------------------
 REGISTRY                                         *ide-vim-registry*

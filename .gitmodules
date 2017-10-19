@@ -106,3 +106,6 @@
 [submodule ".vim/bundle/gtk-syntax"]
 	path = .vim/bundle/gtk-syntax
 	url = https://github.com/vim-scripts/gtk-vim-syntax
+[submodule ".vim/bundle/nette"]
+	path = .vim/bundle/nette
+	url = https://github.com/fpob/nette.vim.git
