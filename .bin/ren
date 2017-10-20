@@ -8,7 +8,9 @@ import binascii
 import shlex
 import datetime
 import uuid
+import functools
 import itertools
+import inspect
 import click
 
 
@@ -35,110 +37,310 @@ class lu_str(str):
 
     def __format__(self, fmt):
         if ':' in fmt:
-            str_fmt, lu_fmt = fmt.split(":")
+            str_fmt, lu_fmt = fmt.split(':')
             return self.__format__(lu_fmt).__format__(str_fmt)
-        if fmt == "l":
+        if fmt == 'l':
             return self.lower()
-        elif fmt == "u":
+        elif fmt == 'u':
             return self.upper()
         return super().__format__(fmt)
 
 
-class LazyFormatVariable:
-    def __init__(self, generator, *args, **kwargs):
+class File:
+    def __init__(self, path, dir, name, ext):
+        self.path, self.dir, self.name, self.ext = path, dir, name, ext
+
+    def __str__(self):
+        return self.path
+
+    @classmethod
+    def from_path(cls, file_path):
+        file_path = os.path.abspath(file_path)
+        file_dir, file_name = os.path.split(file_path)
+        file_name, file_ext = os.path.splitext(file_name)
+        if file_ext in {'.gz', '.xz', '.lzma', '.bz', '.bz2', '.Z'}:
+            file_name, second_ext = os.path.splitext(file_name)
+            file_ext = second_ext + file_ext
+        return cls(file_path, file_dir, file_name, file_ext)
+
+
+class FormatVariableError(RuntimeError):
+    def __init__(self, message, name):
+        super().__init__(message)
+        self.name = name
+
+
+class FormatVariable:
+    def __init__(self, name, value):
+        self.name = name
+        self._value = value
+
+    @property
+    def value(self):
+        return self._value
+
+    def __repr__(self):
+        return '<{}>'.format(self.name)
+
+    def __str__(self):
+        return str(self.value)
+
+    def __format__(self, fmt):
+        try:
+            return self.value.__format__(fmt)
+        except ValueError as e:
+            raise FormatVariableError(
+                "Uknown format code '{}' for variable '{}'".format(fmt, self.name),
+                self.name
+            )
+
+
+class FormatVariableGenerator(FormatVariable):
+    def __init__(self, name, generator, *args, **kwargs):
+        super().__init__(name, None)
+        del self._value
         self.generator = generator
         self.args = args
         self.kwargs = kwargs
 
+    @property
+    def value(self):
+        if '_value' not in self.__dict__:
+            self._value = self.generator(*self.args, **self.kwargs)
+        return self._value
+
+
+def format_variable(name, lazy=False):
+    """
+    Decorator for functions and callable classes which generates value for
+    format variables.
+    Wraps return value of decorated function with FormatVariable or
+    FormatVariableWrapper if lazy=True.
+
+    Examples:
+
+    >>> @format_variable('foo')
+    ... def var_foo():
+    ...     return 'foo value'
+    ...
+    >>> var_foo.name
+    'foo'
+    >>> value = var_foo()
+    >>> type(value)
+    <class 'formatters.FormatVariable'>
+    >>> str(value)
+    'foo value'
+    >>> '{:s}'.format(value)
+    'foo value'
+    """
+    def inner(fun):
+        fun.name = name
+
+        if inspect.isclass(fun):
+            fun.__call__ = format_variable(name, lazy)(fun.__call__)
+            return fun
+
+        @functools.wraps(fun)
+        def decorator(*args, **kwargs):
+            if lazy:
+                return FormatVariableGenerator(name, fun, *args, **kwargs)
+            return FormatVariable(name, fun(*args, **kwargs))
+        return decorator
+    return inner
+
+
+def format_args(values):
+    """
+    Generate list of FormatVariable instances from list of values.
+    """
+    return [FormatVariable(i, val) for i, val in enumerate(values)]
+
+
+def format_kwargs(variables):
+    """
+    Generate dict from FormatVariable instances.
+    """
+    return {var.name: var for var in variables}
+
+
+@format_variable('N')
+def name(file):
+    return lu_str(file.name)
+
+
+@format_variable('E')
+def ext(file):
+    return lu_str(file.ext)
+
+
+@format_variable('i')
+class Sequence:
+    def __init__(self, start):
+        self.counter = itertools.count(start)
+
     def __call__(self):
-        if "result" not in self.__dict__:
-            self.result = self.generator(*self.args, **self.kwargs)
-        return self.result
-
-    def __getattr__(self, name):
-        return getattr(self(), name)
-
-    def __str__(self):
-        return str(self())
-
-    def __format__(self, fmt):
-        return self().__format__(fmt)
+        return next(self.counter)
 
 
-def lazy_generator(function):
-    def decorator(*args, **kwargs):
-        return LazyFormatVariable(function, *args, **kwargs)
-    return decorator
+@format_variable('now')
+class TimeNow:
+    def __init__(self):
+        self.now = datetime.datetime.now()
+
+    def __call__(self):
+        return self.now
 
 
-@lazy_generator
-def filename_asciize(file_name):
-    normalized = (unicodedata.normalize("NFKD", file_name)
-                  .encode("ASCII", "ignore").decode("ASCII"))
-    return re.sub(r"[^a-zA-Z0-9/]+", "-", normalized).strip("-")
+@format_variable('ascii')
+def asciize(file):
+    normalized = (unicodedata.normalize('NFKD', file.name)
+                  .encode('ASCII', 'ignore').decode('ASCII'))
+    return lu_str(re.sub(r'[^a-zA-Z0-9/]+', '-', normalized).strip('-'))
 
 
-@lazy_generator
-def filename_windows(file_name):
-    re.sub(r'[\x00-\x1f/?<>\\:*|"^]', "_", file_name).rstrip(".")
+@format_variable('win')
+def windows(file):
+    return lu_str(re.sub(r'[\x00-\x1f/?<>\\:*|"^]', '_', file.name).rstrip('.'))
 
 
-@lazy_generator
-def file_hash(algorithm, file_path):
-    h = hashlib.new(algorithm)
-    with open(file_path, "rb") as f:
-        while True:
-            data = f.read(65536)
-            if not data:
-                break
-            h.update(data)
-    return lu_str(h.hexdigest())
+def file_hash(algorithm):
+    @format_variable(algorithm, lazy=True)
+    def file_hash_inner(file):
+        h = hashlib.new(algorithm)
+        with open(file.path, 'rb') as f:
+            while True:
+                data = f.read(65536)
+                if not data:
+                    break
+                h.update(data)
+        return lu_str(h.hexdigest())
+    return file_hash_inner
 
 
-@lazy_generator
-def file_crc32(file_path):
+@format_variable('crc32', lazy=True)
+def crc32(file):
     h = 0
-    with open(file_path, "rb") as f:
+    with open(file.path, 'rb') as f:
         while True:
             data = f.read(65536)
             if not data:
                 break
             h = binascii.crc32(data, h)
-    return lu_str("{:08x}".format(h & 0xffffffff))
+    return lu_str('{:08x}'.format(h & 0xffffffff))
 
 
-def path_split(file_path):
-    file_dir = os.path.dirname(file_path)
-    file_name = os.path.basename(file_path)
-    file_name, file_ext = os.path.splitext(file_name)
-    if file_ext in {".gz", ".xz", ".lzma", ".bz", ".bz2", ".Z"}:
-        file_name, second_ext = os.path.splitext(file_name)
-        file_ext = second_ext + file_ext
-    return file_dir, file_name, file_ext
+@format_variable('uuid', lazy=True)
+def random_uuid():
+    return uuid.uuid4()
 
 
-def rename_file(old, new, overwrite=False, dump=False):
-    if dump:
-        click.echo("{}\t{}\t{}".format("mv -f" if overwrite else "mv",
-                                       shlex.quote(old), shlex.quote(new)))
-    elif os.path.exists(new) and not overwrite:
-        click.echo(("Can't rename „{}“ to „{}“, file already exists"
-                    .format(old, new)), err=True)
-    else:
-        os.rename(old, new)
+def create_rename_table(files, fmt, parse_re='', sequence_start=1):
+    rename_table = list()
+
+    parse_cre = re.compile(parse_re)
+    seq = Sequence(sequence_start)
+    now = TimeNow()
+
+    for file in map(File.from_path, files):
+        fmt_args = []
+        fmt_kwargs = format_kwargs([
+            name(file),
+            ext(file),
+            seq(),
+            now(),
+            asciize(file),
+            windows(file),
+            crc32(file),
+            file_hash('md5')(file),
+            file_hash('sha1')(file),
+            file_hash('sha256')(file),
+            random_uuid()
+        ])
+
+        parse_match = parse_cre.search(file.name)
+        if parse_match:
+            fmt_args.extend(format_args(
+                lu_str(value) for value in parse_match.groups()
+            ))
+            fmt_kwargs.update(format_kwargs(
+                FormatVariable(name, lu_str(value))
+                for name, value in parse_match.groupdict().items()
+            ))
+
+        try:
+            file_new_name = fmt.format(*fmt_args, **fmt_kwargs)
+        except KeyError as e:
+            raise FormatVariableError("Undefined variabe '{}'".format(str(e)), str(e))
+        except IndexError as e:
+            raise FormatVariableError('Undefined match reference', '#')
+
+        if '/' in file_new_name:
+            raise ValueError("Invalid filename '%s' (contains „/“)" % file_new_name)
+
+        file_new = os.path.join(file.dir, file_new_name)
+        if file.path != file_new:
+            rename_table.append((file.path, file_new))
+
+    return rename_table
+
+
+def apply_rename_table(rename_table, dry_run=False):
+    for file_dir, files in itertools.groupby(sorted(rename_table),
+                                             key=lambda i: os.path.dirname(i[0])):
+        files = list(files)
+        dir_content = ({os.path.join(file_dir, f) for f in os.listdir(file_dir)}
+                       - {old for old, new in files})
+
+        exists = False
+        overwrite = set()
+        new_names = set()
+        not_unique = set()
+
+        for old, new in files:
+            new_name = os.path.basename(new)
+            if os.path.exists(new):
+                exists = True
+            if new in dir_content:
+                overwrite.add(new_name)
+            if new_name in new_names:
+                not_unique.add(new_name)
+            new_names.add(new_name)
+
+        if not_unique:
+            raise RuntimeError(
+                "Some new file names in directory '{}' are not unique"
+                .format(file_dir, repr(not_unique))
+            )
+
+        elif overwrite:
+            raise RuntimeError(
+                "Can't rename files in directory '{}', some files would be overwriten"
+                .format(file_dir)
+            )
+
+        elif exists and not dry_run:
+            suffix = '__ren-' + str(int(now.timestamp()))
+            for old, new in files:
+                os.rename(old, new + suffix)
+            for _, new in files:
+                os.rename(new + suffix, new)
+
+        elif not dry_run:
+            for old, new in files:
+                os.rename(old, new)
 
 
 @click.command()
-@click.option("-d", "--dump", is_flag=True, default=False,
-              help="Dont rename only print shell mv commands.")
-@click.option("-s", "--seq-start", default=0, type=int,
-              help="Sequence start (variable „i“).")
-@click.option("-p", "--parse", default='', type=re.compile, metavar="REGEX",
-              help="Parse original filename without extension. Python"
-                   " regular expression. Matches are added to variables.")
-@click.argument("fmt", metavar="FORMAT")
-@click.argument("files", type=click.Path(exists=True), nargs=-1)
-def main(dump, seq_start, parse, fmt, files):
+@click.argument('fmt', metavar='FORMAT')
+@click.argument('files', type=click.Path(exists=True), nargs=-1)
+@click.option('-d', '--dry-run', is_flag=True, default=False,
+              help='Dont rename only print old names and new names.')
+@click.option('-s', '--seq-start', default=0, type=int,
+              help='Sequence start (variable „i“).')
+@click.option('-p', '--parse', default='', type=re.compile, metavar='REGEX',
+              help='Parse original filename without extension. Python'
+                   ' regular expression. Matches are added to variables.')
+def main(fmt, files, dry_run, seq_start, parse):
     """
     FORMAT   - Python format string (str.format).
 
@@ -165,102 +367,20 @@ def main(dump, seq_start, parse, fmt, files):
     also applies to all hashes, but they are by default lower-case.
     """
 
-    # os.path.realpath() resolves symlinks which is unacceptable
-    files = [os.path.normpath(os.path.join(os.environ['PWD'],
-                                           os.path.expanduser(f)))
-             for f in files]
+    try:
+        rename_table = create_rename_table(
+            files, fmt, parse_re=parse, sequence_start=seq_start)
 
-    to_rename = list()
+        apply_rename_table(rename_table, dry_run=dry_run)
 
-    seq = itertools.count(seq_start)
-    now = datetime.datetime.now()
+        if dry_run:
+            print('\n'.join('rename{}'.format(repr(s)) for s in rename_table))
 
-    for file in files:
-        file_dir, file_name, file_ext = path_split(file)
-
-        fmt_args = []
-        fmt_kwargs = {
-            "N": lu_str(file_name),
-            "E": lu_str(file_ext),
-            "i": next(seq),
-            "now": now,
-            "ascii": filename_asciize(file),
-            "win": filename_windows(file),
-            "crc32": file_crc32(file),
-            "md5": file_hash("md5", file),
-            "sha1": file_hash("sha1", file),
-            "sha256": file_hash("sha256", file),
-            "uuid": uuid.uuid4(),
-        }
-
-        parse_match = parse.search(file_name)
-        if parse_match:
-            fmt_args.extend([lu_str(v) for v in parse_match.groups()])
-            fmt_kwargs.update({k: lu_str(v) for k, v in parse_match.groupdict().items()})
-
-        try:
-            file_new_name = fmt.format(*fmt_args, **fmt_kwargs)
-        except KeyError as e:
-            click.echo("Undefined variable %s" % str(e), err=True)
-            raise click.Abort
-        except IndexError as e:
-            click.echo("Undefined match reference", err=True)
-            raise click.Abort
-        except ValueError as e:
-            click.echo(e, err=True)
-            raise click.Abort
-
-        if "/" in file_new_name:
-            click.echo("Invalid filename „%s“ (contains „/“)" % file_new_name)
-            raise click.Abort
-
-        file_new = os.path.join(file_dir, file_new_name)
-        if file != file_new:
-            to_rename.append((file_dir, file, file_new))
-
-    for file_dir, files in itertools.groupby(
-            sorted(to_rename), key=lambda i: os.path.dirname(i[1])):
-        files = [i[1:] for i in files]
-        dir_content = ({os.path.join(file_dir, f) for f in os.listdir(file_dir)}
-                       - {old for old, new in files})
-
-        exists = False
-        overwrite = set()
-        new_names = set()
-        not_unique = set()
-
-        for old, new in files:
-            new_name = os.path.basename(new)
-            if os.path.exists(new):
-                exists = True
-            if new in dir_content:
-                overwrite.add(new_name)
-            if new_name in new_names:
-                not_unique.add(new_name)
-            new_names.add(new_name)
-
-        if not_unique:
-            msg = ("Some new file names in directory „{}“ are not unique:\n* {}"
-                   .format(file_dir, "\n* ".join(not_unique)))
-            click.echo(msg, err=True)
-
-        elif overwrite:
-            msg = ("Can't rename files in directory „{}“, some files would be "
-                   "overwriten:\n* {}".format(file_dir, "\n* ".join(overwrite)))
-            click.echo(msg, err=True)
-
-        elif exists:
-            suffix = "__ren-" + str(int(now.timestamp()))
-            for old, new in files:
-                rename_file(old, new + suffix, dump=dump)
-            for _, new in files:
-                rename_file(new + suffix, new, dump=dump)
-
-        else:
-            for old, new in files:
-                rename_file(old, new, dump=dump)
+    except Exception as e:
+        click.echo(e, err=True)
+        raise click.Abort() from e
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
-    main(help_option_names=["-h", "--help"])
+    main(help_option_names=['-h', '--help'])

@@ -257,6 +257,7 @@ else
     nnoremap <Leader>t :terminal ++close ++curwin<Cr>
     nnoremap <Leader>T :terminal ++curwin<Space>
     vnoremap <Leader>t :terminal<Cr>
+    vnoremap <Leader>T :terminal<Space>
 endif
 
 " easymotion ---------------------------------------------------------------{{{1
