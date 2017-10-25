@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import hashlib
 import re
 import unicodedata
 import binascii
@@ -11,6 +10,7 @@ import uuid
 import functools
 import itertools
 import inspect
+import hashlib
 import click
 
 
@@ -46,24 +46,6 @@ class lu_str(str):
         return super().__format__(fmt)
 
 
-class File:
-    def __init__(self, path, dir, name, ext):
-        self.path, self.dir, self.name, self.ext = path, dir, name, ext
-
-    def __str__(self):
-        return self.path
-
-    @classmethod
-    def from_path(cls, file_path):
-        file_path = os.path.abspath(file_path)
-        file_dir, file_name = os.path.split(file_path)
-        file_name, file_ext = os.path.splitext(file_name)
-        if file_ext in {'.gz', '.xz', '.lzma', '.bz', '.bz2', '.Z'}:
-            file_name, second_ext = os.path.splitext(file_name)
-            file_ext = second_ext + file_ext
-        return cls(file_path, file_dir, file_name, file_ext)
-
-
 class FormatVariableError(RuntimeError):
     def __init__(self, message, name):
         super().__init__(message)
@@ -71,6 +53,14 @@ class FormatVariableError(RuntimeError):
 
 
 class FormatVariable:
+    """
+    Special storage for str.format arguments.
+
+    Generates better error message for format specifier errors. When error with
+    specifier occurs then raise exception with name of value instead of type
+    (default behavior) which is much more useful for user.
+    """
+
     def __init__(self, name, value):
         self.name = name
         self._value = value
@@ -88,14 +78,22 @@ class FormatVariable:
     def __format__(self, fmt):
         try:
             return self.value.__format__(fmt)
-        except ValueError as e:
+        except ValueError:
             raise FormatVariableError(
-                "Uknown format code '{}' for variable '{}'".format(fmt, self.name),
+                ("Uknown format code '{}' for variable '{}'"
+                 .format(fmt, self.name)),
                 self.name
             )
 
 
 class FormatVariableGenerator(FormatVariable):
+    """
+    Lazy version of FormatVariable, interface is nearly same.
+
+    Instead of value of the variable uses the generator (function) and its
+    arguments.
+    """
+
     def __init__(self, name, generator, *args, **kwargs):
         super().__init__(name, None)
         del self._value
@@ -104,10 +102,9 @@ class FormatVariableGenerator(FormatVariable):
         self.kwargs = kwargs
 
     @property
+    @functools.lru_cache(maxsize=None)
     def value(self):
-        if '_value' not in self.__dict__:
-            self._value = self.generator(*self.args, **self.kwargs)
-        return self._value
+        return self.generator(*self.args, **self.kwargs)
 
 
 def format_variable(name, lazy=False):
@@ -117,17 +114,14 @@ def format_variable(name, lazy=False):
     Wraps return value of decorated function with FormatVariable or
     FormatVariableWrapper if lazy=True.
 
-    Examples:
-
     >>> @format_variable('foo')
     ... def var_foo():
     ...     return 'foo value'
-    ...
     >>> var_foo.name
     'foo'
     >>> value = var_foo()
     >>> type(value)
-    <class 'formatters.FormatVariable'>
+    <class 'ren.FormatVariable'>
     >>> str(value)
     'foo value'
     >>> '{:s}'.format(value)
@@ -163,6 +157,24 @@ def format_kwargs(variables):
     return {var.name: var for var in variables}
 
 
+def format_error(message, name):
+    raise FormatVariableError(message, name)
+
+
+def format(fmt, args, kwargs):
+    """
+    Wrapper for str.format. Raises more understandable exceptions when some
+    error occurs. Eg. "Uknown variable 'foo'" instead of KeyError("foo").
+    """
+    try:
+        return fmt.format(*args, **kwargs)
+    except KeyError as e:
+        name = str(e)
+        raise FormatVariableError("Unknown variabe '{}'".format(name), name)
+    except IndexError as e:
+        raise FormatVariableError('Unknown reference', '#')
+
+
 @format_variable('N')
 def name(file):
     return lu_str(file.name)
@@ -191,6 +203,11 @@ class TimeNow:
         return self.now
 
 
+@format_variable('mtime')
+def mtime(file):
+    return datetime.datetime.fromtimestamp(os.path.getmtime(file.path))
+
+
 @format_variable('ascii')
 def asciize(file):
     normalized = (unicodedata.normalize('NFKD', file.name)
@@ -200,12 +217,17 @@ def asciize(file):
 
 @format_variable('win')
 def windows(file):
-    return lu_str(re.sub(r'[\x00-\x1f/?<>\\:*|"^]', '_', file.name).rstrip('.'))
+    return lu_str(re.sub(r'[\x00-\x1f/?<>\\:*|"^]', '_', file.name)
+                  .rstrip('.'))
 
 
 def file_hash(algorithm):
     @format_variable(algorithm, lazy=True)
+    @functools.lru_cache(maxsize=None)
     def file_hash_inner(file):
+        if not os.path.isfile(file.path):
+            format_error("Variable '{}' can not be used for directories"
+                         .format(algorithm), algorithm)
         h = hashlib.new(algorithm)
         with open(file.path, 'rb') as f:
             while True:
@@ -218,7 +240,11 @@ def file_hash(algorithm):
 
 
 @format_variable('crc32', lazy=True)
+@functools.lru_cache(maxsize=None)
 def crc32(file):
+    if not os.path.isfile(file.path):
+        format_error("Variable 'crc32' can not be used for directories",
+                     'crc32')
     h = 0
     with open(file.path, 'rb') as f:
         while True:
@@ -234,7 +260,24 @@ def random_uuid():
     return uuid.uuid4()
 
 
-def create_rename_table(files, fmt, parse_re='', sequence_start=1):
+class File:
+    def __init__(self, path, dir, name, ext):
+        self.path, self.dir, self.name, self.ext = path, dir, name, ext
+
+    def __str__(self):
+        return self.path
+
+    @classmethod
+    def from_path(cls, file_path):
+        file_dir, file_name = os.path.split(file_path)
+        file_name, file_ext = os.path.splitext(file_name)
+        if file_ext in {'.gz', '.xz', '.lzma', '.bz', '.bz2', '.Z'}:
+            file_name, second_ext = os.path.splitext(file_name)
+            file_ext = second_ext + file_ext
+        return cls(file_path, file_dir, file_name, file_ext)
+
+
+def create_rename_table(files, fmt, parse_re='', parse_ext=False, sequence_start=0):
     rename_table = list()
 
     parse_cre = re.compile(parse_re)
@@ -248,6 +291,7 @@ def create_rename_table(files, fmt, parse_re='', sequence_start=1):
             ext(file),
             seq(),
             now(),
+            mtime(file),
             asciize(file),
             windows(file),
             crc32(file),
@@ -257,7 +301,10 @@ def create_rename_table(files, fmt, parse_re='', sequence_start=1):
             random_uuid()
         ])
 
-        parse_match = parse_cre.search(file.name)
+        if parse_ext:
+            parse_match = parse_cre.search(file.name + file.ext)
+        else:
+            parse_match = parse_cre.search(file.name)
         if parse_match:
             fmt_args.extend(format_args(
                 lu_str(value) for value in parse_match.groups()
@@ -267,29 +314,31 @@ def create_rename_table(files, fmt, parse_re='', sequence_start=1):
                 for name, value in parse_match.groupdict().items()
             ))
 
-        try:
-            file_new_name = fmt.format(*fmt_args, **fmt_kwargs)
-        except KeyError as e:
-            raise FormatVariableError("Undefined variabe '{}'".format(str(e)), str(e))
-        except IndexError as e:
-            raise FormatVariableError('Undefined match reference', '#')
+        file_new_name = format(fmt, fmt_args, fmt_kwargs)
 
         if '/' in file_new_name:
-            raise ValueError("Invalid filename '%s' (contains „/“)" % file_new_name)
+            raise ValueError("Invalid filename '{}' (contains '/')"
+                             .format(file_new_name))
 
         file_new = os.path.join(file.dir, file_new_name)
-        if file.path != file_new:
-            rename_table.append((file.path, file_new))
+        rename_table.append((file.path, file_new))
 
     return rename_table
 
 
 def apply_rename_table(rename_table, dry_run=False):
-    for file_dir, files in itertools.groupby(sorted(rename_table),
-                                             key=lambda i: os.path.dirname(i[0])):
+    rename_table = ((old, new) for old, new in rename_table if old != new)
+
+    grouped_table = itertools.groupby(sorted(rename_table),
+                                      key=lambda i: os.path.dirname(i[0]))
+
+    for file_dir, files in grouped_table:
         files = list(files)
-        dir_content = ({os.path.join(file_dir, f) for f in os.listdir(file_dir)}
-                       - {old for old, new in files})
+
+        dir_content = (
+            {os.path.join(file_dir, f) for f in os.listdir(file_dir or '.')}
+            - {old for old, new in files}
+        )
 
         exists = False
         overwrite = set()
@@ -314,12 +363,12 @@ def apply_rename_table(rename_table, dry_run=False):
 
         elif overwrite:
             raise RuntimeError(
-                "Can't rename files in directory '{}', some files would be overwriten"
-                .format(file_dir)
+                ("Can not rename files in directory '{}', some files would be "
+                 "overwriten").format(file_dir)
             )
 
         elif exists and not dry_run:
-            suffix = '__ren-' + str(int(now.timestamp()))
+            suffix = '__ren-{:06x}'.format(os.getpid())
             for old, new in files:
                 os.rename(old, new + suffix)
             for _, new in files:
@@ -330,35 +379,55 @@ def apply_rename_table(rename_table, dry_run=False):
                 os.rename(old, new)
 
 
+def rename(files, fmt, sequence_start=0, parse_re='', parse_ext=False, dry_run=False):
+    """
+    Rename files and returns rename table (list of tuple(old_name, new_name)).
+    If dry_run is True ten nothing is renamed, just returns rename table.
+    """
+    rename_table = create_rename_table(files, fmt,
+                                       sequence_start=sequence_start,
+                                       parse_re=parse_re, parse_ext=parse_ext)
+    apply_rename_table(rename_table, dry_run=dry_run)
+    return rename_table
+
+
 @click.command()
 @click.argument('fmt', metavar='FORMAT')
 @click.argument('files', type=click.Path(exists=True), nargs=-1)
 @click.option('-d', '--dry-run', is_flag=True, default=False,
-              help='Dont rename only print old names and new names.')
+              help='Dont rename only print old names and new names as tsv.')
 @click.option('-s', '--seq-start', default=0, type=int,
-              help='Sequence start (variable „i“).')
+              help='Sequence start (variable „i“), default is 0.')
 @click.option('-p', '--parse', default='', type=re.compile, metavar='REGEX',
-              help='Parse original filename without extension. Python'
-                   ' regular expression. Matches are added to variables.')
-def main(fmt, files, dry_run, seq_start, parse):
+              help='Python regular expression which is used to parse original '
+              'filename. Matches are added to variables.')
+@click.option('-e', '--parse-ext', is_flag=True, default=False,
+              help='Parse file with exception, default is False.')
+def main(files, fmt, dry_run, seq_start, parse, parse_ext):
     """
-    FORMAT   - Python format string (str.format).
+    Bulk renamer.
+
+    Arguments:
+
+      FORMAT   - Python format string (str.format).
 
     Format Variables:
 
     \b
-    {N}      - original name without extension
-    {E}      - file extension with dot
-    {i}      - sequence, accepts number format specifiers (eg. {i:03d})
-    {now}    - script start date, format specifier is strftime format string
-               (default: '%Y-%m-%d %H:%M:%S.%f')
-    {ascii}  - asciized filename
-    {win}    - Window$ safe filename
-    {crc32}  - CRC32 hash (8x)
-    {md5}    - MD5 hash (32x)
-    {sha1}   - SHA1 hash (40x)
-    {sha256} - SHA256 hash (64x)
-    {uuid}   - UUID 4 (randomly generated)
+      {N}      - original name without extension
+      {E}      - file extension with dot
+      {i}      - sequence, accepts number format specifiers (eg. {i:03d})
+      {now}    - script start date, format specifier is strftime format string
+                 (default: '%Y-%m-%d %H:%M:%S.%f')
+      {mtime}  - file modification time, accepts strftime format as format
+                 specifier (default: '%Y-%m-%d %H:%M:%S.%f')
+      {ascii}  - asciized filename
+      {win}    - Window$ safe filename
+      {crc32}  - CRC32 hash (8x)
+      {md5}    - MD5 hash (32x)
+      {sha1}   - SHA1 hash (40x)
+      {sha256} - SHA256 hash (64x)
+      {uuid}   - UUID 4 (randomly generated)
 
     Variables from parse regex overwrites values of these variables!
 
@@ -368,19 +437,19 @@ def main(fmt, files, dry_run, seq_start, parse):
     """
 
     try:
-        rename_table = create_rename_table(
-            files, fmt, parse_re=parse, sequence_start=seq_start)
-
-        apply_rename_table(rename_table, dry_run=dry_run)
+        rename_table = rename(files, fmt,
+                              parse_re=parse,
+                              parse_ext=parse_ext,
+                              sequence_start=seq_start,
+                              dry_run=dry_run)
 
         if dry_run:
-            print('\n'.join('rename{}'.format(repr(s)) for s in rename_table))
+            for ren in rename_table:
+                click.echo('%s\t%s' % ren)
 
     except Exception as e:
-        click.echo(e, err=True)
-        raise click.Abort() from e
+        raise click.ClickException(str(e))
 
 
 if __name__ == '__main__':
-    # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
     main(help_option_names=['-h', '--help'])

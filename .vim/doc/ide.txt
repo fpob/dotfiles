@@ -367,9 +367,8 @@ DIFF                                             *ide-vim-diff*
 
 [c        skok na začátek předchozího bloku se změnami
 ]c        skok na začátek dalšího bloku se změnami
-dp        diff-put - přenesení změn **DO** druhého souboru
-do        diff-obtain - přenesení změn **Z** druhého souboru
-dp a do   funguje i pro vizuální bloky
+dp        :diffput - přenesení změn **DO** druhého souboru
+do        :diffget - přenesení změn **Z** druhého souboru
 
 ------------------------------------------------------------------------------
 PREKLAD                                          *ide-vim-preklad*
