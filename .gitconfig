@@ -27,8 +27,7 @@
     sc = commit -sS     # signed commit
 
     l = log --oneline --graph --decorate --all --date-order
-    ll = log --show-signature --graph --decorate --all --date-order
-    ls = log --oneline --graph --decorate --all --stat --date-order
+    ll = log --show-signature --graph --decorate --all --stat --date-order
     lg = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset) - %C(cyan)%ai%C(reset)%C(bold green)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an [%G?]%C(reset)' --all
 
     pa = push origin --all --follow-tags

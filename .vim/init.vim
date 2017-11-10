@@ -412,7 +412,7 @@ let g:phpcomplete_parse_docblock_comments = 1
 
 let g:gutentags_project_root = ['tags']
 
-let g:gutentags_ctags_exclude = ['vendor', 'temp', 'log', 'tests', 'doc']
+let g:gutentags_ctags_exclude = ['vendor', 'temp', 'log', 'tests', 'doc', 'node_modules', 'bower_components']
 let g:gutentags_ctags_executable = 'ctags'
 let g:gutentags_ctags_executable_php = 'php-ctags'
 
