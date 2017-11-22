@@ -115,7 +115,7 @@ class links(Command):
     Read links from links file (.links|_links|links|_links.txt|links.txt)
     and open it in browser.
     If there is only one link opens browser immediately, otherwise show
-    selection of loaded links.
+    hint popup with loaded links.
     """
 
     FILE_NAMES = ('.links', '_links', 'links', '_links.txt', 'links.txt')

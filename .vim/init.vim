@@ -1,4 +1,4 @@
-" Nastavení ----------------------------------------------------------------{{{1
+" Settings -----------------------------------------------------------------{{{1
 
 execute pathogen#infect()
 set nocompatible
@@ -43,6 +43,9 @@ set confirm         " místo selhání :q/:e se zeptá
 set noshowmode      " nezobrazovat mod (insert, normal, ... resi airline)
 set laststatus=2
 set virtualedit=block
+
+" Splits
+set splitright
 
 if has('conceal')
     set conceallevel=0
@@ -113,7 +116,7 @@ syntax enable
 syntax on
 filetype plugin indent on
 
-" Nastavení GUI ------------------------------------------------------------{{{1
+" GUI settings -------------------------------------------------------------{{{1
 
 if has('gui_running')
     " Nadpis okna
@@ -126,7 +129,7 @@ if has('gui_running')
     set guifont=Hack\ 9
 endif
 
-" ColorSchecme -------------------------------------------------------------{{{1
+" ColorScheme --------------------------------------------------------------{{{1
 
 autocmd ColorScheme molokai
     \   hi CursorLine ctermbg=234 guibg=#242828
@@ -139,7 +142,7 @@ autocmd ColorScheme *
 
 silent! colorscheme molokai     " Barevné schéma
 
-" Automatické příkazy ------------------------------------------------------{{{1
+" Autocommands -------------------------------------------------------------{{{1
 
 " Definovat a resetovat autocmdgroup vimrc
 augroup vimrc
@@ -165,7 +168,7 @@ augroup vimrc
     autocmd VimEnter * let @/=''
 augroup END
 
-" Makra a klávesy ----------------------------------------------------------{{{1
+" Mappings -----------------------------------------------------------------{{{1
 
 let mapleader = ","
 let g:mapleader = ","
@@ -178,32 +181,34 @@ inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
 
-" Pohyb na zalomených řádcích
-"nnoremap <silent> k gk
-"nnoremap <silent> j gj
+" Move by visual lines not by file lines
+nnoremap <silent> k gk
+nnoremap <silent> j gj
 
-" Při odazení ve visual režimu znovu označit
+" Keep selection when indenting/outdenting
 vnoremap < <gv
 vnoremap > >gv
 
-" Novy radek
+" Add new line...
 inoremap <S-Cr> <Esc>o
 nnoremap <S-Cr> o<Esc>
 
-" Kopírovat do konce řádku
+" Yank to the end
 nnoremap Y y$
 
-" Přepínaní panelů/bufferů
+" Tab switching
 nnoremap <Left> gT
 nnoremap <Right> gt
-nnoremap <Up> :bp<Cr>
-nnoremap <Down> :bn<Cr>
 nnoremap <C-h> gT
 nnoremap <C-l> gt
+
+" Buffer switching
+nnoremap <Up> :bp<Cr>
+nnoremap <Down> :bn<Cr>
 nnoremap <C-k> :bp<Cr>
 nnoremap <C-j> :bn<Cr>
 
-" Foldy
+" Fold with spacebar
 nnoremap <Space> za
 vnoremap <Space> zf
 
@@ -220,7 +225,7 @@ nnoremap <F9> :make<Cr>
 nnoremap <F10> <nop>
 nnoremap <F11> <nop>
 
-" Chyby :make
+" Quicfix list shortcuts
 noremap <C-F5> :clist<Cr>
 noremap <C-F6> :cprev<Cr>
 noremap <C-F7> :cnext<Cr>
@@ -230,24 +235,31 @@ noremap <C-F8> :copen<Cr>
 inoremap <C-u> <esc>viwUea
 
 " Typografie
-inoremap <Leader>, „
-inoremap <Leader>' “
-inoremap <Leader>" “
-inoremap <Leader>- –
-inoremap <Leader>. …
+inoremap <Leader><Leader>, „
+inoremap <Leader><Leader>' “
+inoremap <Leader><Leader>" “
+inoremap <Leader><Leader>- –
+inoremap <Leader><Leader>. …
 
-" cd do adresare editovaneho souboru
+" cd to directory of currently edited file
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 
-" Kopirovani a vkladani
+" Select text that was last edited/pasted.
+nmap gV `[v`]
+
+" Copy/yank X clipboard
 noremap <Leader>y "+y
 noremap <Leader>p "+p
 noremap <Leader>P "+P
 
+" Yank directory
 nnoremap <silent> yd :let @+=expand("%:p:h")<Cr>
+" Yank full path
 nnoremap <silent> yp :let @+=expand("%:p")<Cr>
+" Yank file name
 nnoremap <silent> yn :let @+=expand("%:t")<Cr>
 
+" Make file executable
 nnoremap <Leader>x :silent !chmod +x %<Cr>
 
 if has('nvim')
@@ -331,7 +343,7 @@ nmap <leader>9 <Plug>AirlineSelectTab9
 
 " NERDTree -----------------------------------------------------------------{{{1
 
-let NERDTreeIgnore = ['^__pycache__$[[dir]]']
+let NERDTreeIgnore = ['^__pycache__$[[dir]]', '^tags$[[file]]']
 
 " Nezobrazovat napovedu
 let NERDTreeMinimalUI = 1
@@ -438,4 +450,4 @@ autocmd VimEnter,ColorScheme *
 
 " trailing-whitespace ------------------------------------------------------{{{1
 
-let g:extra_whitespace_ignored_filetypes = ['mail', 'gitcommit']
+let g:extra_whitespace_ignored_filetypes = ['mail']

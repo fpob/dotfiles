@@ -110,7 +110,7 @@ setopt correct
 # Prompt -------------------------------------------------------------------{{{1
 
 function prompt_anime_aid () {
-    [[ -f .aid ]] && "${1}_prompt_segment" "$0" "$2" cyan black "a`cat .aid`"
+    [[ -f .aid ]] && "${1}_prompt_segment" "$0" "$2" cyan black "a$(cat .aid)"
 }
 
 function prompt_parent () {
@@ -135,9 +135,7 @@ alias e='$EDITOR'
 
 # Colors
 alias ls="ls -v --color=auto"
-alias grep="grep --color=auto"
-alias fgrep="fgrep --color=auto"
-alias egrep="egrep --color=auto"
+alias grep="grep --color=auto -nT"
 
 # ls shortcuts
 alias l='ls -CF'
@@ -182,14 +180,13 @@ alias tsv="column -t -s$'\t'"
 alias mdv='mdv -t 884.0134'
 alias gdb='gdb -q'
 alias bc='bc -ql'
-alias octave='octave -q --no-gui'
+alias octave='octave -qW'
 
 # Global aliasses
-alias -g L='|less -FR'
+alias -g L='|less -FKRX'
 alias -g G='|grep -Pi'
 alias -g T='|tail'
 alias -g H='|head'
-alias -g W='|wc'
 alias -g N='&>/dev/null'
 
 # Start new instance only if it is not running in current shell

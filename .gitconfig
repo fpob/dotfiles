@@ -6,6 +6,7 @@
 [core]
     editor = vim
     autocrlf = input
+    pager = less -FKRX
 
 [commit]
     # Show 'diff --cached' when writing commit message
@@ -17,6 +18,14 @@
 [credential]
     helper = cache
 
+[grep]
+    lineNumber = true
+    patternType = perl
+
+[diff]
+    tool = vimdiff
+    guitool = gvimdiff
+
 [alias]
     s = status
     a = add
@@ -25,6 +34,7 @@
 
     c = commit
     sc = commit -sS     # signed commit
+    uncommit = reset HEAD^
 
     l = log --oneline --graph --decorate --all --date-order
     ll = log --show-signature --graph --decorate --all --stat --date-order

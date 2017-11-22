@@ -29,22 +29,74 @@ http://vimawesome.com/
 |local-additions|
 
 ------------------------------------------------------------------------------
-JAVACOMPLETE                                     *ide-javacomplete*
+FUGITIVE                                         *ide-fugitive*
 
-<leader>jI      Imports AddMissing
-<leader>jR      Imports RemoveUnused
-<leader>ji      Imports AddSmart
-<leader>jii     Imports Add
+`Git`           !git
 
-<leader>jM      Generate AbstractMethods
-<leader>jA      Generate Accessors
-<leader>js      Generate AccessorSetter
-<leader>jg      Generate AccessorGetter
-<leader>ja      Generate AccessorSetterGetter
-<leader>jts     Generate ToString
-<leader>jeq     Generate EqualsAndHashCode
-<leader>jc      Generate Constructor
-<leader>jcc     Generate DefaultConstructor
+Soubory ~
+
+`Gremove`       Git rm %
+`Gmove` target  Git mv % target
+               - target  je relativni cesta k puvodnimu souboru
+               - /target je absolutni cesta vzhledem k rootu repozitare
+`Gwrite`        Git add %
+`Gread`         Git checkout %
+
+Commit ~
+
+`Gcommit`       otevre split, misto noveho editoru - funguje doplnovani
+`Gblame`        blame se jmeny otevre ve split okne, kde synchrozivany scroll
+
+Status ~
+
+`Gstatus`  zobrazi status ve split okne
+
+- <Ctrl-N>
+  <Ctrl-P>   skace mezi soubory (preskakuje prazdne radky/komentare)
+- <->        funguje jako add/reset, i ve visual modu
+- <Enter>    nad souborem jej otevre
+- <Shift-C>  spusti `Gcommit`
+
+Diff ~
+
+`Gdiff`  zobrazi rozdily mezi working copy a index
+
+- `Gwrite` a `Gread` funguje ve working copy a index ruzne! Funguji ale
+  rozumne symetricky, `Gwrite` zapise DO a `Gread` precte Z toho druheho.
+
+- Working Copy (vpravo):
+  `:Gwrite`  = Git add %
+  `:Gread`   = Git checkout %
+
+- Index:
+  `:Gwrite`  = Git checkout %
+  `:Gread`   = Git add %
+
+
+Index ~
+
+`Gedit`  otevira objekty gitu
+
+- jako parametr se da zadat SHA objektu (commit, tree, blob) nebo
+  branch:soubor
+- <Enter> nad SHA v zobrazeni historie skoci na zadany objekt
+
+`Gedit` :path/file   otevre v bufferu verzi souboru z "index"
+`Gedit` :0           `Gedit` pro aktualni soubor
+`Gedit` master:file  otevre v bufferu verzi souboru z urcite vetve
+`Gedit` 1234abcd     otevre objekt gitu (commit, tree, blob)
+
+Log ~
+
+`Glog`  vypise celou historii, a prida ji do quicfixlistu, takze se da dobre
+      preskakovat pomoci `cnext`, `cprev` atd.
+
+`Glog` -10  zobrazi jen 10 revizi
+
+Vyhledavani ~
+
+`Ggrep`  vyhleda pomoci Git grep a prida vysledky do quickfixlistu
+
 
 ------------------------------------------------------------------------------
 CTRLP                                            *ide-pluginy-ctrlp*
@@ -292,6 +344,8 @@ g#  předchozí slovo pod kurzorem, i částečně odpovídající
 g*  další slovo pod kurzorem, i částečně odpovídající
 gd  skok na lokální definici symbolu pod kurzorem
 gD  skok na na globální definici symbolu pod kurzorem
+gn  vybere (visual) nasledujici match
+gN  vybere predchozi match
 
 Ostatní~
 
