@@ -12,6 +12,9 @@
     # Show 'diff --cached' when writing commit message
     verbose = true
 
+[log]
+    date = iso
+
 [push]
     default = matching
 

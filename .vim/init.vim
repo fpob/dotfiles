@@ -81,7 +81,7 @@ set nojoinspaces    " při spojování ř.(S-j) nedává 2 mezery za větu
 set ignorecase  " ignorovat velikost písmena při hledání
 set smartcase
 set incsearch
-set hlsearch    " zvýraznit nalezená slova
+"(easymotion) set hlsearch    " zvýraznit nalezená slova
 nohlsearch      " nezvýraznovat po reloadu vimu
 
 " Diff
@@ -212,18 +212,24 @@ nnoremap <C-j> :bn<Cr>
 nnoremap <Space> za
 vnoremap <Space> zf
 
-" Zkratky
+" Change default help
 nnoremap <F1> :help ide<Cr>
+
+" Faster saving and closing
 nnoremap <F2> :w<Cr>
-nnoremap <F3> @q
+nnoremap <F3> :wq<Cr>
 nnoremap <F4> :q<Cr>
-nnoremap <F5> :nohlsearch<Cr>
-nnoremap <F6> <nop>
+nnoremap <S-F2> :wa<Cr>
+nnoremap <S-F3> :wqa<Cr>
+nnoremap <S-F4> :qa<Cr>
+
+"(easymotion) nnoremap <F5> :nohlsearch<Cr>
+
+nnoremap <F5> @q
 nnoremap <F7> :TagbarToggle<Cr>
 nnoremap <F8> :NERDTreeToggle<Cr>
+
 nnoremap <F9> :make<Cr>
-nnoremap <F10> <nop>
-nnoremap <F11> <nop>
 
 " Quicfix list shortcuts
 noremap <C-F5> :clist<Cr>
@@ -245,7 +251,8 @@ inoremap <Leader><Leader>. …
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 
 " Select text that was last edited/pasted.
-nmap gV `[v`]
+" `[ `] not working as expected
+"nmap gV `[v`]
 
 " Copy/yank X clipboard
 noremap <Leader>y "+y
@@ -274,10 +281,25 @@ endif
 
 " easymotion ---------------------------------------------------------------{{{1
 
+" Character jumps
 nmap <Leader>f <Plug>(easymotion-bd-f)
 nmap <Leader>F <Plug>(easymotion-overwin-f)
 nmap <Leader>s <Plug>(easymotion-bd-f2)
 nmap <Leader>S <Plug>(easymotion-overwin-f2)
+
+" Faster HJKL motion
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+" Keep cursor column when JK motion
+let g:EasyMotion_startofline = 0
+
+" Searching
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
 
 " airline ------------------------------------------------------------------{{{1
 
@@ -296,7 +318,6 @@ let g:airline_exclude_preview = 0
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tagbar#enabled = 0
 let g:airline#extensions#whitespace#enabled = 0
-let g:airline#extensions#hunks#enabled = 0
 
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -361,10 +382,13 @@ let g:ctrlp_max_depth = 16
 let g:ctrlp_open_new_file = 'r'
 " Otevírání více souborů: 1 v aktuálním okně a další v nových záložkách
 let g:ctrlp_open_multiple_files = 'tjr'
-" Ingnorovani souboru, rozsireni 'wildignore'
-let g:ctrlp_custom_ignore = {
-\   'dir': '\v(tmp|temp|vendor|log|doc|node_modules)',
-\   'file': '\v\.(min\.js|min\.css)$'
+" Prikaz pro vyhledani souboru, g:ctrlp_custom_ignore se pouziva pokud neni
+" zadano 'ignore':1
+let g:ctrlp_user_command = {
+\   'types': {
+\       1: ['.git', 'cd %s && git ls-files . -co --exclude-standard'],
+\   },
+\   'fallback': 'find %s -type f | grep -vP "(\.git|~$|__pycache__|\.py[co]$|\.o$)"',
 \}
 
 " UltiSnips ----------------------------------------------------------------{{{1
@@ -451,3 +475,11 @@ autocmd VimEnter,ColorScheme *
 " trailing-whitespace ------------------------------------------------------{{{1
 
 let g:extra_whitespace_ignored_filetypes = ['mail']
+
+" vimtex -------------------------------------------------------------------{{{1
+
+let g:vimtex_quickfix_mode = 0
+
+" whiteboard ---------------------------------------------------------------{{{1
+
+let g:whiteboard_fallback_interpreter = 'python'

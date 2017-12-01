@@ -109,3 +109,12 @@
 [submodule ".vim/bundle/nette"]
 	path = .vim/bundle/nette
 	url = https://github.com/fpob/nette.vim.git
+[submodule ".vim/bundle/matchtag"]
+	path = .vim/bundle/matchtag
+	url = https://github.com/gregsexton/matchtag
+[submodule ".vim/bundle/matchit"]
+	path = .vim/bundle/matchit
+	url = https://github.com/vim-scripts/matchit.zip
+[submodule ".vim/bundle/whiteboard"]
+	path = .vim/bundle/whiteboard
+	url = https://github.com/fpob/whiteboard.vim.git

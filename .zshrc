@@ -38,6 +38,8 @@ else
     export EDITOR=${EDITOR:-vim}
 fi
 
+export FILE_MANAGER=${FILE_MANAGER:-ranger}
+
 # Python startup script
 [[ -f $HOME/.pythonrc ]] && export PYTHONSTARTUP=$HOME/.pythonrc
 
@@ -132,10 +134,11 @@ POWERLEVEL9K_ROOT_ICON=$'\u2622'
 unalias -m '*'
 
 alias e='$EDITOR'
+alias f='$FILE_MANAGER'
 
 # Colors
 alias ls="ls -v --color=auto"
-alias grep="grep --color=auto -nT"
+alias grep="grep --color=auto"
 
 # ls shortcuts
 alias l='ls -CF'
@@ -165,16 +168,15 @@ alias t='nocorrect task'
 # force 256 colors
 alias tmux='tmux -2'
 
-alias man='nocorrect man'
-alias mkdir='nocorrect mkdir -p'
-alias mv='nocorrect mv'
-
 # Copy & Paste Clipboard
 alias ci='xclip -i -sel c'
 alias co='xclip -o -sel c'
 
 # Cut long lines
 alias cll='cut -c -$COLUMNS'
+
+# git-grep with external grep
+alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto -nT'
 
 alias tsv="column -t -s$'\t'"
 alias mdv='mdv -t 884.0134'

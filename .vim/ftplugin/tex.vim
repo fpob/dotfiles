@@ -15,3 +15,7 @@ setlocal nolist
 
 inoremap <Char-0xA0> ~
 imap <S-Space> ~
+
+nnoremap <F7> :VimtexTocToggle<Cr>
+nnoremap <F9> :VimtexCompileSS<Cr>
+nnoremap <F10> :VimtexView<Cr>
