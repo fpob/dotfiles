@@ -17,3 +17,5 @@ for f ; do
     LANG=C printf '% 6.2f\t%s\n' $ns "$f"
 done
 [[ $# -gt 1 ]] && LANG=C printf '% 6.2f\tsum\n' $sum
+
+exit 0

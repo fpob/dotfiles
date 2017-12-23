@@ -18,9 +18,10 @@ workspace 2 output LVDS1
 
 # Start terminal
 bindsym $mod+t exec x-terminal-emulator
-
 # Start FileManager
 bindsym $mod+y exec caja
+# Start note taker
+bindsym $mod+u exec cherrytree
 
 # Start dmenu
 bindsym $mod+space exec rofi -show combi

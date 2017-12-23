@@ -156,7 +156,8 @@ class links(Command):
     def execute(self):
         links = self._get_links()
         if self.arg(1):
-            self.fm.execute_command("$BROWSER '%s'" % links[self.arg(1)])
+            if self.arg(1) in links:
+                self.fm.execute_command("$BROWSER '%s'" % links[self.arg(1)])
         elif len(links) == 1:
             self.fm.execute_command("$BROWSER '%s'" % links['a'])
         else:

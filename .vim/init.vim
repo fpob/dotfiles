@@ -81,7 +81,7 @@ set nojoinspaces    " při spojování ř.(S-j) nedává 2 mezery za větu
 set ignorecase  " ignorovat velikost písmena při hledání
 set smartcase
 set incsearch
-"(easymotion) set hlsearch    " zvýraznit nalezená slova
+set hlsearch    " zvýraznit nalezená slova
 nohlsearch      " nezvýraznovat po reloadu vimu
 
 " Diff
@@ -223,9 +223,8 @@ nnoremap <S-F2> :wa<Cr>
 nnoremap <S-F3> :wqa<Cr>
 nnoremap <S-F4> :qa<Cr>
 
-"(easymotion) nnoremap <F5> :nohlsearch<Cr>
-
-nnoremap <F5> @q
+nnoremap <F5> :nohlsearch<Cr>
+nnoremap <F6> @q
 nnoremap <F7> :TagbarToggle<Cr>
 nnoremap <F8> :NERDTreeToggle<Cr>
 
@@ -281,6 +280,8 @@ endif
 
 " easymotion ---------------------------------------------------------------{{{1
 
+let g:EasyMotion_smartcase = 1
+
 " Character jumps
 nmap <Leader>f <Plug>(easymotion-bd-f)
 nmap <Leader>F <Plug>(easymotion-overwin-f)
@@ -296,10 +297,10 @@ map <Leader>h <Plug>(easymotion-linebackward)
 let g:EasyMotion_startofline = 0
 
 " Searching
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
+map  <Leader>/ <Plug>(easymotion-sn)
+omap <Leader>/ <Plug>(easymotion-tn)
+map  <Leader>n <Plug>(easymotion-next)
+map  <Leader>N <Plug>(easymotion-prev)
 
 " airline ------------------------------------------------------------------{{{1
 

@@ -21,7 +21,7 @@ path=(~/.bin ~/.local/bin ~/.composer/vendor/bin $path)
 typeset -gU path
 
 # Man path
-MANPATH=`env MANPATH= manpath`
+MANPATH=$(env MANPATH= manpath)
 manpath=(~/.local/man $manpath)
 typeset -gU manpath
 
@@ -49,7 +49,7 @@ export TS_ENV="pwd"
 # Python virtualenvwrapper variables
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Projects
-export VIRTUALENVWRAPPER_PYTHON=`which python3`
+export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # ssh key
@@ -122,8 +122,15 @@ function prompt_parent () {
     esac
 }
 
+function prompt_chroot () {
+    if [[ -z ${debian_chroot:-} && -r /etc/debian_chroot ]] ; then
+        debian_chroot=$(cat /etc/debian_chroot)
+        "${1}_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "$debian_chroot"
+    fi
+}
+
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status root_indicator context dir)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(anime_aid vcs virtualenv background_jobs ssh parent)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(anime_aid vcs virtualenv background_jobs chroot ssh parent)
 POWERLEVEL9K_STATUS_VERBOSE=false
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
 POWERLEVEL9K_ROOT_ICON=$'\u2622'
