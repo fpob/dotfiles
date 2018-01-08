@@ -1,0 +1,5 @@
+#!/bin/sh
+case $1 in
+    4|6) curl -$1 http://ipecho.net/plain ;;
+    *)   curl     http://ipecho.net/plain ;;
+esac
