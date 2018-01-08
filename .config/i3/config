@@ -28,7 +28,7 @@ bindsym $mod+space exec rofi -show combi
 bindsym $mod+slash exec rofi -show window
 
 # Start appfinder
-bindsym $mod+F2 exec xfce4-appfinder
+bindsym $mod+F2 exec xfce4-appfinder --disable-server
 
 # Screenshot
 bindsym Print exec xfce4-screenshooter
