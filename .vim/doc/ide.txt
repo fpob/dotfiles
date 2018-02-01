@@ -354,6 +354,7 @@ g<C-g>  Zobrazí sloupec kurzoru, řádek, ...
 ga      Zobrazí ASCII hodnotu znaku pod kurzorem
 g8      Zobrazí UTF-8 hodnotu znaku pod kurzorem
 gf      Otevře soubor jehož název je pod kruzorem
+gx      Otevře soubor/URL/... v GUI programu (xdg-open?)
 guu     Převede celý řádek na malé písmena
 gUU     Převede celý řádek na velké písmena
 <C-d>   Při doplňovaní zobrazí celý seznam možností
