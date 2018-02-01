@@ -84,12 +84,13 @@ fi
 DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
+DISABLE_AUTO_UPDATE="true"
 
 # Pluginy
 plugins=(sudo zsh_reload git git-flow autojump taskwarrior redis-cli
-         python pip virtualenvwrapper django gulp bower composer)
+         python pip django gulp bower composer)
 # custom
-plugins+=(cheat ranger zsh-syntax-highlighting)
+plugins+=(cheat ranger zsh-syntax-highlighting virtualenvwrapper-lazy)
 
 # Pridani podpory precmd a preexec, bez toho nefunguje theme powerlevel9k
 autoload -U add-zsh-hook
@@ -186,6 +187,8 @@ alias cll='cut -c -$COLUMNS'
 alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto -nT'
 
 alias tsv="column -t -s$'\t'"
+alias json="python -mjson.tool"
+
 alias mdv='mdv -t 884.0134'
 alias gdb='gdb -q'
 alias bc='bc -ql'
