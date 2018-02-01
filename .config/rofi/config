@@ -7,8 +7,8 @@ rofi.color-normal: #393939, #ffffff, #393939, #f0544c, #ffffff
 rofi.color-active: #393939, #f0544c, #393939, #f0544c, #222222
 rofi.color-urgent: #393939, #ffa726, #393939, #ffa726, #222222
 
-! Show on the currently focused monitor
-rofi.monitor: -1
+! Show on the monitor with the focused window
+rofi.monitor: -4
 
 rofi.combi-modi: drun,ssh,tmux:~/.config/rofi/tmux-sessions.sh
 rofi.modi: combi,window,drun,run,ssh,tmux:~/.config/rofi/tmux-sessions.sh

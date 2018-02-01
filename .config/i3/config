@@ -163,6 +163,7 @@ mode "$mode_system" {
 }
 
 bindsym $mod+Shift+x mode "$mode_system"
+bindsym $mod+x exec --no-startup-id $cmd_lock
 
 # Resize mode --------------------------------------------------------------{{{1
 

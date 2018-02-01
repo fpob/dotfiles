@@ -3,7 +3,7 @@
 # http://stackoverflow.com/questions/4545661/unicodedecodeerror-when-redirecting-to-file
 export PYTHONIOENCODING=UTF-8
 
-status=`mpris-remote playstatus | awk '/^playing/{print $2}'`
+status=`mpris-remote playstatus 2>/dev/null | awk '/^playing/{print $2}'`
 
 if [[ $status == playing ]] ; then
     awk_script='{
