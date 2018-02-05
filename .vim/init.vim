@@ -14,12 +14,14 @@ set viewoptions-=options
 " Odsazování
 set backspace=indent,eol,start  " backspace maže vše
 set expandtab                   " tab na mezery
+set copyindent
+set preserveindent
 set shiftwidth=4                " odsování
 set tabstop=4
 set smarttab                    " inteligetní tab
 set smartindent                 " inteligetní odsazení
 set autoindent
-set cinoptions=(4
+set formatoptions=tcqlron
 
 " Foldy
 set foldmethod=marker
@@ -71,7 +73,7 @@ if has('mouse')
 endif
 
 " Zalamování řádků
-set colorcolumn=80,100  " Zvýraznění 80. a 100. sloupce
+set colorcolumn=80,120  " Zvýraznění 80. a 120. sloupce
 set wrap
 set breakindent     " Wrap s odsazováním
 set showbreak=↳     " znak na začátku zalomeného řádku

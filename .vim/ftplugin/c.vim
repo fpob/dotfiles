@@ -4,7 +4,6 @@ setlocal softtabstop=4
 setlocal expandtab
 setlocal textwidth=80
 setlocal cindent
-setlocal formatoptions=tcqlron
 setlocal cinoptions=:0,l1,t0,g0,(0
 
 "if &filetype == 'c'
