@@ -1,10 +1,6 @@
 global !p
 def c_to_h(filename):
-	if filename.endswith(".c"):
-		return filename[:-1] + "h"
-	elif filename.endswith(".cc"):
-		return filename[:-2] + "hh"
-	return filename
+	return filename[:-2]
 def once_def(filename):
 	return filename.upper().replace(".", "_")
 endglobal
@@ -22,7 +18,7 @@ snippet inc "include system" b
 endsnippet
 
 snippet Inc "include user" b
-#include "${1:`!p snip.rv = c_to_h(fn)`}"
+#include "${1:`!p snip.rv = c_to_h(fn)`}.h"
 endsnippet
 
 # #ifndef ... #define ... #endif
