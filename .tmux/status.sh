@@ -21,8 +21,6 @@ read load1 load5 load15 _ </proc/loadavg
 # top appears to give incorrect CPU usage on first iteration
 read cpu mem < <(top -b -n2 -d0.1 | awk '/^%Cpu/ { cpu = $2 + $4 } /^KiB Mem/ { mem = $8 / $4 * 100 } END { print cpu, mem }')
 
-printf '\uf0e4 %.0f%% \uf080 %.2f \uf2db %.0f%%' $cpu $load1 $mem
+printf ' %.0f%%  %.2f  %.0f%%' $cpu $load1 $mem
 
-#printf ' \ue0b3 '
-
-[[ -n $SSH_CONNECTION ]] && printf ' \ue0b3 #[bold]%s#[nobold]' 'SSH'
+[[ -n $SSH_CONNECTION ]] && printf '  #[bold]%s#[nobold]' 'SSH'
