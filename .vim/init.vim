@@ -405,7 +405,7 @@ let g:snips_author_email = Chomp(system('git config user.email 2>/dev/null'))
 
 let g:UltiSnipsSnippetDirectories = ["ultisnips"]
 
-" deliminate ---------------------------------------------------------------{{{1
+" delimitmate --------------------------------------------------------------{{{1
 
 let delimitMate_expand_cr = 1
 
@@ -483,6 +483,3 @@ let g:extra_whitespace_ignored_filetypes = ['mail']
 
 let g:vimtex_quickfix_mode = 0
 
-" whiteboard ---------------------------------------------------------------{{{1
-
-let g:whiteboard_fallback_interpreter = 'python'

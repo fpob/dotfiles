@@ -58,30 +58,15 @@
 [submodule ".vim/bundle/gitgutter"]
 	path = .vim/bundle/gitgutter
 	url = https://github.com/airblade/vim-gitgutter
-[submodule ".vim/bundle/html5"]
-	path = .vim/bundle/html5
-	url = https://github.com/othree/html5.vim
-[submodule ".vim/bundle/javascript"]
-	path = .vim/bundle/javascript
-	url = https://github.com/pangloss/vim-javascript
 [submodule ".vim/bundle/jinja"]
 	path = .vim/bundle/jinja
 	url = https://github.com/lepture/vim-jinja.git
-[submodule ".vim/bundle/less"]
-	path = .vim/bundle/less
-	url = https://github.com/groenewege/vim-less.git
-[submodule ".vim/bundle/markdown"]
-	path = .vim/bundle/markdown
-	url = https://github.com/hallison/vim-markdown.git
 [submodule ".vim/bundle/python-pep8-indent"]
 	path = .vim/bundle/python-pep8-indent
 	url = https://github.com/hynek/vim-python-pep8-indent.git
 [submodule ".vim/bundle/python-syntax"]
 	path = .vim/bundle/python-syntax
 	url = https://github.com/hdima/python-syntax
-[submodule ".vim/bundle/zsh"]
-	path = .vim/bundle/zsh
-	url = https://github.com/chrisbra/vim-zsh.git
 [submodule ".vim/bundle/ultisnips"]
 	path = .vim/bundle/ultisnips
 	url = https://github.com/sirver/ultisnips
