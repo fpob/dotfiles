@@ -78,4 +78,9 @@ case "$mimetype" in
         ;;
 esac
 
+echo '----- File Type Classification -----' \
+    && file --dereference --brief -- "$path" \
+    && file --dereference --brief --mime -- "$path" \
+    && exit 5
+
 exit 1

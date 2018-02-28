@@ -46,7 +46,7 @@ def flatten(directory, separator, reverse, limit, dry_run):
             path = os.path.relpath(os.path.join(root, file), directory)
 
             if reverse:
-                new_path = replace(path, separator, os.sep, limit)
+                new_path = replace(path, separator, os.sep, limit).lstrip(os.sep)
             else:
                 new_path = replace(path, os.sep, separator, limit)
 
