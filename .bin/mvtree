@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+
+import os
+import shutil
+import click
+
+
+def read_items(source, null=False):
+    """
+    Iterator through items from source file (opened file). If null is true then
+    items are terminated by a null character instead of new line.
+    """
+    delimiter = '\0' if null else '\n'
+    # Strings are immutable so `chars += c` result in unnecessary copies.
+    chars = []
+    while True:
+        c = source.read(1)
+        if c == delimiter:
+            if chars:
+                yield ''.join(chars)
+            chars = []
+        elif c == '':
+            if chars:
+                yield ''.join(chars)
+            return
+        else:
+            chars.append(c)
+
+
+@click.command()
+@click.argument('destination')
+@click.option('-f', '--from-file', type=click.File('r'), default='-',
+              help='Read files from given file instead of stdin')
+@click.option('-0', '--null', is_flag=True,
+              help='Files are terminated by a null character instead of new line.')
+@click.option('-s', '--strip', type=int, default=0,
+              help='Strip N levels from source structure.')
+@click.option('-p', '--preserve', is_flag=True,
+              help='Preserve directories/files (so it works like cpio command).')
+def mvtree(destination, from_file, null, strip, preserve):
+    """
+    Move files from stdin (or file) and preserves the directory tree. Works
+    like `cpio -pd` but primarily moves files, not copies them.
+
+    Example:
+        $ find ~/Projects -name src -print0 | mvtree -0 -s1 SourceCodes
+        Find all 'src' directories in '~/Projects' directory and move them to
+        'SourceCodes' directory while preserving original directory tree.
+    """
+    for item in read_items(from_file, null):
+        if '\0' in item:
+            click.echo('Path contains NULL character. '
+                       'Did you forget the `--null` option?', err=True)
+            raise click.Abort
+        if item.endswith('\n') and not os.path.exists(item):
+            click.echo('Path contains newline but that path not exists. ',
+                       err=True)
+            raise click.Abort
+
+        if strip:
+            dest = os.path.join(destination, *item.split(os.sep)[strip:])
+        else:
+            dest = os.path.join(destination, item)
+
+        if os.path.exists(dest):
+            click.echo('Destination "%s" already exists' % dest, err=True)
+            continue
+
+        dest_dir = os.path.dirname(dest)
+        os.makedirs(dest_dir, exist_ok=True)
+
+        if preserve:
+            shutil.copytree(item, dest)
+        else:
+            shutil.move(item, dest)
+
+
+if __name__ == '__main__':
+    mvtree()
