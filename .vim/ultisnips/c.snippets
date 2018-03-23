@@ -5,7 +5,14 @@ def once_def(filename):
 	return filename.upper().replace(".", "_")
 endglobal
 
-snippet main "main function" b
+snippet main "void main()" b
+void main()
+{
+	$0
+}
+endsnippet
+
+snippet main "int main(int argc, const char **argv)" b
 int main(int argc, const char **argv)
 {
 	$0
@@ -38,7 +45,7 @@ ${VISUAL}$0
 #endif
 endsnippet
 
-snippet #if ""
+snippet #if "" b
 #if ${1:FOO}
 ${VISUAL}$0
 #endif
@@ -59,37 +66,49 @@ ${VISUAL}$0
 #endif /* $1 */
 endsnippet
 
-snippet if "" b
+snippet if
 if (${1:/* condition */}) {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet el "" b
+snippet elif
+else if (${1:/* condition */}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet else
 else {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet do "" b
+snippet do
 do {
 	${VISUAL}$0
 } while (${1:/* condition */});
 endsnippet
 
-snippet wh "" b
+snippet while
 while (${1:/* condition */}) {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet for "" b
-for (${2:i} = 0; $2 < ${1:count}; $2${3:++}) {
+snippet for
+for (${1}; ${2}; ${3}) {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet switch "" b
+snippet fori
+for (int ${1:i} = 0; $1 < ${2:count}; $1++) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet switch
 switch (${1:variable}) {
 	case '${2:value}':
 		${3:// code...}
@@ -101,7 +120,7 @@ switch (${1:variable}) {
 }
 endsnippet
 
-snippet case "" b
+snippet case
 case '${1:value}':
 	${2:// code...}
 	break;
@@ -109,7 +128,7 @@ endsnippet
 
 # Function
 snippet fun "" b
-${1:void} ${2:function_name}(${3})
+${2:void} ${1:function_name}(${3})
 {
 	$0
 }
@@ -117,7 +136,7 @@ endsnippet
 
 # Function Declaration
 snippet fund "" b
-${1:void} ${2:function_name}(${3});
+${2:void} ${1:function_name}(${3});
 endsnippet
 
 # Struct

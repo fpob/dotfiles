@@ -1,0 +1,22 @@
+snippet @cc "click.command" b
+@click.command()$0
+def ${1:cli}():
+	${2:pass}
+
+
+if __name__ == '__main__':
+    # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+    $1()
+endsnippet
+
+snippet @ca "click.argument" b
+@click.argument(${1})$0
+endsnippet
+
+snippet @co "click.option" b
+@click.option(${1})$0
+endsnippet
+
+snippet ce "click.echo"
+click.echo(${1})$0
+endsnippet

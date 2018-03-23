@@ -23,17 +23,17 @@ if ${1:condition}:
 	${VISUAL}$0
 endsnippet
 
-snippet el "Condition else" b
+snippet else "Condition else" b
 else:
 	${VISUAL}$0
 endsnippet
 
-snippet eli "Condition elif" b
+snippet elif "Condition elif" b
 elif ${1:condition}:
 	${VISUAL}$0
 endsnippet
 
-snippet wh "While loop" b
+snippet while "While loop" b
 while ${1:condition}:
 	${VISUAL}$0
 endsnippet
@@ -43,9 +43,58 @@ for ${1:needle} in ${2:haystack}:
 	${VISUAL}$0
 endsnippet
 
-snippet wi "With" b
+snippet with "With" b
 with ${1:with_item}:
 	${VISUAL}$0
+endsnippet
+
+snippet def "Function" b
+def ${1:fname}(${2:`indent('.') ? 'self' : ''`}):
+	$0
+endsnippet
+
+snippet la "Lambda" b
+lambda ${2:vars}: $0
+endsnippet
+
+snippet try "Try/Except" b
+try:
+	${1:pass}
+except ${2:Exception} as ${3:e}:
+	${4:raise $3}
+endsnippet
+
+snippet try "Try/Except/Else" b
+try:
+	${1:pass}
+except ${2:Exception} as ${3:e}:
+	${4:raise $3}
+else:
+	${5:pass}
+endsnippet
+
+snippet try "Try/Except/Finally" b
+try:
+	${1:pass}
+except ${2:Exception} as ${3:e}:
+	${4:raise $3}
+finally:
+	${5:pass}
+endsnippet
+
+snippet try "Try/Except/Else/Finally" b
+try:
+	${1:pass}
+except ${2:Exception} as ${3:e}:
+	${4:raise $3}
+else:
+	${5:pass}
+finally:
+	${6:pass}
+endsnippet
+
+snippet . "self" i
+self.$0
 endsnippet
 
 snippet class "Class" b
@@ -56,17 +105,6 @@ class ${1:ClassName}:
 		$0
 endsnippet
 
-snippet def "Function" b
-def ${1:fname}(${2:`indent('.') ? 'self' : ''`}):
-	$0
-endsnippet
-
-snippet deff "Function" b
-def ${1:fname}(${2:`indent('.') ? 'self' : ''`}):
-	"""${3:docstring for $1}"""
-	$0
-endsnippet
-
 snippet defs "Class function" b
 def ${1:mname}(self, ${2:arg}):
 	$0
@@ -74,59 +112,21 @@ endsnippet
 
 snippet prop "Property" b
 @property
-def ${1:foo}():
-	return self._$1
+def ${1:foo}(self):
+	${2:return self._$1}$0
 endsnippet
 
-snippet ld "Lambda" b
-${1:var} = lambda ${2:vars}: $0
+snippet props "Property setter" b
+@$1.setter
+def ${1:foo}(self, value):
+	${2:self._$1 = value}$0
 endsnippet
 
-snippet . "self" i
-self.$0
-endsnippet
-
-snippet try "Try/Except" b
-try:
-	${1:pass}
-except ${2:Exception}, ${3:e}:
-	${4:raise $3}
-endsnippet
-
-snippet try "Try/Except/Else" b
-try:
-	${1:pass}
-except ${2:Exception}, ${3:e}:
-	${4:raise $3}
-else:
-	${5:pass}
-endsnippet
-
-snippet try "Try/Except/Finally" b
-try:
-	${1:pass}
-except ${2:Exception}, ${3:e}:
-	${4:raise $3}
-finally:
-	${5:pass}
-endsnippet
-
-snippet try "Try/Except/Else/Finally" b
-try:
-	${1:pass}
-except ${2:Exception}, ${3:e}:
-	${4:raise $3}
-else:
-	${5:pass}
-finally:
-	${6:pass}
+snippet _ "Magic" i
+__${1:init}__$0
 endsnippet
 
 snippet ifm "If main" b
 if __name__ == '__main__':
 	${VISUAL}$0
-endsnippet
-
-snippet _ "Magic" i
-__${1:init}__$0
 endsnippet
