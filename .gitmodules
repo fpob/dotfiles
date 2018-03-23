@@ -97,3 +97,6 @@
 [submodule ".vim/bundle/matchit"]
 	path = .vim/bundle/matchit
 	url = https://github.com/vim-scripts/matchit.zip
+[submodule ".vim/bundle/templates"]
+	path = .vim/bundle/templates
+	url = https://github.com/fpob/templates.vim.git
