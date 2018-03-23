@@ -228,7 +228,8 @@ nnoremap <S-F4> :qa<Cr>
 nnoremap <F5> :nohlsearch<Cr>
 nnoremap <F6> @q
 nnoremap <F7> :TagbarToggle<Cr>
-nnoremap <F8> :NERDTreeToggle<Cr>
+" Custom NERDTree command
+nnoremap <F8> :NERDTreeFocusOrClose<Cr>
 
 nnoremap <F9> :make<Cr>
 
@@ -279,6 +280,7 @@ else
     vnoremap <Leader>t :terminal<Cr>
     vnoremap <Leader>T :terminal<Space>
 endif
+
 
 " easymotion ---------------------------------------------------------------{{{1
 
@@ -374,6 +376,15 @@ let NERDTreeMinimalUI = 1
 
 " Pri mazani souboru automaticky zrusi stary buffer
 let NERDTreeAutoDeleteBuffer = 1
+
+function! NERDTreeFocusOrClose()
+    if exists('t:NERDTreeBufName') && bufname('%') ==? t:NERDTreeBufName
+        execute 'NERDTreeClose'
+    else
+        execute 'NERDTreeFocus'
+    endif
+endfun
+command! NERDTreeFocusOrClose call NERDTreeFocusOrClose()
 
 " CtrlP --------------------------------------------------------------------{{{1
 
