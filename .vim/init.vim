@@ -168,6 +168,9 @@ augroup vimrc
     autocmd VimEnter * let @q=''
     " Vymazání posledniho hledani po spuštění
     autocmd VimEnter * let @/=''
+
+    " Always start on first line in gitcommit
+    autocmd FileType gitcommit call setpos('.', [0, 1, 1, 0])
 augroup END
 
 " Mappings -----------------------------------------------------------------{{{1
