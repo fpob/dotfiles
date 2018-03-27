@@ -177,8 +177,8 @@ alias t='nocorrect task'
 alias tmux='tmux -2'
 
 # Copy & Paste Clipboard
-alias ci='xclip -i -sel c'
-alias co='xclip -o -sel c'
+alias ci='xsel -ib'
+alias co='xsel -ob'
 
 # Cut long lines
 alias cll='cut -c -$COLUMNS'

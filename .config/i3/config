@@ -147,8 +147,7 @@ bindsym $mod+Shift+r restart
 
 # Mode System --------------------------------------------------------------{{{1
 
-#set $cmd_lock ~/.config/i3/lock.sh
-set $cmd_lock mate-screensaver-command --activate
+set $cmd_lock mate-screensaver-command --lock
 set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (h) shutdown
 
 mode "$mode_system" {
