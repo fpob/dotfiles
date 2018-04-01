@@ -3,7 +3,7 @@ import unicodedata
 import re
 LABEL_CRE = re.compile(r'[^a-zA-Z0-9]+')
 def label(s):
-	return LABEL_CRE.sub('-', unicodedata.normalize('NFKD', s).encode('ASCII', 'ignore').lower()).strip('-')
+	return LABEL_CRE.sub('-', unicodedata.normalize('NFKD', s).encode('ASCII', 'ignore').decode('ASCII').lower()).strip('-')
 endglobal
 
 
