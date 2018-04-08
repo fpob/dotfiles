@@ -1,5 +1,5 @@
 configuration {
     modi: "combi,window,drun,run,ssh,tmux:~/.config/rofi/tmux-sessions.sh";
     combi-modi: "drun,ssh,tmux:~/.config/rofi/tmux-sessions.sh";
-    theme: "numix";
+    theme: "abrus";
 }
