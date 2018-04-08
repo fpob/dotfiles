@@ -1,0 +1,9 @@
+configuration  {
+    font: "Hack 9";
+    color-normal: "#393939, #ffffff, #393939, #f0544c, #ffffff";
+    color-urgent: "#393939, #ffa726, #393939, #ffa726, #222222";
+    color-active: "#393939, #f0544c, #393939, #f0544c, #222222";
+    color-window: "#393939, #444444, #f0544c";
+    show-icons: true;
+    drun-icon-theme: "Numix";
+}
