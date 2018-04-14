@@ -73,7 +73,7 @@ if has('mouse')
 endif
 
 " Zalamování řádků
-set colorcolumn=80,120  " Zvýraznění 80. a 120. sloupce
+set colorcolumn=80,100  " Zvýraznění 80. a 100. sloupce
 set wrap
 set breakindent     " Wrap s odsazováním
 set showbreak=↳     " znak na začátku zalomeného řádku
