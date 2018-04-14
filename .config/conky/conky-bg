@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+export LC_TIME=en_US.utf-8
+
+# Get the number of screens
+screens=$(xrandr | grep -cw connected);
+
+if [[ $screens -eq 1 ]] ; then
+    # LVDS 1366x768+0+0
+    conky -c "$0.conf" -x -20 -y -120
+else
+    # HDMI 1920x1080+1366+0
+    conky -c "$0.conf" -x 650 -y -120
+    # LVDS 1366x768+0+312
+    conky -c "$0.conf" -x 2300 -y -270
+fi

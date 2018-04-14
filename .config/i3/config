@@ -209,7 +209,7 @@ bar {
         # Abrus
         background #1E1E1E
         statusline #EEEEEE
-        separator  #444444
+        separator  #1E1E1E
 
         # <border> <background> <text>
         # Numix
