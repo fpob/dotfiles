@@ -1,5 +1,6 @@
 configuration  {
     font: "Hack 9";
+    width: 600;
     show-icons: true;
     drun-icon-theme: "Arc";
 }
