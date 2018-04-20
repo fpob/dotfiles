@@ -1,4 +1,5 @@
-\documentclass[11pt,titlepage]{article}
+\documentclass[11pt,titlepage]{article} % {{{
+
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
 
@@ -8,14 +9,19 @@
 \usepackage{graphicx}
 %\usepackage{multicol}
 \usepackage[all]{hypcap} % správné odkazování na obrázky pokud je caption pod
+\usepackage{caption}
 
+\graphicspath{{images/}}
+\captionsetup{justification=centering}
+
+% }}}
 
 \title{}
 \author{}
 \date{\today}
 
-
 \begin{document}
+
 \begin{titlepage} % {{{
   \makeatletter
   \begin{center}
@@ -38,8 +44,6 @@
 \tableofcontents
 \newpage
 
-
 % ...
-
 
 \end{document}

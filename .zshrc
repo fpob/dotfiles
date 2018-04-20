@@ -167,9 +167,6 @@ alias py='python3'
 alias pyc='py3compile'
 alias pydoc='pydoc3'
 
-# Task Spooler
-alias ts='tsp'
-
 # TaskWarrior
 alias t='nocorrect task'
 
@@ -189,7 +186,6 @@ alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto
 alias tsv="column -t -s$'\t'"
 alias json="python -mjson.tool"
 
-alias mdv='mdv -t 884.0134'
 alias gdb='gdb -q'
 alias bc='bc -ql'
 alias octave='octave -qW'
