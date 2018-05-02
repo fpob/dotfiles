@@ -1,5 +1,6 @@
-set editor = `echo \$EDITOR`
+# General ------------------------------------------------------------------{{{1
 
+set editor = `echo \$EDITOR`
 set imap_keepalive = 300                # Keep connection by polling
 set mail_check = 120                    # How often to check for new mail
 set timeout = 300
@@ -8,24 +9,28 @@ set use_from = yes
 set send_charset = "utf-8"
 set header_cache = ~/.cache/mutt        # Store message headers locally
 set message_cachedir = ~/.cache/mutt    # Store messages locally
+set imap_check_subscribed = yes         # Fetch all subscribed folders
+
+# Accounts -----------------------------------------------------------------{{{1
 
 # Default account
-source ~/.mutt/account.local
+source ~/.mutt/account.fpob-cz
 
 # Local account
 folder-hook "local" "source ~/.mutt/account.local"
 macro index <f4> '<enter-command>source ~/.mutt/account.local<enter><change-folder>!<enter>'
 
 # Accounts
-folder-hook "eva-00" "source ~/.mutt/account.eva-00"
+folder-hook "fpob-cz" "source ~/.mutt/account.fpob-cz"
 folder-hook "gmail" "source ~/.mutt/account.gmail"
 folder-hook "vut-fit" "source ~/.mutt/account.vut-fit"
 macro index <f5> '<enter-command>source ~/.mutt/account.eva-00<enter><change-folder>!<enter>'
 macro index <f6> '<enter-command>source ~/.mutt/account.gmail<enter><change-folder>!<enter>'
 macro index <f7> '<enter-command>source ~/.mutt/account.vut-fit<enter><change-folder>!<enter>'
 
-bind pager,attach,index g noop
+# Mappings and shortcuts ---------------------------------------------------{{{1
 
+bind pager,attach,index g noop
 bind pager j next-line
 bind pager k previous-line
 bind attach,index,pager \CD next-page
@@ -35,32 +40,42 @@ bind pager G bottom
 bind attach,index gg first-entry
 bind attach,index G last-entry
 
-bind index,pager B sidebar-toggle-visible
-bind index,pager \CJ sidebar-next
-bind index,pager \CK sidebar-prev
-bind index,pager \CL sidebar-open
-
+# Previous folder
 macro index,pager gl '<change-folder>-<enter>'
+# Inbox folder
 macro index,pager gi '<change-folder>!<enter>'
+# Sent folder
 macro index,pager gs '<change-folder><<enter>'
+
+# Theme, formatting, ... ---------------------------------------------------{{{1
 
 # Show in threads
 set sort = threads
 set sort_aux = last-date-received
 set hide_thread_subject=no
 
+# Formats...
 set date_format="%y-%m-%d %H:%M"
 set index_format="%2C | %Z [%d] %-30.30F (%-4.4c) %s"
-
-set sidebar_format="%B%* %N/%S"
-set sidebar_short_path          # Shorten mailbox names
-set sidebar_delim_chars="/"     # Delete everything up to the last / character
-set sidebar_folder_indent       # Indent folders whose names we've shortened
-set sidebar_indent_string="  "  # Indent with two spaces
 
 # Wrap long lines
 set wrap = 120
 set smart_wrap = yes
+
+# Sidebar ------------------------------------------------------------------{{{1
+
+# Sidebar config
+set sidebar_visible = yes       # Show sidebar
+set sidebar_format="%B%* %N/%S"
+set sidebar_delim_chars="/"     # Delete everything up to the last / character
+
+# Sidebar mappings
+bind index,pager B sidebar-toggle-visible
+bind index,pager J sidebar-next
+bind index,pager K sidebar-prev
+bind index,pager L sidebar-open
+
+# MIME ---------------------------------------------------------------------{{{1
 
 auto_view text/html
 alternative_order text/plain text/html text/enriched
