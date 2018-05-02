@@ -23,8 +23,5 @@ setxkbmap -option caps:escape &
 # Wallpaper
 test -x ~/.fehbg && ~/.fehbg &
 
-# Conky on background
-test -x ~/.config/conky/conky-bg && ~/.config/conky/conky-bg &
-
 # Applications
 test -x ~/.autostart && ~/.autostart &
