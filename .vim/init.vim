@@ -414,8 +414,8 @@ function! Chomp(string)
     return substitute(a:string, '\n\+$', '', '')
 endfunction
 
-let g:snips_author = Chomp(system('git config user.name 2>/dev/null'))
-let g:snips_author_email = Chomp(system('git config user.email 2>/dev/null'))
+let g:snips_author = Chomp(system('git config --includes --get user.name 2>/dev/null'))
+let g:snips_author_email = Chomp(system('git config --includes --get user.email 2>/dev/null'))
 
 let g:UltiSnipsSnippetDirectories = ["ultisnips"]
 

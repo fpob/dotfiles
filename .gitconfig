@@ -1,5 +1,5 @@
-[user]
-    name = Filip Pobořil
+[include]
+    path = ~/.gitconfig.local
 
 [core]
     editor = vim
