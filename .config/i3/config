@@ -17,7 +17,7 @@ workspace 1 output HDMI1
 workspace 2 output LVDS1
 
 # Start terminal
-bindsym $mod+t exec x-terminal-emulator
+bindsym $mod+t exec mate-terminal
 # Start FileManager
 bindsym $mod+y exec caja
 # Start note taker
@@ -26,9 +26,6 @@ bindsym $mod+u exec cherrytree
 # Start dmenu
 bindsym $mod+space exec rofi -show combi
 bindsym $mod+slash exec rofi -show window
-
-# Start appfinder
-bindsym $mod+F2 exec xfce4-appfinder --disable-server
 
 # Screenshot
 bindsym Print exec xfce4-screenshooter

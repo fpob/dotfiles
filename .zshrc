@@ -88,7 +88,7 @@ DISABLE_AUTO_UPDATE="true"
 
 # Pluginy
 plugins=(sudo zsh_reload git git-flow autojump taskwarrior redis-cli
-         python pip django gulp bower composer)
+         python pip django)
 # custom
 plugins+=(cheat ranger zsh-syntax-highlighting virtualenvwrapper-lazy)
 
