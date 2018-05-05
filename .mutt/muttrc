@@ -24,7 +24,7 @@ macro index <f4> '<enter-command>source ~/.mutt/account.local<enter><change-fold
 folder-hook "fpob-cz" "source ~/.mutt/account.fpob-cz"
 folder-hook "gmail" "source ~/.mutt/account.gmail"
 folder-hook "vut-fit" "source ~/.mutt/account.vut-fit"
-macro index <f5> '<enter-command>source ~/.mutt/account.eva-00<enter><change-folder>!<enter>'
+macro index <f5> '<enter-command>source ~/.mutt/account.fpob-cz<enter><change-folder>!<enter>'
 macro index <f6> '<enter-command>source ~/.mutt/account.gmail<enter><change-folder>!<enter>'
 macro index <f7> '<enter-command>source ~/.mutt/account.vut-fit<enter><change-folder>!<enter>'
 
@@ -61,6 +61,17 @@ set index_format="%2C | %Z [%d] %-30.30F (%-4.4c) %s"
 # Wrap long lines
 set wrap = 120
 set smart_wrap = yes
+
+# White text on default ("transparent") background
+color normal white default
+color hdrdefault cyan default
+color error brightred default
+#color message cyan default
+color markers red default
+color attachment yellow default
+#color indicator brightblack     yellow
+color tree yellow default
+color quoted green default
 
 # Sidebar ------------------------------------------------------------------{{{1
 
