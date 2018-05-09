@@ -138,7 +138,7 @@ set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (h) shut
 
 mode "$mode_system" {
     bindsym l exec --no-startup-id $cmd_lock, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym e exec --no-startup-id mate-session-save --logout, mode "default"
     bindsym s exec --no-startup-id $cmd_lock && systemctl suspend, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym h exec --no-startup-id systemctl poweroff -i, mode "default"
