@@ -90,7 +90,7 @@ DISABLE_AUTO_UPDATE="true"
 plugins=(sudo zsh_reload git git-flow autojump taskwarrior redis-cli
          python pip django)
 # custom
-plugins+=(cheat ranger zsh-syntax-highlighting virtualenvwrapper-lazy)
+plugins+=(cheat ranger zsh-syntax-highlighting virtualenvwrapper)
 
 # Pridani podpory precmd a preexec, bez toho nefunguje theme powerlevel9k
 autoload -U add-zsh-hook
