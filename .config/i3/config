@@ -120,7 +120,7 @@ bindsym $mod+p workspace prev
 bindsym $mod+Shift+bracketright move workspace to output right
 bindsym $mod+Shift+bracketleft move workspace to output left
 
-# i3 bindings --------------------------------------------------------------{{{1
+# System and i3 bindings ---------------------------------------------------{{{1
 
 # Take command and send it to i3
 bindsym $mod+Shift+semicolon exec i3-input
@@ -131,24 +131,12 @@ bindsym $mod+Shift+c reload
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
-# Mode System --------------------------------------------------------------{{{1
+# Shutdown and logout dialog
+bindsym $mod+Shift+q exec --no-startup-id mate-session-save --shutdown-dialog
+bindsym $mod+Shift+x exec --no-startup-id mate-session-save --logout-dialog
 
-set $cmd_lock mate-screensaver-command --lock
-set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (h) shutdown
-
-mode "$mode_system" {
-    bindsym l exec --no-startup-id $cmd_lock, mode "default"
-    bindsym e exec --no-startup-id mate-session-save --logout, mode "default"
-    bindsym s exec --no-startup-id $cmd_lock && systemctl suspend, mode "default"
-    bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym h exec --no-startup-id systemctl poweroff -i, mode "default"
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-bindsym $mod+Shift+x mode "$mode_system"
-bindsym $mod+x exec --no-startup-id $cmd_lock
+# Lock screen
+bindsym $mod+x exec --no-startup-id mate-screensaver-command --lock
 
 # Resize mode --------------------------------------------------------------{{{1
 
