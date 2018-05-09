@@ -1,0 +1,217 @@
+# General settings/bindings ------------------------------------------------{{{1
+
+# https://github.com/i3/i3/issues/2523
+# Numlock is the Mod2 key. When it’s enabled, Mod2 is pressed.
+
+# Mod1 = Alt, Mod4 = Win
+set $mod Mod4
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Disable wariping (move mouse cursor to newly focused container)
+mouse_warping none
+
+# Start terminal
+bindsym $mod+t exec mate-terminal
+# Start FileManager, `caja` nor `caja --no-desktop` not working
+bindsym $mod+y exec --no-startup-id xdg-open ~/
+# Start note taker
+bindsym $mod+u exec cherrytree
+
+# Start dmenu
+bindsym $mod+space exec rofi -show combi
+bindsym $mod+slash exec rofi -show window
+
+# Screenshot
+bindsym Print exec xfce4-screenshooter
+bindsym Ctrl+Print exec xfce4-screenshooter --window
+
+# Window/layout bindings ---------------------------------------------------{{{1
+
+# Kill focused window
+bindsym $mod+q kill
+bindsym --release button2 kill
+bindsym --release Mod2+button2 kill
+
+# Change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Split in horizontal/vertical orientation
+bindsym $mod+v split v
+bindsym $mod+b split h
+
+# Enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# Toggle tiling/floating
+bindsym $mod+Shift+space floating toggle
+bindsym button3 floating toggle
+bindsym Mod2+button3 floating toggle
+
+# Change focus between tiling/floating windows
+bindsym $mod+o focus mode_toggle
+
+# Focus the parent/child container
+bindsym $mod+a focus parent
+bindsym $mod+d focus child
+
+# Mark/Goto
+bindsym $mod+m exec i3-input -F 'mark --toggle "%s"' -l 1 -P 'Mark: '
+bindsym $mod+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+
+# Workspace bindings -------------------------------------------------------{{{1
+
+# Switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# Switch to next/prev workspace
+bindsym $mod+n workspace next
+bindsym $mod+p workspace prev
+
+# Move workspace to different monitor
+bindsym $mod+Shift+bracketright move workspace to output right
+bindsym $mod+Shift+bracketleft move workspace to output left
+
+# i3 bindings --------------------------------------------------------------{{{1
+
+# Take command and send it to i3
+bindsym $mod+Shift+semicolon exec i3-input
+
+# Reload the configuration file
+bindsym $mod+Shift+c reload
+
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# Mode System --------------------------------------------------------------{{{1
+
+set $cmd_lock mate-screensaver-command --lock
+
+bindsym $mod+x exec --no-startup-id $cmd_lock
+
+# Resize mode --------------------------------------------------------------{{{1
+
+# Resize window (you can also use the mouse for that)
+mode "resize" {
+    bindsym h resize shrink width 5 px or 5 ppt
+    bindsym j resize shrink height 5 px or 5 ppt
+    bindsym k resize grow height 5 px or 5 ppt
+    bindsym l resize grow width 5 px or 5 ppt
+
+    bindsym Left resize shrink width 5 px or 5 ppt
+    bindsym Down resize shrink height 5 px or 5 ppt
+    bindsym Up resize grow height 5 px or 5 ppt
+    bindsym Right resize grow width 5 px or 5 ppt
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Theme --------------------------------------------------------------------{{{1
+
+# Font for window titles
+font pango:Noto Sans 10
+
+# <border> <background> <text> <indicator> <child_border>
+# Numix
+#client.focused          #333333 #F0544C #FFFFFF #F0544C #333333
+#client.unfocused        #333333 #444444 #AAAAAA
+#client.focused_inactive #333333 #444444 #AAAAAA
+#client.urgent           #F0544C #444444 #F0544C
+# Abrus
+client.focused          #1E1E1E #B82525 #FFFFFF #B82525 #1E1E1E
+client.unfocused        #1E1E1E #1E1E1E #AAAAAA
+client.focused_inactive #181E1E #1E1E1E #AAAAAA
+client.urgent           #C72E2E #1E1E1E #C72E2E
+
+# Bar ----------------------------------------------------------------------{{{1
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+    position bottom
+    font pango:Noto Sans,FontAwesome 10
+    tray_output primary
+
+    #status_command ~/.config/conky/conky-i3bar
+    status_command i3status -c ~/.config/i3-mate/i3status.conf
+    separator_symbol " "
+
+    colors {
+        # Numix
+        #background #333333
+        #statusline #EEEEEE
+        #separator  #555555
+        # Abrus
+        background #0E0F12
+        statusline #EEEEEE
+        separator  #0E0F12
+
+        # <border> <background> <text>
+        # Numix
+        #focused_workspace  #F0544C #F0544C #FFFFFF
+        #active_workspace   #F0544C #F0544C #FFFFFF
+        #inactive_workspace #333333 #333333 #EEEEEE
+        #urgent_workspace   #F0544C #333333 #F0544C
+        # Abrus
+        focused_workspace  #B82525 #B82525 #FFFFFF
+        active_workspace   #B82525 #B82525 #FFFFFF
+        inactive_workspace #0E0F12 #0E0F12 #EEEEEE
+        urgent_workspace   #B82525 #0E0F12 #B82525
+    }
+}
+
+# Window settings ----------------------------------------------------------{{{1
+
+for_window [class="(?i)tilda"] floating enable
+for_window [class="(?i)xfce4-appfinder"] floating enable
+
+for_window [class="(?i)firefox" tiling] border pixel 2
+
+for_window [instance="floating" class="mpv"] floating enable, sticky enable, border pixel 2
