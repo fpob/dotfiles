@@ -12,10 +12,6 @@ floating_modifier $mod
 # Disable wariping (move mouse cursor to newly focused container)
 mouse_warping none
 
-# put workspace 1 on external display
-workspace 1 output HDMI1
-workspace 2 output LVDS1
-
 # Start terminal
 bindsym $mod+t exec mate-terminal
 # Start FileManager
