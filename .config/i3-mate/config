@@ -130,7 +130,20 @@ bindsym $mod+Shift+r restart
 # Mode System --------------------------------------------------------------{{{1
 
 set $cmd_lock mate-screensaver-command --lock
+set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (h) shutdown
 
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $cmd_lock, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $cmd_lock && systemctl suspend, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym h exec --no-startup-id systemctl poweroff -i, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+x mode "$mode_system"
 bindsym $mod+x exec --no-startup-id $cmd_lock
 
 # Resize mode --------------------------------------------------------------{{{1
