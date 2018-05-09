@@ -176,12 +176,6 @@ bindsym $mod+r mode "resize"
 font pango:Noto Sans 10
 
 # <border> <background> <text> <indicator> <child_border>
-# Numix
-#client.focused          #333333 #F0544C #FFFFFF #F0544C #333333
-#client.unfocused        #333333 #444444 #AAAAAA
-#client.focused_inactive #333333 #444444 #AAAAAA
-#client.urgent           #F0544C #444444 #F0544C
-# Abrus
 client.focused          #1E1E1E #B82525 #FFFFFF #B82525 #1E1E1E
 client.unfocused        #1E1E1E #1E1E1E #AAAAAA
 client.focused_inactive #1E1E1E #1E1E1E #AAAAAA
@@ -196,29 +190,19 @@ bar {
     font pango:Noto Sans,FontAwesome 10
     tray_output primary
 
-    status_command ~/.config/conky/conky-i3bar
+    status_command ~/.config/i3/status.sh
+    separator_symbol " "
 
     colors {
-        # Numix
-        #background #333333
-        #statusline #EEEEEE
-        #separator  #555555
-        # Abrus
-        background #1E1E1E
+        background #0E0F12
         statusline #EEEEEE
         separator  #1E1E1E
 
         # <border> <background> <text>
-        # Numix
-        #focused_workspace  #F0544C #F0544C #FFFFFF
-        #active_workspace   #F0544C #F0544C #FFFFFF
-        #inactive_workspace #333333 #333333 #EEEEEE
-        #urgent_workspace   #F0544C #333333 #F0544C
-        # Abrus
         focused_workspace  #B82525 #B82525 #FFFFFF
         active_workspace   #B82525 #B82525 #FFFFFF
-        inactive_workspace #1E1E1E #1E1E1E #EEEEEE
-        urgent_workspace   #B82525 #1E1E1E #B82525
+        inactive_workspace #0E0F12 #0E0F12 #EEEEEE
+        urgent_workspace   #B82525 #0E0F12 #B82525
     }
 }
 
@@ -231,6 +215,3 @@ for_window [class="(?i)firefox" tiling] border pixel 2
 
 for_window [instance="floating" class="mpv"] floating enable, sticky enable, border pixel 2
 
-# Autostart appliactions ---------------------------------------------------{{{1
-
-exec --no-startup-id ~/.config/i3/autostart
