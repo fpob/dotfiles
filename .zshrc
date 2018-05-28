@@ -88,7 +88,7 @@ DISABLE_AUTO_UPDATE="true"
 
 # Pluginy
 plugins=(sudo zsh_reload git git-flow autojump taskwarrior redis-cli
-         python pip django)
+         python pip django docker docker-compose autojump)
 # custom
 plugins+=(cheat ranger zsh-syntax-highlighting virtualenvwrapper)
 
