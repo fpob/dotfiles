@@ -27,6 +27,10 @@
     tool = vimdiff
     guitool = gvimdiff
 
+[merge]
+    tool = vimdiff
+    guitool = gvimdiff
+
 [alias]
     s = status
     a = add
@@ -80,3 +84,6 @@
     fhf = flow hotfix finish --fetch
     frs = flow release start
     frf = flow release finish --fetch
+
+    dt = difftool --gui
+    mt = mergetool --tool=gvimdiff
