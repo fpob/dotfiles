@@ -7,4 +7,4 @@ tmux ls &>/dev/null || exit
 #find "$HOME/.tmux/environments" -type f -mtime +6 -delete
 
 # Keep only last 10 environments
-find "$HOME/.tmux/environments" -type f | sort -rn | tail -n +11 | xargs rm -rf
+find "$HOME/.tmux/environments" -type f | sort -r | tail -n +11 | xargs rm -rf
