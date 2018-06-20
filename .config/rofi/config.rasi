@@ -3,4 +3,5 @@ configuration {
     combi-modi: "drun,ssh,tmux:~/.config/rofi/tmux-sessions.sh";
     theme: "abrus";
     monitor: "-1";
+    terminal: "mate-terminal.wrapper";
 }
