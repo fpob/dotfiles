@@ -226,3 +226,10 @@ if which direnv &>/dev/null ; then
 
 fi
 
+# Functions-----------------------------------------------------------------{{{1
+
+formiko-vim () {
+    # detach command
+    (command formiko-vim "$1" &>/dev/null &)
+}
+
