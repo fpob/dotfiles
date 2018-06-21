@@ -1,6 +1,7 @@
 " Settings -----------------------------------------------------------------{{{1
 
 execute pathogen#infect()
+execute pathogen#helptags()
 set nocompatible
 
 " Historie, zálohy
@@ -454,32 +455,32 @@ let g:ycm_min_num_of_chars_for_completion = 2
 " Python interpreter pro Jedi
 "let g:ycm_python_binary_path = '/usr/bin/python3'
 " Use python from virtualenv
-let g:ycm_python_binary_path = 'python'
+let g:ycm_python_binary_path = 'python3'
 
 " Zavrit okno s nahledem tagu
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
-
-" phpcomplete
-let g:phpcomplete_parse_docblock_comments = 1
 
 " gutentags ----------------------------------------------------------------{{{1
 
 let g:gutentags_project_root = ['tags']
 let g:gutentags_add_default_project_roots = 0
 
-let g:gutentags_ctags_exclude = ['vendor', 'temp', 'log', 'tests', 'doc', 'node_modules', 'bower_components']
-let g:gutentags_ctags_executable = 'ctags'
-let g:gutentags_ctags_executable_php = 'php-ctags'
-
 " python -------------------------------------------------------------------{{{1
 
-let python_highlight_builtins = 1
-let python_highlight_builtin_funcs = 1
-let python_highlight_exceptions = 1
-let python_highlight_string_formatting = 1
-let python_highlight_string_format = 1
-let python_highlight_file_headers_as_comments = 1
+let g:pymode_python = 'python3'
+
+let g:pymode_lint_checkers = ['pyflakes', 'flake8']
+let g:pymode_lint_cwindow = 0
+
+let g:pymode_lint_todo_symbol = 'W'
+let g:pymode_lint_comment_symbol = 'C'
+let g:pymode_lint_visual_symbol = 'R'
+let g:pymode_lint_error_symbol = 'E'
+let g:pymode_lint_info_symbol = 'I'
+let g:pymode_lint_pyflakes_symbol = 'F'
+
+let g:pymode_syntax_print_as_function = 1
 
 " indent-guides ------------------------------------------------------------{{{1
 

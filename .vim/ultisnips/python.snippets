@@ -9,6 +9,12 @@ import ${1:module}
 $0
 endsnippet
 
+snippet doc "Docstring" b
+"""
+${VISUAL}$0
+"""
+endsnippet
+
 snippet docs "Module docstring" b
 """
 File: ${1:`Filename('$1.py', 'foo.py')`}
@@ -59,14 +65,14 @@ endsnippet
 
 snippet try "Try/Except" b
 try:
-	${1:pass}
+	${VISUAL}${1}
 except ${2:Exception} as ${3:e}:
 	${4:raise $3}
 endsnippet
 
 snippet try "Try/Except/Else" b
 try:
-	${1:pass}
+	${VISUAL}${1}
 except ${2:Exception} as ${3:e}:
 	${4:raise $3}
 else:
@@ -75,7 +81,7 @@ endsnippet
 
 snippet try "Try/Except/Finally" b
 try:
-	${1:pass}
+	${VISUAL}${1}
 except ${2:Exception} as ${3:e}:
 	${4:raise $3}
 finally:
@@ -84,7 +90,7 @@ endsnippet
 
 snippet try "Try/Except/Else/Finally" b
 try:
-	${1:pass}
+	${VISUAL}${1}
 except ${2:Exception} as ${3:e}:
 	${4:raise $3}
 else:

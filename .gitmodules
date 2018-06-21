@@ -46,9 +46,6 @@
 [submodule ".vim/bundle/gutentags"]
 	path = .vim/bundle/gutentags
 	url = https://github.com/ludovicchabant/vim-gutentags
-[submodule ".vim/bundle/phpcomplete"]
-	path = .vim/bundle/phpcomplete
-	url = https://github.com/shawncplus/phpcomplete.vim.git
 [submodule ".vim/bundle/youcompleteme"]
 	path = .vim/bundle/youcompleteme
 	url = https://github.com/valloric/youcompleteme
@@ -61,12 +58,6 @@
 [submodule ".vim/bundle/jinja"]
 	path = .vim/bundle/jinja
 	url = https://github.com/lepture/vim-jinja.git
-[submodule ".vim/bundle/python-pep8-indent"]
-	path = .vim/bundle/python-pep8-indent
-	url = https://github.com/hynek/vim-python-pep8-indent.git
-[submodule ".vim/bundle/python-syntax"]
-	path = .vim/bundle/python-syntax
-	url = https://github.com/hdima/python-syntax
 [submodule ".vim/bundle/ultisnips"]
 	path = .vim/bundle/ultisnips
 	url = https://github.com/sirver/ultisnips
@@ -100,3 +91,6 @@
 [submodule ".vim/bundle/templates"]
 	path = .vim/bundle/templates
 	url = https://github.com/fpob/templates.vim.git
+[submodule ".vim/bundle/python-mode"]
+	path = .vim/bundle/python-mode
+	url = https://github.com/klen/python-mode
