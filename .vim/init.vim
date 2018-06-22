@@ -470,15 +470,10 @@ let g:gutentags_add_default_project_roots = 0
 
 let g:pymode_python = 'python3'
 
-let g:pymode_lint_checkers = ['pyflakes', 'flake8']
+let g:pymode_lint_checkers = ['pyflakes', 'pep8']
 let g:pymode_lint_cwindow = 0
 
-let g:pymode_lint_todo_symbol = 'W'
-let g:pymode_lint_comment_symbol = 'C'
-let g:pymode_lint_visual_symbol = 'R'
-let g:pymode_lint_error_symbol = 'E'
-let g:pymode_lint_info_symbol = 'I'
-let g:pymode_lint_pyflakes_symbol = 'F'
+let g:pymode_lint_signs = 0
 
 let g:pymode_syntax_print_as_function = 1
 
