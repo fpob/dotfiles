@@ -1,8 +1,9 @@
 " Settings -----------------------------------------------------------------{{{1
 
+set nocompatible
+
 execute pathogen#infect()
 execute pathogen#helptags()
-set nocompatible
 
 " Historie, zálohy
 set backup
@@ -74,7 +75,8 @@ if has('mouse')
 endif
 
 " Zalamování řádků
-set colorcolumn=80,100  " Zvýraznění 80. a 100. sloupce
+set textwidth=79
+set colorcolumn=+1  " Zvýraznění &textwidth+1 sloupce
 set wrap
 set breakindent     " Wrap s odsazováním
 set showbreak=↳     " znak na začátku zalomeného řádku
@@ -170,8 +172,8 @@ augroup vimrc
     " Vymazání posledniho hledani po spuštění
     autocmd VimEnter * let @/=''
 
-    " Always start on first line in gitcommit
-    autocmd FileType gitcommit call setpos('.', [0, 1, 1, 0])
+    " Always start git commit at first line
+    autocmd FileType gitcommit exec 'au VimEnter * call setpos(".", [0, 1, 1, 0])'
 augroup END
 
 " Mappings -----------------------------------------------------------------{{{1
@@ -284,7 +286,6 @@ else
     vnoremap <Leader>t :terminal<Cr>
     vnoremap <Leader>T :terminal<Space>
 endif
-
 
 " easymotion ---------------------------------------------------------------{{{1
 
@@ -466,16 +467,17 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:gutentags_project_root = ['tags']
 let g:gutentags_add_default_project_roots = 0
 
-" python -------------------------------------------------------------------{{{1
+" python-mode --------------------------------------------------------------{{{1
+
+let g:pymode_options = 1
+let g:pymode_options_colorcolumn = 1
 
 let g:pymode_python = 'python3'
+let g:pymode_syntax_print_as_function = 1
 
 let g:pymode_lint_checkers = ['pyflakes', 'pep8']
 let g:pymode_lint_cwindow = 0
-
 let g:pymode_lint_signs = 0
-
-let g:pymode_syntax_print_as_function = 1
 
 " indent-guides ------------------------------------------------------------{{{1
 

@@ -28,3 +28,6 @@ int-import-graph=
 [DESIGN]
 max-args=10
 ignored-argument-names=_.*
+
+[TYPECHECK]
+generated-members=sh

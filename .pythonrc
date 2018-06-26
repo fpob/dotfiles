@@ -6,14 +6,18 @@ import re
 import hashlib
 import math
 
+try:
+    import sh
+except ImportError:
+    pass
+
 
 def hash_str(algorithm, string):
     return hashlib.new(algorithm, string.encode('utf-8')).hexdigest()
 
 
 # Completion
-import readline
-import rlcompleter
+import readline, rlcompleter
 readline.parse_and_bind("tab: complete")
 del readline, rlcompleter
 
