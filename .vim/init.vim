@@ -391,6 +391,12 @@ function! NERDTreeFocusOrClose()
 endfun
 command! NERDTreeFocusOrClose call NERDTreeFocusOrClose()
 
+" tagbar -------------------------------------------------------------------{{{1
+
+let g:tagbar_autofocus = 1
+let g:tagbar_autoclose = 1
+let g:tagbar_sort = 0
+
 " CtrlP --------------------------------------------------------------------{{{1
 
 " Maximální počet souborů pro skenování
