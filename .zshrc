@@ -88,9 +88,9 @@ DISABLE_AUTO_UPDATE="true"
 
 # Pluginy
 plugins=(sudo zsh_reload git git-flow autojump taskwarrior redis-cli
-         python pip django docker docker-compose autojump)
+         python pip django virtualenvwrapper docker docker-compose autojump)
 # custom
-plugins+=(cheat ranger zsh-syntax-highlighting virtualenvwrapper)
+plugins+=(cheat ranger zsh-syntax-highlighting direnv)
 
 # Pridani podpory precmd a preexec, bez toho nefunguje theme powerlevel9k
 autoload -U add-zsh-hook
@@ -166,6 +166,7 @@ alias free='free -th'
 alias py='python3'
 alias pyc='py3compile'
 alias pydoc='pydoc3'
+alias ipy='ipython3'
 
 # TaskWarrior
 alias t='nocorrect task'
@@ -212,19 +213,6 @@ export LESS_TERMCAP_so=$'\E[01;31m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;34m'
 
-# direnv -------------------------------------------------------------------{{{1
-
-if which direnv &>/dev/null ; then
-
-    _direnv_hook() {
-      eval "$(direnv export zsh)";
-    }
-    typeset -ag precmd_functions;
-    if [[ -z ${precmd_functions[(r)_direnv_hook]} ]]; then
-      precmd_functions+=_direnv_hook;
-    fi
-
-fi
 
 # Functions-----------------------------------------------------------------{{{1
 
