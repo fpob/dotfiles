@@ -477,6 +477,7 @@ let g:gutentags_add_default_project_roots = 0
 
 let g:pymode_options = 1
 let g:pymode_options_colorcolumn = 1
+let g:pymode_folding = 0
 
 let g:pymode_python = 'python3'
 let g:pymode_syntax_print_as_function = 1
@@ -484,6 +485,8 @@ let g:pymode_syntax_print_as_function = 1
 let g:pymode_lint_checkers = ['pyflakes', 'pep8']
 let g:pymode_lint_cwindow = 0
 let g:pymode_lint_signs = 0
+
+let g:pymode_rope = 0
 
 " indent-guides ------------------------------------------------------------{{{1
 
