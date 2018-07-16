@@ -88,7 +88,8 @@ DISABLE_AUTO_UPDATE="true"
 
 # Pluginy
 plugins=(sudo zsh_reload git git-flow autojump taskwarrior redis-cli
-         python pip django virtualenvwrapper docker docker-compose autojump)
+         python pip django virtualenvwrapper docker docker-compose autojump
+         oc)
 # custom
 plugins+=(cheat ranger zsh-syntax-highlighting direnv)
 
@@ -103,8 +104,8 @@ fpath=($ZSH_CUSTOM/completions $ZSH_CUSTOM/functions $fpath)
 typeset -Ug fpath
 
 # Reinicializace doplnovani, kvuli vlastnim doplnovani
-autoload -Uz compinit
-compinit -d "$ZSH_CACHE_DIR/zcomp-$HOST"
+#autoload -Uz compinit
+#compinit -d "$ZSH_CACHE_DIR/zcomp-$HOST"
 
 # Opravy jen u nazvu prikazu, ne vsude
 unsetopt correct_all
