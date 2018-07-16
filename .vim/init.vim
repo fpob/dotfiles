@@ -477,6 +477,7 @@ let g:gutentags_add_default_project_roots = 0
 
 let g:pymode_options = 1
 let g:pymode_options_colorcolumn = 1
+let g:pymode_options_max_line_length = 79
 let g:pymode_folding = 0
 
 let g:pymode_python = 'python3'
