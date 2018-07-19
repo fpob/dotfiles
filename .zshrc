@@ -113,29 +113,27 @@ setopt correct
 
 # Prompt -------------------------------------------------------------------{{{1
 
-function prompt_anime_aid () {
-    [[ -f .aid ]] && "${1}_prompt_segment" "$0" "$2" cyan black "a$(cat .aid)"
+# Rename function `getUniqueFolder` to `original_getUniqueFolder`
+eval "original_$(declare -f getUniqueFolder)"
+
+# Shorten path as same as getUniqueFolder does but with expanded last element.
+function getUniqueFolder() {
+    local trunc_path=$(original_getUniqueFolder "$1")
+    [[ $1 != $HOME ]] && trunc_path="${trunc_path%/*}/${PWD##*/}"
+    echo $trunc_path
 }
 
-function prompt_parent () {
-    case $PARENT in
-        ranger|vim|nvim)
-            "${1}_prompt_segment" "$0" "$2" black yellow "$PARENT" ;;
-    esac
-}
+POWERLEVEL9K_CUSTOM_PARENT="case \$PARENT in ranger|vim|nvim) echo -n "\$PARENT" ;; esac"
+POWERLEVEL9K_CUSTOM_PARENT_FOREGROUND="yellow"
+POWERLEVEL9K_CUSTOM_PARENT_BACKGROUND="black"
 
-function prompt_chroot () {
-    if [[ -z ${debian_chroot:-} && -r /etc/debian_chroot ]] ; then
-        debian_chroot=$(cat /etc/debian_chroot)
-        "${1}_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "$debian_chroot"
-    fi
-}
-
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status root_indicator context dir)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(anime_aid vcs virtualenv background_jobs chroot ssh parent)
-POWERLEVEL9K_STATUS_VERBOSE=false
+POWERLEVEL9K_STATUS_CROSS=true
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
-POWERLEVEL9K_ROOT_ICON=$'\u2622'
+POWERLEVEL9K_SHORTEN_STRATEGY="truncate_to_unique"
+POWERLEVEL9K_ROOT_ICON="\u2622"
+
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(root_indicator context dir)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs vcs virtualenv custom_parent ssh)
 
 # Aliasses -----------------------------------------------------------------{{{1
 
