@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+print_help () {
+    cat <<EOF
+Usage: git branch-prune [<options>]
+
+Remove remote branches that no loger exists on the remote and remove merged
+local branches.
+
+    -d, --dry-run  dry run
+
+EOF
+}
+
+dry_run=false
+
+eval set -- "$(getopt -o hd --long dry-run -n 'git branch-prune' -- "$@")"
+while true ; do
+    case "$1" in
+        -d|--dry-run) dry_run=true ; shift ;;
+        -h) print_help ; exit ;;
+        --) shift ; break ;;
+        *) echo 'Internal error' ; exit 1 ;;
+    esac
+done
+
+if $dry_run ; then
+    git fetch --all --prune --dry-run
+    git branch --merged \
+        | grep -vE '(^\*|master|develop)'
+else
+    git fetch --all --prune $git_opts
+    git branch --merged \
+        | grep -vE '(^\*|master|develop)' \
+        | xargs -r git branch --delete
+fi
+
+exit 0
