@@ -1,16 +1,30 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-if [ -z "$1" -o -z "$2" ] ; then
-    echo "Usage: $(basename "$0") WORKSPACE LAYOUT" >&2
+export DIR="$HOME/.config/i3/layouts"
+
+if [[ -z $1 ]] ; then
+    echo "Usage: $(basename "$0") LAYOUT [WORKSPACE]" >&2
+    echo
+    echo 'Layouts:'
+    for path in "$DIR"/*.{sh,json} ; do
+        name="$(basename "$path")"
+        echo "  ${name%%.*}"
+    done | sort
     exit 2
 fi
 
-workspace=$1
-layout="$HOME/.config/i3/layouts/$2.json"
+layout=$1
+workspace=$2
 
-if [ ! -f "$layout" ] ; then
-    echo "Layout file '$layout' not exists" >&2
-    exit 1
+if [[ -n $workspace ]] ; then
+    i3-msg "workspace $workspace" >/dev/null
 fi
 
-i3-msg "workspace $workspace; append_layout $layout" >/dev/null
+if [[ -x $DIR/$layout.sh ]]; then
+    "$DIR/$layout.sh" >/dev/null
+elif [[ -f $DIR/$layout.json ]] ; then
+    i3-msg "append_layout \"$DIR/$layout.json\"" >/dev/null
+else
+    echo "Layout file '$DIR/$layout.{sh,json}' not exists" >&2
+    exit 1
+fi
