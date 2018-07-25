@@ -401,15 +401,27 @@ let g:tagbar_sort = 0
 
 nnoremap <leader>g :Grepper<cr>
 nnoremap <leader>G :Grepper -tool git<cr>
+xnoremap <leader>g <plug>(GrepperOperator)
 
-let g:grepper = {}
+" Initialize g:grepper with default values
+runtime plugin/grepper.vim
+
+let g:grepper.tools = ['grep', 'git']
+let g:grepper.grep.grepprg .= ' -P -- '
+let g:grepper.git.grepprg .= ' -P -- '
+
+let g:grepper.simple_prompt = 1
 
 " Highlight matches
 let g:grepper.highlight = 1
 " Do not copen/lwindow after grep finished
-let g:grepper.open = 1
+let g:grepper.open = 0
 " Change CWD before grepping
 let g:grepper.dir = 'repo,cwd'
+
+let g:grepper.operator.tools = ['grep', 'git']
+
+command! Todo :Grepper -side -query '(TODO|FIXME)'
 
 " CtrlP --------------------------------------------------------------------{{{1
 
