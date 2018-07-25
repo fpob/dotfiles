@@ -97,3 +97,6 @@
 [submodule ".vim/bundle/argtextobj"]
 	path = .vim/bundle/argtextobj
 	url = https://github.com/vim-scripts/argtextobj.vim
+[submodule ".vim/bundle/grepper"]
+	path = .vim/bundle/grepper
+	url = https://github.com/mhinz/vim-grepper

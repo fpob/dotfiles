@@ -397,6 +397,20 @@ let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
 let g:tagbar_sort = 0
 
+" Grepper ------------------------------------------------------------------{{{1
+
+nnoremap <leader>g :Grepper<cr>
+nnoremap <leader>G :Grepper -tool git<cr>
+
+let g:grepper = {}
+
+" Highlight matches
+let g:grepper.highlight = 1
+" Do not copen/lwindow after grep finished
+let g:grepper.open = 1
+" Change CWD before grepping
+let g:grepper.dir = 'repo,cwd'
+
 " CtrlP --------------------------------------------------------------------{{{1
 
 " Maximální počet souborů pro skenování
