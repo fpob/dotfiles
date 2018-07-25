@@ -14,13 +14,3 @@ cd () {
         builtin cd "$@"
     fi
 }
-
-pycov () {
-    tests_dir=${1:-tests}
-    coverage run -m unittest discover "$tests_dir" 2>/dev/null
-    if [[ $? -ne 0 ]] ; then
-        echo 'Tests failed' >&2
-        return 1
-    fi
-    coverage report -m --omit="$tests_dir/*"
-}
