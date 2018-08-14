@@ -515,6 +515,10 @@ let g:pymode_lint_signs = 0
 
 let g:pymode_rope = 0
 
+" go -----------------------------------------------------------------------{{{1
+
+let g:go_template_autocreate = 0
+
 " indent-guides ------------------------------------------------------------{{{1
 
 let g:indent_guides_enable_on_vim_startup = 1

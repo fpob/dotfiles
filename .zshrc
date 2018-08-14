@@ -17,7 +17,7 @@ fi
 # Paths --------------------------------------------------------------------{{{1
 
 # Bin path
-path=(~/.bin ~/.local/bin ~/.composer/vendor/bin $path)
+path=(~/.bin ~/.local/bin ~/.go/bin $path)
 typeset -gU path
 
 # Man path
@@ -51,6 +51,9 @@ export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Projects
 export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# golang
+export GOPATH=$HOME/.go
 
 # ssh key
 #export SSH_KEY_PATH="~/.ssh/dsa_id"
@@ -88,8 +91,7 @@ DISABLE_AUTO_UPDATE="true"
 
 # Pluginy
 plugins=(sudo zsh_reload git git-flow autojump taskwarrior redis-cli
-         python pip django virtualenvwrapper docker docker-compose autojump
-         oc)
+         python pip virtualenvwrapper docker docker-compose autojump oc go)
 # custom
 plugins+=(cheat ranger zsh-syntax-highlighting direnv)
 
