@@ -5,6 +5,7 @@ from ranger.core.loader import CommandLoader
 import os
 import shlex
 import re
+import itertools
 
 
 def trim(string, length=200):
@@ -145,13 +146,22 @@ class links(Command):
                          if self.LINK_CRE.match(line)]
         return links
 
+    def _get_hint_keys(self, length=1):
+        if length == 1:
+            return self.HINT_KEYS
+        return [''.join(keys) for keys in itertools.product(self.HINT_KEYS, repeat=length)]
+
     def _get_links(self):
-        return dict(zip(self.HINT_KEYS,
-                        self._parse_links_file(self._find_links_file())))
+        links = self._parse_links_file(self._find_links_file())
+        for i in itertools.count(start=1):
+            hint_keys = self._get_hint_keys(i)
+            if len(links) <= len(hint_keys):
+                return dict(zip(hint_keys, links))
 
     def _draw_list(self):
-        links = self._get_links()
-        self.fm.ui.browser.draw_info = [" | ".join(i) for i in links.items()]
+        links = sorted(self._get_links().items(),
+                       key=lambda i: tuple(self.HINT_KEYS.index(c) for c in i[0]))
+        self.fm.ui.browser.draw_info = [" | ".join(i) for i in links]
 
     def execute(self):
         links = self._get_links()
@@ -167,5 +177,5 @@ class links(Command):
     def quick(self):
         if self.arg(0) == 'links' and not self.arg(1):
             self._draw_list()
-        if self.arg(1):
+        if self.arg(1) and self.arg(1) in self._get_links():
             return True
