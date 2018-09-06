@@ -200,3 +200,6 @@ for_window [class="(?i)firefox" tiling] border pixel 2
 
 for_window [instance="floating" class="mpv"] floating enable, sticky enable, border pixel 2
 
+# FIX switching workspaces/windows (window mode), borders are needed in
+# floating mode to resize window.
+for_window [title="^EVE$"] fullscreen enable, border pixel 2

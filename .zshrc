@@ -185,6 +185,9 @@ alias cll='cut -c -$COLUMNS'
 # git-grep with external grep
 alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto -nT'
 
+# Curl with kerberos auth
+alias kcurl='curl -u : --negotiate'
+
 alias tsv="column -t -s$'\t'"
 alias json="python -mjson.tool"
 
