@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+
+import os
+
+import click
+import sh
+import shlex
+
+
+PWD = os.getcwd()
+
+
+@click.group()
+def cli():
+    pass
+
+
+@cli.command('echo')
+@click.argument('images', nargs=-1, type=click.Path(dir_okay=False, exists=True))
+def cli_echo(images):
+    images = [os.path.relpath(f, PWD) for f in sorted(images)
+              if os.path.exists(f)]
+    if len(images) < 2:
+        return
+    click.echo('  '.join(images))
+
+
+@cli.command('view')
+@click.option('-w', '--width', type=int, default=1900)
+@click.option('-h', '--height', type=int, default=1000)
+@click.option('-d', '--dupes-dest', type=click.Path(file_okay=False), default='dupes',
+              help='Directory where to move duplicates')
+@click.argument('images', nargs=-1, type=click.Path(dir_okay=False))
+def cli_view(images, width, height, dupes_dest):
+    images = [os.path.relpath(f, PWD) for f in sorted(images)
+              if os.path.exists(f)]
+    if len(images) < 2:
+        return
+
+    if len(images) > 9:
+        click.echo('Too many images to compare, maximum is 9', err=True)
+        raise click.Abort
+
+    if not os.path.exists(dupes_dest):
+        os.mkdir(dupes_dest)
+
+    actions = dict()
+    for num, image in enumerate(images, start=1):
+        dupes = [i for i in images if i != image]
+        action = 'action{:d}'.format(num)
+        title = 'keep {:d}. image'.format(num)
+        command = 'mv {} {}'.format(' '.join(shlex.quote(f) for f in dupes),
+                                    dupes_dest)
+        actions[action] = '[{}]{}'.format(title, command)
+
+    sh.feh(images,
+           index=True,
+           index_info='%f\n%wx%h\n%S',
+           limit_width=width,
+           thumb_height=height,
+           thumb_width=width//len(images),
+           **actions)
+
+
+@cli.command('grouping')
+@click.option('-s', '--script', is_flag=True,
+              help='Generate shell script commands')
+@click.argument('images', nargs=-1, type=click.Path(dir_okay=False))
+def cli_grouping(images, script):
+    images = [os.path.relpath(f, PWD) for f in sorted(images)
+              if os.path.exists(f)]
+    if len(images) < 2:
+        return
+
+    if not all(os.path.basename(f) == f for f in images):
+        click.echo('Duplicate images are not in PWD', err=True)
+        raise click.Abort
+
+    first, _ = os.path.splitext(images.pop(0))
+    for image in images:
+        new_name = first + '_' + image
+        if script:
+            click.echo('mv {} {}'.format(shlex.quote(image),
+                                         shlex.quote(new_name)))
+        else:
+            if os.path.isfile(new_name):
+                click.echo('File %s already exists!' % new_name, err=True)
+            else:
+                os.rename(image, new_name)
+
+
+if __name__ == '__main__':
+    # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+    cli()

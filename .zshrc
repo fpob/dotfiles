@@ -188,8 +188,11 @@ alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto
 # Curl with kerberos auth
 alias kcurl='curl -u : --negotiate'
 
+# Syntax highlight
+alias syn='pygmentize'
+
 alias tsv="column -t -s$'\t'"
-alias json="python -mjson.tool"
+alias json="python -mjson.tool | pygmentize -s -l json"
 
 alias gdb='gdb -q'
 alias bc='bc -ql'
