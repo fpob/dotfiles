@@ -190,7 +190,7 @@ alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto
 alias kcurl='curl -u : --negotiate'
 
 # Syntax highlight
-alias syn='pygmentize'
+alias syn='pygmentize -f 256 -O bg=dark,style=monokai'
 
 alias tsv="column -t -s$'\t'"
 alias json="python -mjson.tool | pygmentize -s -l json"
