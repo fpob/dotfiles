@@ -25,7 +25,7 @@ indicate_hidden = yes
 # Align icons left/right/off
 icon_position = off
 # Paths to default icons.
-icon_folders = /usr/share/icons/Abrus/status/32/:/usr/share/icons/Abrus/devices/32/:/usr/share/icons/Abrus/apps/32/
+icon_path = /usr/share/icons/Abrus/status/32/:/usr/share/icons/Abrus/devices/32/:/usr/share/icons/Abrus/apps/32/
 
 # Sort messages by urgency.
 sort = yes
@@ -35,7 +35,7 @@ sort = yes
 bounce_freq = 0
 
 # The geometry of the window: [{width}]x{height}[+/-{x}+/-{y}]
-geometry = "320x5-8+8"
+geometry = "250-8+8"
 # Shrink window if it's smaller than the width.
 shrink = no
 # The transparency of the window.
