@@ -93,10 +93,10 @@ timeout = 10
 background = "#285577"
 foreground = "#ffffff"
 timeout = 10
-icon = /usr/share/icons/Abrus/status/32/dialog-info.png
 
 [urgency_critical]
 background = "#900000"
 foreground = "#ffffff"
 timeout = 0
-icon = /usr/share/icons/Abrus/status/32/dialog-warning.png
+
+# vim: ft=dosini

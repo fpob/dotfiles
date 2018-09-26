@@ -133,7 +133,7 @@ bindsym $mod+Shift+q exec --no-startup-id mate-session-save --shutdown-dialog
 bindsym $mod+Shift+x exec --no-startup-id mate-session-save --logout-dialog
 
 # Lock screen
-bindsym $mod+x exec --no-startup-id ~/.config/i3/lock.sh
+bindsym $mod+x exec --no-startup-id mate-screensaver-command --lock
 
 # Resize mode --------------------------------------------------------------{{{1
 
@@ -194,7 +194,6 @@ bar {
 # Window settings ----------------------------------------------------------{{{1
 
 for_window [class="(?i)tilda"] floating enable
-for_window [class="(?i)xfce4-appfinder"] floating enable
 
 for_window [class="(?i)firefox" tiling] border pixel 2
 
