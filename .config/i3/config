@@ -14,9 +14,8 @@ mouse_warping none
 
 # Start terminal
 bindsym $mod+t exec mate-terminal
-# Start FileManager (`caja` nor `caja --no-desktop` not working with session
-# manager)
-bindsym $mod+y exec xdg-open ~
+# Start FileManager
+bindsym $mod+y exec caja --browser ~
 # Start note taker
 bindsym $mod+u exec cherrytree
 
