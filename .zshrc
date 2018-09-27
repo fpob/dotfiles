@@ -116,6 +116,8 @@ setopt correct
 
 # Prompt -------------------------------------------------------------------{{{1
 
+if [[ $ZSH_THEME = 'powerlevel9k/powerlevel9k' ]] ; then
+
 # Rename function `getUniqueFolder` to `original_getUniqueFolder`
 eval "original_$(declare -f getUniqueFolder)"
 
@@ -137,6 +139,8 @@ POWERLEVEL9K_ROOT_ICON="\u2622"
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(root_indicator context dir)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs vcs virtualenv custom_parent ssh)
+
+fi # END powerlevel9k
 
 # Aliasses -----------------------------------------------------------------{{{1
 
