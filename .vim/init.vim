@@ -2,9 +2,6 @@
 
 set nocompatible
 
-execute pathogen#infect()
-execute pathogen#helptags()
-
 " Historie, zálohy
 set backup
 set backupdir=~/.vim/tmp,.,/tmp
