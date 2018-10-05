@@ -58,6 +58,9 @@
     m = merge --no-ff
     mf = merge --ff
 
+    r = rebase
+    ri = rebase --interactive
+
     d = diff
     dc = diff --cached
     du = diff @{upstream}
