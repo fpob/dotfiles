@@ -1,3 +1,3 @@
-set cindent
-set cinkeys-=0#
-set indentkeys-=0#
+setlocal cindent
+setlocal cinkeys-=0#
+setlocal indentkeys-=0#

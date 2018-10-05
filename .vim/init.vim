@@ -517,6 +517,8 @@ let g:pymode_rope = 0
 
 let g:go_template_autocreate = 0
 
+autocmd FileType go setlocal noexpandtab
+
 " indent-guides ------------------------------------------------------------{{{1
 
 let g:indent_guides_enable_on_vim_startup = 1
