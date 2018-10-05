@@ -179,7 +179,7 @@ augroup END
 " Mappings -----------------------------------------------------------------{{{1
 
 let mapleader = ","
-let g:mapleader = ","
+let maplocalleader=","
 
 " Movement
 noremap <MouseDown> 3<C-Y>
@@ -294,8 +294,6 @@ let g:EasyMotion_smartcase = 1
 " Character jumps
 nmap <Leader>f <Plug>(easymotion-bd-f)
 nmap <Leader>F <Plug>(easymotion-overwin-f)
-nmap <Leader>s <Plug>(easymotion-bd-f2)
-nmap <Leader>S <Plug>(easymotion-overwin-f2)
 
 " Faster HJKL motion
 map <Leader>l <Plug>(easymotion-lineforward)
@@ -525,7 +523,7 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
+let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'org']
 
 let g:indent_guides_auto_colors = 0
 autocmd VimEnter,ColorScheme *
@@ -539,4 +537,14 @@ let g:extra_whitespace_ignored_filetypes = ['mail']
 " vimtex -------------------------------------------------------------------{{{1
 
 let g:vimtex_quickfix_mode = 0
+
+" org ----------------------------------------------------------------------{{{1
+
+let g:org_indent = 1
+let g:org_aggressive_conceal = 1
+
+let g:org_todo_keywords=['TODO', 'WIP', '|', 'DONE']
+
+" Open link in firefox
+let g:utl_cfg_hdl_scm_http_system = "silent !firefox '%u' &"
 

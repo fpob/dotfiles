@@ -100,3 +100,18 @@
 [submodule ".vim/bundle/go"]
 	path = .vim/bundle/go
 	url = https://github.com/fatih/vim-go
+[submodule ".vim/pack/org/start/orgmode"]
+	path = .vim/pack/org/start/orgmode
+	url = https://github.com/jceb/vim-orgmode.git
+[submodule ".vim/pack/org/start/utl.vim"]
+	path = .vim/pack/org/start/utl
+	url = https://github.com/vim-scripts/utl.vim
+[submodule ".vim/pack/org/start/speeddating"]
+	path = .vim/pack/org/start/speeddating
+	url = https://github.com/tpope/vim-speeddating.git
+[submodule ".vim/pack/org/start/calendar"]
+	path = .vim/pack/org/start/calendar
+	url = https://github.com/mattn/calendar-vim
+[submodule ".vim/pack/org/start/SyntaxRange"]
+	path = .vim/pack/org/start/SyntaxRange
+	url = https://github.com/vim-scripts/SyntaxRange.git
