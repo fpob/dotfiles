@@ -401,7 +401,9 @@ nnoremap <leader>g :Grepper<cr>
 nnoremap <leader>G :Grepper -tool git<cr>
 xnoremap <leader>g <plug>(GrepperOperator)
 
-" Initialize g:grepper with default values
+" Initialize g:grepper with default values. Grepper package must be loaded
+" manually, see: 'he packages'.
+packadd! grepper
 runtime plugin/grepper.vim
 
 let g:grepper.tools = ['grep', 'git']

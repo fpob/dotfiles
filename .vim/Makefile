@@ -3,12 +3,10 @@ PWD = $(shell pwd)
 default: clean
 
 init:
-	wget -P autoload https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 	mkdir tmp view
 
 youcompleteme:
-	git -C bundle/youcompleteme submodule update --recursive --init
-	cd bundle/youcompleteme && ./install.py
+	cd pack/dev/start/youcompleteme && ./install.py
 
 spell:
 	test -d spell || mkdir spell

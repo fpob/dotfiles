@@ -2,64 +2,64 @@
 	path = .oh-my-zsh/custom/themes/powerlevel9k
 	url = https://github.com/bhilburn/powerlevel9k.git
 [submodule ".vim/bundle/airline"]
-	path = .vim/bundle/airline
+	path = .vim/pack/base/start/airline
 	url = https://github.com/bling/vim-airline.git
 [submodule ".vim/bundle/ctrlp"]
-	path = .vim/bundle/ctrlp
+	path = .vim/pack/base/start/ctrlp
 	url = https://github.com/kien/ctrlp.vim
 [submodule ".vim/bundle/delimitmate"]
-	path = .vim/bundle/delimitmate
+	path = .vim/pack/dev/start/delimitmate
 	url = https://github.com/raimondi/delimitmate
 [submodule ".vim/bundle/easymotion"]
-	path = .vim/bundle/easymotion
+	path = .vim/pack/base/start/easymotion
 	url = https://github.com/easymotion/vim-easymotion
 [submodule ".vim/bundle/editorconfig"]
-	path = .vim/bundle/editorconfig
+	path = .vim/pack/dev/start/editorconfig
 	url = https://github.com/editorconfig/editorconfig-vim.git
 [submodule ".vim/bundle/indent-guides"]
-	path = .vim/bundle/indent-guides
+	path = .vim/pack/base/start/indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides
 [submodule ".vim/bundle/molokai"]
-	path = .vim/bundle/molokai
+	path = .vim/pack/base/start/molokai
 	url = https://github.com/tomasr/molokai
 [submodule ".vim/bundle/multiple-cursors"]
-	path = .vim/bundle/multiple-cursors
+	path = .vim/pack/dev/start/multiple-cursors
 	url = https://github.com/terryma/vim-multiple-cursors
 [submodule ".vim/bundle/nerdtree"]
-	path = .vim/bundle/nerdtree
+	path = .vim/pack/base/start/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
 [submodule ".vim/bundle/repeat"]
-	path = .vim/bundle/repeat
+	path = .vim/pack/base/start/repeat
 	url = https://github.com/tpope/vim-repeat.git
 [submodule ".vim/bundle/signature"]
-	path = .vim/bundle/signature
+	path = .vim/pack/base/start/signature
 	url = https://github.com/kshenoy/vim-signature
 [submodule ".vim/bundle/surround"]
-	path = .vim/bundle/surround
+	path = .vim/pack/dev/start/surround
 	url = https://github.com/tpope/vim-surround
 [submodule ".vim/bundle/tagbar"]
-	path = .vim/bundle/tagbar
+	path = .vim/pack/dev/start/tagbar
 	url = https://github.com/majutsushi/tagbar.git
 [submodule ".vim/bundle/trailing-whitespace"]
-	path = .vim/bundle/trailing-whitespace
+	path = .vim/pack/dev/start/trailing-whitespace
 	url = https://github.com/bronson/vim-trailing-whitespace
 [submodule ".vim/bundle/gutentags"]
-	path = .vim/bundle/gutentags
+	path = .vim/pack/dev/start/gutentags
 	url = https://github.com/ludovicchabant/vim-gutentags
 [submodule ".vim/bundle/youcompleteme"]
-	path = .vim/bundle/youcompleteme
+	path = .vim/pack/dev/start/youcompleteme
 	url = https://github.com/valloric/youcompleteme
 [submodule ".vim/bundle/fugitive"]
-	path = .vim/bundle/fugitive
+	path = .vim/pack/dev/start/fugitive
 	url = https://github.com/tpope/vim-fugitive
 [submodule ".vim/bundle/gitgutter"]
-	path = .vim/bundle/gitgutter
+	path = .vim/pack/dev/start/gitgutter
 	url = https://github.com/airblade/vim-gitgutter
 [submodule ".vim/bundle/jinja"]
-	path = .vim/bundle/jinja
+	path = .vim/pack/dev/start/jinja
 	url = https://github.com/lepture/vim-jinja.git
 [submodule ".vim/bundle/ultisnips"]
-	path = .vim/bundle/ultisnips
+	path = .vim/pack/dev/start/ultisnips
 	url = https://github.com/sirver/ultisnips
 [submodule ".tmux/plugins/resurrect"]
 	path = .tmux/plugins/resurrect
@@ -71,34 +71,28 @@
 	path = .tmux/plugins/yank
 	url = https://github.com/tmux-plugins/tmux-yank.git
 [submodule ".vim/bundle/vimtex"]
-	path = .vim/bundle/vimtex
+	path = .vim/pack/dev/start/vimtex
 	url = https://github.com/lervag/vimtex.git
 [submodule ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
 	path = .oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule ".vim/bundle/gtk-syntax"]
-	path = .vim/bundle/gtk-syntax
-	url = https://github.com/vim-scripts/gtk-vim-syntax
-[submodule ".vim/bundle/nette"]
-	path = .vim/bundle/nette
-	url = https://github.com/fpob/nette.vim.git
 [submodule ".vim/bundle/matchit"]
-	path = .vim/bundle/matchit
+	path = .vim/pack/base/start/matchit
 	url = https://github.com/vim-scripts/matchit.zip
 [submodule ".vim/bundle/templates"]
-	path = .vim/bundle/templates
+	path = .vim/pack/dev/start/templates
 	url = https://github.com/fpob/templates.vim.git
 [submodule ".vim/bundle/python-mode"]
-	path = .vim/bundle/python-mode
+	path = .vim/pack/dev/start/python-mode
 	url = https://github.com/klen/python-mode
 [submodule ".vim/bundle/argtextobj"]
-	path = .vim/bundle/argtextobj
+	path = .vim/pack/dev/start/argtextobj
 	url = https://github.com/vim-scripts/argtextobj.vim
 [submodule ".vim/bundle/grepper"]
-	path = .vim/bundle/grepper
+	path = .vim/pack/base/start/grepper
 	url = https://github.com/mhinz/vim-grepper
 [submodule ".vim/bundle/go"]
-	path = .vim/bundle/go
+	path = .vim/pack/dev/start/go
 	url = https://github.com/fatih/vim-go
 [submodule ".vim/pack/org/start/orgmode"]
 	path = .vim/pack/org/start/orgmode
