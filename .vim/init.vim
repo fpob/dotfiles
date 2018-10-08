@@ -398,8 +398,8 @@ let g:tagbar_sort = 0
 " Grepper ------------------------------------------------------------------{{{1
 
 nnoremap <leader>g :Grepper<cr>
-nnoremap <leader>G :Grepper -tool git<cr>
-xnoremap <leader>g <plug>(GrepperOperator)
+nmap gs <plug>(GrepperOperator)
+vmap gs <plug>(GrepperOperator)
 
 " Initialize g:grepper with default values. Grepper package must be loaded
 " manually, see: 'he packages'.
@@ -494,7 +494,8 @@ let g:ycm_python_binary_path = 'python3'
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 
-nnoremap <Leader>i :YcmCompleter GetDoc<Cr>
+nmap <Leader>K :YcmCompleter GetDoc<Cr>
+nmap <Leader>G :YcmCompleter GoTo<Cr>
 
 " gutentags ----------------------------------------------------------------{{{1
 
