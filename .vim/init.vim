@@ -274,6 +274,9 @@ nnoremap <silent> yn :let @+=expand("%:t")<Cr>
 " Make file executable
 nnoremap <Leader>x :silent !chmod +x %<Cr>
 
+" Close preview window
+nnoremap <Leader>z <C-W>z
+
 if has('nvim')
     nnoremap <Leader>t :terminal<Cr>
     nnoremap <Leader>T :terminal<Space>
@@ -490,6 +493,8 @@ let g:ycm_python_binary_path = 'python3'
 " Zavrit okno s nahledem tagu
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
+
+nnoremap <Leader>i :YcmCompleter GetDoc<Cr>
 
 " gutentags ----------------------------------------------------------------{{{1
 
