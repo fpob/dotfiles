@@ -230,9 +230,6 @@ nnoremap <S-F4> :qa<Cr>
 
 nnoremap <F5> :nohlsearch<Cr>
 nnoremap <F6> @q
-nnoremap <F7> :TagbarToggle<Cr>
-" Custom NERDTree command
-nnoremap <F8> :NERDTreeFocusOrClose<Cr>
 
 nnoremap <F9> :make<Cr>
 
@@ -389,11 +386,16 @@ function! NERDTreeFocusOrClose()
 endfun
 command! NERDTreeFocusOrClose call NERDTreeFocusOrClose()
 
+nnoremap <F8> :NERDTreeFocusOrClose<Cr>
+
 " tagbar -------------------------------------------------------------------{{{1
+
+nnoremap <F7> :TagbarToggle<Cr>
 
 let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
 let g:tagbar_sort = 0
+let g:tagbar_compact = 1
 
 " Grepper ------------------------------------------------------------------{{{1
 
@@ -521,8 +523,6 @@ let g:pymode_rope = 0
 " go -----------------------------------------------------------------------{{{1
 
 let g:go_template_autocreate = 0
-
-autocmd FileType go setlocal noexpandtab
 
 " indent-guides ------------------------------------------------------------{{{1
 
