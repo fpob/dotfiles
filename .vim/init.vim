@@ -169,8 +169,10 @@ augroup vimrc
     " Vymazání posledniho hledani po spuštění
     autocmd VimEnter * let @/=''
 
-    " Always start git commit at first line
-    autocmd FileType gitcommit exec 'au VimEnter * call setpos(".", [0, 1, 1, 0])'
+    " Always start git commit at first line and change foldmethod
+    autocmd FileType gitcommit
+        \   exec 'au VimEnter * call setpos(".", [0, 1, 1, 0])'
+        \|  setlocal foldmethod=syntax
 augroup END
 
 " Mappings -----------------------------------------------------------------{{{1
