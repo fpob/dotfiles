@@ -511,16 +511,29 @@ let g:gutentags_add_default_project_roots = 0
 let g:pymode_options = 1
 let g:pymode_options_colorcolumn = 1
 let g:pymode_options_max_line_length = 79
-let g:pymode_folding = 0
+
+let g:pymode_folding = 1
+let g:pymode_indent = 1
 
 let g:pymode_python = 'python3'
 let g:pymode_syntax_print_as_function = 1
 
-let g:pymode_lint_checkers = ['pyflakes', 'pep8']
+let g:pymode_lint = 1
+let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'pylint']
 let g:pymode_lint_cwindow = 0
 let g:pymode_lint_signs = 0
 
-let g:pymode_rope = 0
+let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_length}
+let g:pymode_lint_options_pylint = {'errors-only': 1}
+
+let g:pymode_rope = 1
+" Create .ropeproject in /tmp not in PWD
+let g:pymode_rope_project_root = tempname()
+
+let g:pymode_rope_show_doc_bind = 'K'
+let g:pymode_rope_goto_definition_bind = 'gd'
+let g:pymode_rope_rename_bind = '<Leader>R'
+let g:pymode_rope_organize_imports_bind = '<Leader>I'
 
 " go -----------------------------------------------------------------------{{{1
 
