@@ -5,6 +5,9 @@ default: clean
 init:
 	mkdir tmp view
 
+helptags:
+	find pack -maxdepth 4 -name doc -type d -exec vim -T dumb -e -c 'helptags {}' -c q \;
+
 youcompleteme:
 	cd pack/dev/start/youcompleteme && ./install.py
 

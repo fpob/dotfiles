@@ -82,9 +82,6 @@
 [submodule ".vim/bundle/templates"]
 	path = .vim/pack/dev/start/templates
 	url = https://github.com/fpob/templates.vim.git
-[submodule ".vim/bundle/python-mode"]
-	path = .vim/pack/dev/start/python-mode
-	url = https://github.com/klen/python-mode
 [submodule ".vim/bundle/argtextobj"]
 	path = .vim/pack/dev/start/argtextobj
 	url = https://github.com/vim-scripts/argtextobj.vim
@@ -109,3 +106,6 @@
 [submodule ".vim/pack/org/start/SyntaxRange"]
 	path = .vim/pack/org/start/SyntaxRange
 	url = https://github.com/vim-scripts/SyntaxRange.git
+[submodule ".vim/pack/dev/start/python-mode"]
+	path = .vim/pack/dev/start/python-mode
+	url = https://github.com/python-mode/python-mode
