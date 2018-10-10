@@ -40,9 +40,6 @@
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/pack/dev/start/tagbar
 	url = https://github.com/majutsushi/tagbar.git
-[submodule ".vim/bundle/trailing-whitespace"]
-	path = .vim/pack/dev/start/trailing-whitespace
-	url = https://github.com/bronson/vim-trailing-whitespace
 [submodule ".vim/bundle/gutentags"]
 	path = .vim/pack/dev/start/gutentags
 	url = https://github.com/ludovicchabant/vim-gutentags
@@ -109,3 +106,6 @@
 [submodule ".vim/pack/dev/start/python-mode"]
 	path = .vim/pack/dev/start/python-mode
 	url = https://github.com/python-mode/python-mode
+[submodule ".vim/pack/dev/start/better-whitespace"]
+	path = .vim/pack/dev/start/better-whitespace
+	url = https://github.com/ntpeters/vim-better-whitespace.git

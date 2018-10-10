@@ -537,9 +537,10 @@ autocmd VimEnter,ColorScheme *
     \   hi IndentGuidesOdd ctermbg=235 guibg=#262626
     \|  hi IndentGuidesEven ctermbg=235 guibg=#262626
 
-" trailing-whitespace ------------------------------------------------------{{{1
+" better-whitespace --------------------------------------------------------{{{1
 
-let g:extra_whitespace_ignored_filetypes = ['mail']
+let g:better_whitespace_filetypes_blacklist = ['mail', 'diff', 'gitcommit', 'help']
+let g:show_spaces_that_precede_tabs = 1
 
 " vimtex -------------------------------------------------------------------{{{1
 
