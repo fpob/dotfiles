@@ -124,7 +124,12 @@ eval "original_$(declare -f getUniqueFolder)"
 # Shorten path as same as getUniqueFolder does but with expanded last element.
 function getUniqueFolder() {
     local trunc_path=$(original_getUniqueFolder "$1")
-    [[ $1 != $HOME ]] && trunc_path="${trunc_path%/*}/${PWD##*/}"
+    if [[ $trunc_path =~ .*/.* ]] ; then
+        [[ $1 != $HOME ]] && trunc_path="${trunc_path%/*}/${PWD##*/}"
+    else
+        # directory one level in root, eg. `mnt`
+        trunc_path=${PWD:1}
+    fi
     echo $trunc_path
 }
 
