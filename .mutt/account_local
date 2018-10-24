@@ -1,6 +1,6 @@
 set my_name = "Filip Pobořil"
-set my_user = fpob
-set my_mail = fpob@localhost
+set my_user = `echo \$USER`
+set my_mail = $my_user@localhost
 set my_pass =
 
 # Receive options

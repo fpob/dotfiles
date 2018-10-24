@@ -14,19 +14,21 @@ set imap_check_subscribed = yes         # Fetch all subscribed folders
 # Accounts -----------------------------------------------------------------{{{1
 
 # Default account
-source ~/.mutt/account.fpob-cz
+source ~/.mutt/account_local
 
 # Local account
-folder-hook "local" "source ~/.mutt/account.local"
-macro index <f4> '<enter-command>source ~/.mutt/account.local<enter><change-folder>!<enter>'
+folder-hook "local" "source ~/.mutt/account_local"
+macro index <f4> '<enter-command>source ~/.mutt/account_local<enter><change-folder>!<enter>'
 
 # Accounts
-folder-hook "fpob-cz" "source ~/.mutt/account.fpob-cz"
-folder-hook "gmail" "source ~/.mutt/account.gmail"
-folder-hook "vut-fit" "source ~/.mutt/account.vut-fit"
-macro index <f5> '<enter-command>source ~/.mutt/account.fpob-cz<enter><change-folder>!<enter>'
-macro index <f6> '<enter-command>source ~/.mutt/account.gmail<enter><change-folder>!<enter>'
-macro index <f7> '<enter-command>source ~/.mutt/account.vut-fit<enter><change-folder>!<enter>'
+folder-hook "account_0" "source ~/.mutt/account_0"
+folder-hook "account_1" "source ~/.mutt/account_1"
+folder-hook "account_2" "source ~/.mutt/account_2"
+folder-hook "account_3" "source ~/.mutt/account_3"
+macro index <f5> '<enter-command>source ~/.mutt/account_0<enter><change-folder>!<enter>'
+macro index <f6> '<enter-command>source ~/.mutt/account_1<enter><change-folder>!<enter>'
+macro index <f7> '<enter-command>source ~/.mutt/account_2<enter><change-folder>!<enter>'
+macro index <f8> '<enter-command>source ~/.mutt/account_3<enter><change-folder>!<enter>'
 
 # Mappings and shortcuts ---------------------------------------------------{{{1
 
