@@ -202,7 +202,7 @@ alias kcurl='curl -u : --negotiate'
 alias syn='pygmentize -f 256 -O bg=dark,style=monokai'
 
 alias tsv="column -t -s$'\t'"
-alias json="python -mjson.tool | pygmentize -s -l json"
+alias json="python -mjson.tool"
 
 alias gdb='gdb -q'
 alias bc='bc -ql'
