@@ -3,8 +3,11 @@
 # argument: environment name
 
 virtualenv_name=$1
+virtualenv_path=$WORKON_HOME/$virtualenv_name
 
-if [[ -f $WORKON_HOME/$virtualenv_name/.project ]] ; then
+echo "Python: $(readlink "$virtualenv_path/bin/python")"
+
+if [[ -f $virtualenv_path/.project ]] ; then
     echo -n 'Project: '
-    cat $WORKON_HOME/$virtualenv_name/.project
+    cat $virtualenv_path/.project
 fi
