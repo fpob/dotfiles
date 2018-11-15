@@ -6,7 +6,7 @@ map=
 
 if [[ $1 = '--help' ]] ; then
     cat << EOF
-Usage: `basename $0` [-o DIR] [-b BITRATE] FILE [FILE ...]
+Usage: $(basename "$0") [-o DIR] [-b BITRATE] FILE [FILE ...]
 
 Zkonvertuje zadané audio/video soubory na mp3.
 
@@ -30,7 +30,7 @@ done
 shift $OPTIND
 
 if [[ -n $output ]] ; then
-    [[ ! -d $output ]] && mkdir -p $output
+    [[ ! -d $output ]] && mkdir -p "$output"
 fi
 
 if [[ -z $1 ]] ; then
@@ -39,12 +39,12 @@ if [[ -z $1 ]] ; then
 fi
 
 for src in "${@}" ; do
-    mime=`mimetype --output-format %m "$src"`
+    mime=$(mimetype --output-format %m "$src")
     case $mime in
         audio/*|video/*)
-            dst=`python -c 'import sys, os; print(os.path.basename(os.path.splitext(sys.argv[1])[0]))' "$src"`.mp3
+            dst=$(python -c 'import sys, os; print(os.path.basename(os.path.splitext(sys.argv[1])[0]))' "$src").mp3
             [[ -n $output ]] && dst="$output/$dst"
-            ffmpeg -i "$src" ${map:+-map} $map -codec:a libmp3lame -b:a $bitrate "$dst"
+            ffmpeg -i "$src" ${map:+-map} "$map" -codec:a libmp3lame -b:a "$bitrate" "$dst"
             ;;
 
         *)

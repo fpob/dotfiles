@@ -2,7 +2,7 @@
 
 if [ -n "$1" ] ; then
     docker inspect -f '{{range $k, $v := .Config.ExposedPorts}}{{$k}}
-{{end}}' $1 | grep -v '^$'
+{{end}}' "$1" | grep -v '^$'
     exit 0
 else
     echo "Usage: $(basename "$0") <image|container>" >&2

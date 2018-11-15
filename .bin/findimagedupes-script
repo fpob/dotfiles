@@ -16,7 +16,8 @@ def cli():
 
 
 @cli.command('echo')
-@click.argument('images', nargs=-1, type=click.Path(dir_okay=False, exists=True))
+@click.argument('images', nargs=-1,
+                type=click.Path(dir_okay=False, exists=True))
 def cli_echo(images):
     images = [os.path.relpath(f, PWD) for f in sorted(images)
               if os.path.exists(f)]
@@ -28,7 +29,8 @@ def cli_echo(images):
 @cli.command('view')
 @click.option('-w', '--width', type=int, default=1900)
 @click.option('-h', '--height', type=int, default=1000)
-@click.option('-d', '--dupes-dest', type=click.Path(file_okay=False), default='dupes',
+@click.option('-d', '--dupes-dest', default='dupes',
+              type=click.Path(file_okay=False),
               help='Directory where to move duplicates')
 @click.argument('images', nargs=-1, type=click.Path(dir_okay=False))
 def cli_view(images, width, height, dupes_dest):

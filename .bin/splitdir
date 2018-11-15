@@ -3,6 +3,7 @@
 import click
 import os
 
+
 @click.command()
 @click.option("-c", "--chars", default=2,
               help="Počet prvních znaků podle kterých se rozděluje")
@@ -40,6 +41,7 @@ def splitdir(directory, chars, offset, depth, dry_run):
                 except OSError:
                     if os.path.exists(file + "~"):
                         os.rename(file + "~", file)
+
 
 if __name__ == "__main__":
     splitdir()

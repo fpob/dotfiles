@@ -4,6 +4,7 @@ import click
 import base64
 import mimetypes
 
+
 @click.command()
 @click.option("-m", "--mime",
               help="Mime typ souboru (detekuje se automaticky)")
@@ -21,6 +22,7 @@ def datauri(input, output, mime=None):
         mime = mimetypes.guess_type(input.name)[0]
     data = base64.b64encode(input.read()).decode('ascii')
     click.echo(data, output, nl=False)
+
 
 if __name__ == "__main__":
     datauri()

@@ -3,11 +3,13 @@
 import click
 import cairo
 
+
 def rgba(hex_rgba):
     return (int(hex_rgba[0:2], 16) / 255,
             int(hex_rgba[2:4], 16) / 255,
             int(hex_rgba[4:6], 16) / 255,
             int(hex_rgba[6:8], 16) / 255 if len(hex_rgba) == 8 else 1.0)
+
 
 @click.command()
 @click.argument('width', type=click.IntRange(min=100))

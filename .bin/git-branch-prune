@@ -29,7 +29,7 @@ if $dry_run ; then
     git branch --merged \
         | grep -vE '(^\*|master|develop)'
 else
-    git fetch --all --prune $git_opts
+    git fetch --all --prune
     git branch --merged \
         | grep -vE '(^\*|master|develop)' \
         | xargs -r git branch --delete

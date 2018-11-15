@@ -2,7 +2,7 @@
 
 help_msg () {
     cat <<EOF
-Použití: `basename $0` [-r RATE] [-t TITLE] [-s SCALE] [-c COLUMNS] \\
+Použití: $(basename "$0") [-r RATE] [-t TITLE] [-s SCALE] [-c COLUMNS] \\
          [-f FFMPEG_ARGS] <INPUT> [OUTPUT]
 
 Pro zadané video vygeneruje obrázek s náhledy z videa.
@@ -22,16 +22,16 @@ Parametry:
     -c COLUMNS  počet sloupců (= počet screenshotů v jednom řádku)
                 (výchozí: automaticky)
 EOF
-    exit $1
+    exit "$1"
 }
 
 error () {
-    [[ -n $2 ]] && echo $2 >&2
-    exit $1
+    [[ -n $2 ]] && echo "$2" >&2
+    exit "$1"
 }
 
 confirm () {
-    read -e -p "${1:-Potvrdit} (y/n) "
+    read -rep "${1:-Potvrdit} (y/n) "
     if [[ -n $REPLY ]] ; then
         [[ $REPLY = y || $REPLY = yes ]]
     else
@@ -41,7 +41,7 @@ confirm () {
 
 [[ $1 = '--help' ]] && help_msg 0
 
-TEMP=`mktemp -d "/tmp/video-preview.XXXXXX"`
+TEMP=$(mktemp -d "/tmp/video-preview.XXXXXX")
 trap 'rm -rf $TEMP' EXIT
 
 while getopts "r:t:s:c:f:" o; do
@@ -63,7 +63,7 @@ TITLE=${TITLE:-${INPUT%.*}}
 RATE=${RATE:-1/300}
 SCALE=${SCALE:-320}
 
-! which ffmpeg montage &>/dev/null \
+! command -v ffmpeg montage &>/dev/null \
     && error 127 'Příkaz „ffmpeg“ nebo „montage“ neexistuje'
 
 [[ ! -f $INPUT ]] && error 1 "Soubor „$INPUT“ neexistuje"
@@ -73,5 +73,5 @@ if [[ -f $OUTPUT ]] ; then
         && rm -f "$OUTPUT" || exit
 fi
 
-ffmpeg $FFMPEG_ARGS -i "$INPUT" -r $RATE -vf scale=-1:$SCALE -vcodec png $TEMP/%04d.png
-montage -title "$TITLE" -geometry +4+4 ${TILE:+-tile $TILE} $TEMP/* "$OUTPUT"
+ffmpeg $FFMPEG_ARGS -i "$INPUT" -r "$RATE" -vf scale=-1:$SCALE -vcodec png "$TEMP/%04d.png"
+montage -title "$TITLE" -geometry +4+4 ${TILE:+-tile $TILE} "$TEMP"/* "$OUTPUT"
