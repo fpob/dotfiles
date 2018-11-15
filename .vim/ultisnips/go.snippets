@@ -1,0 +1,125 @@
+snippet pack "package" b
+package ${1:main}$0
+endsnippet
+
+snippet import "import factored"
+import (
+	$0
+)
+endsnippet
+
+snippet var "var factored"
+var (
+	$0
+)
+endsnippet
+
+snippet const "const factored"
+const (
+	$0
+)
+endsnippet
+
+snippet main "func main()" b
+func main() {
+	$0
+}
+endsnippet
+
+snippet init "func init()" b
+func init() {
+	$0
+}
+endsnippet
+
+snippet if
+if ${1:/* condition */} {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet elif
+else if ${1:/* condition */} {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet else
+else {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet for
+for ${1} {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet fori
+for ${1:i} := 0; $1 < ${2:count}; $1++ {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet fore "foreach"
+for ${1:item} := range ${2:array} {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet switch
+switch ${1} {
+	$0
+}
+endsnippet
+
+snippet select
+select {
+	$0
+}
+endsnippet
+
+snippet case
+case ${1}:
+	$0
+endsnippet
+
+snippet default
+default:
+	$0
+endsnippet
+
+snippet struct "" b
+type ${1:name} struct {
+	$0
+}
+endsnippet
+
+snippet iface "" b
+type ${1:name} interface {
+	$0
+}
+endsnippet
+
+snippet func "function/closure"
+func ${1:functionName}(${2}) ${3} {
+	$0
+}
+endsnippet
+
+snippet funcs "function on structure" b
+func (${1}) ${2:functionName}(${3}) ${4} {
+	$0
+}
+endsnippet
+
+snippet mc "make chan"
+make(chan ${1})$0
+endsnippet
+
+snippet go "go anonymous func"
+go func() {
+	${VISUAL}$0
+}()
+endsnippet
