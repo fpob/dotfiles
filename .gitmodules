@@ -76,9 +76,6 @@
 [submodule ".vim/bundle/matchit"]
 	path = .vim/pack/base/start/matchit
 	url = https://github.com/vim-scripts/matchit.zip
-[submodule ".vim/bundle/templates"]
-	path = .vim/pack/dev/start/templates
-	url = https://github.com/fpob/templates.vim.git
 [submodule ".vim/bundle/argtextobj"]
 	path = .vim/pack/dev/start/argtextobj
 	url = https://github.com/vim-scripts/argtextobj.vim
@@ -110,3 +107,6 @@
 [submodule ".vim/pack/dev/start/better-whitespace"]
 	path = .vim/pack/dev/start/better-whitespace
 	url = https://github.com/ntpeters/vim-better-whitespace.git
+[submodule ".vim/pack/dev/start/template"]
+	path = .vim/pack/base/start/template
+	url = https://github.com/aperezdc/vim-template.git
