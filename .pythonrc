@@ -1,5 +1,5 @@
 from pprint import pprint
-from imp import reload
+from importlib import reload
 from glob import glob
 import os
 import re
