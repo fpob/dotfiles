@@ -26,7 +26,7 @@ trim() {
     head -n "$maxln"
 }
 highlight() {
-    pygmentize "$@"
+    pygmentize -f 256 -O 'bg=dark,style=monokai' "$@"
     test $? -eq 0 -o $? -eq 141
 }
 
@@ -79,8 +79,8 @@ case "$mimetype" in
 esac
 
 echo '----- File Type Classification -----' \
-    && file --dereference --brief -- "$path" \
-    && file --dereference --brief --mime -- "$path" \
+    && file --dereference --brief -- "$path" | fmt -sw $width \
+    && file --dereference --brief --mime -- "$path" | fmt -sw $width \
     && exit 5
 
 exit 1
