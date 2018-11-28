@@ -539,6 +539,9 @@ nmap <leader>dp <Plug>GitGutterPreviewHunk
 nmap <leader>ds <Plug>GitGutterStageHunk
 nmap <leader>du <Plug>GitGutterUndoHunk
 
+nmap [c <Plug>GitGutterPrevHunk
+nmap ]c <Plug>GitGutterNextHunk
+
 " Pack dev/python-mode -----------------------------------------------------{{{1
 
 let g:pymode_options = 1
