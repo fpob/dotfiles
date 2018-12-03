@@ -15,6 +15,3 @@ cd "$HOME"
 
 # Init submodules
 yadm submodule update --recursive --init
-
-# Init vim
-make -C .vim init

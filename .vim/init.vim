@@ -4,11 +4,17 @@ set nocompatible
 
 " Historie, zálohy
 set backup
-set backupdir=~/.vim/tmp,.,/tmp
-set directory=~/.vim/tmp,.,/tmp
+set backupdir=~/.vim/tmp,/tmp
+set directory=~/.vim/tmp,/tmp
 set history=50
-set undolevels=100
 set viewoptions-=options
+
+" Undo configuration
+set undolevels=100
+if has('persistent_undo')
+    set undofile
+    set undodir=~/.vim/undo,/tmp
+endif
 
 " Odsazování
 set backspace=indent,eol,start  " backspace maže vše
