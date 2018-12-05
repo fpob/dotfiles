@@ -1,0 +1,6 @@
+# IDE files
+/tags
+.vim-template:*
+
+# direnv file
+.envrc
