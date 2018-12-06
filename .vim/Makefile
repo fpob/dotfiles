@@ -3,12 +3,6 @@ PWD = $(shell pwd)
 clean:
 	$(RM) tmp/* view/* undo/*
 
-helptags:
-	find pack -maxdepth 4 -name doc -type d -exec vim -T dumb -e -c 'helptags {}' -c q \;
-
-youcompleteme:
-	cd pack/dev/start/youcompleteme && ./install.py
-
 spell:
 	test -d spell || mkdir spell
 	{ cd /usr/share/hunspell || cd /usr/share/myspell ;} 2>/dev/null \
