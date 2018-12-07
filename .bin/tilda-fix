@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+#
+# Fix Tilda position and size after change of primary monitor.
+#
+
+while [[ $(pgrep -cu $USER tilda) -gt 0 ]] ; do
+    pkill -u $USER tilda
+done
+
+eval "$(xrandr | grep -w primary | sed -re \
+    's/^.* ([0-9]+)x([0-9]+)\+([0-9]+)\+([0-9]+) .*$/w=\1\nh=\2\nx=\3\ny=\4/')"
+
+sed -re "
+s/^max_width=[0-9]+$/max_width=$w/;s/^max_height=[0-9]+$/max_height=$h/
+s/^x_pos=[0-9]+$/x_pos=$x/;s/^y_pos=[0-9]+$/y_pos=$y/
+" -i ~/.config/tilda/config_0
+
+tilda &>/dev/null &
