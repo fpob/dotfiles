@@ -50,7 +50,6 @@ export TS_ENV="pwd"
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Projects
 export VIRTUALENVWRAPPER_PYTHON=$(which python3)
-export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # golang
 export GOPATH=$HOME/.go
@@ -200,6 +199,8 @@ alias kcurl='curl -u : --negotiate'
 
 # Syntax highlight
 alias syn='pygmentize -f 256 -O bg=dark,style=monokai'
+# Markdown viewer
+alias mdv='mdv -t 884.0134 -c $(tput cols) -u i'
 
 alias tsv="column -t -s$'\t'"
 alias json="python -mjson.tool"
