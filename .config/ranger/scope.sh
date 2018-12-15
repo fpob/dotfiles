@@ -59,6 +59,10 @@ case "$extension" in
         try dpkg --info "$path" && { dump | trim; exit 5; } || exit 1
         ;;
 
+    rpm)
+        try rpm -qip "$path" && { dump | trim; exit 5; } || exit 1
+        ;;
+
     txt)
         cat "$path" | trim; exit 5
         ;;
