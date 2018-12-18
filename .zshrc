@@ -90,8 +90,9 @@ DISABLE_AUTO_UPDATE="true"
 ZLE_REMOVE_SUFFIX_CHARS=""
 
 # Pluginy
-plugins=(sudo zsh_reload git git-flow autojump taskwarrior redis-cli
-         python pip virtualenvwrapper docker docker-compose autojump oc go)
+plugins=(zsh_reload history-substring-search
+         sudo git git-flow autojump taskwarrior redis-cli
+         python pip virtualenvwrapper docker docker-compose oc go)
 # custom
 plugins+=(cheat ranger zsh-syntax-highlighting direnv)
 
@@ -105,9 +106,11 @@ source $ZSH/oh-my-zsh.sh
 fpath=($ZSH_CUSTOM/completions $ZSH_CUSTOM/functions $fpath)
 typeset -Ug fpath
 
-# Reinicializace doplnovani, kvuli vlastnim doplnovani
-#autoload -Uz compinit
-#compinit -d "$ZSH_CACHE_DIR/zcomp-$HOST"
+# Reload completions
+autoload -Uz compinit && compinit
+
+# Load run-help function
+autoload -Uz run-help
 
 # Opravy jen u nazvu prikazu, ne vsude
 unsetopt correct_all
@@ -156,7 +159,7 @@ alias f='$FILE_MANAGER'
 
 # Colors
 alias ls="ls -v --color=auto"
-alias grep="grep --color=auto"
+alias grep="grep --color=auto --exclude-dir=.git"
 
 # ls shortcuts
 alias l='ls -CF'
@@ -211,6 +214,7 @@ alias octave='octave -qW'
 
 # Global aliasses
 alias -g L='|less -FKRX'
+alias -g LL='2>&1|less -FKRX'
 alias -g G='|grep -Pi'
 alias -g T='|tail'
 alias -g H='|head'
@@ -238,4 +242,3 @@ formiko-vim () {
     # detach command
     (command formiko-vim "$1" &>/dev/null &)
 }
-
