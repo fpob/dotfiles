@@ -5,9 +5,13 @@
 virtualenv_name=$1
 virtualenv_path=$WORKON_HOME/$virtualenv_name
 
-echo "Python: $(readlink "$virtualenv_path/bin/python")"
+get_version () { "$1" --version | cut -d' ' -f2 }
+
+echo 'Versions: '
+echo "  python: $("$virtualenv_path/bin/python" --version | cut -d' ' -f2)"
+echo "  pip: $("$virtualenv_path/bin/pip" --version | cut -d' ' -f2)"
 
 if [[ -f $virtualenv_path/.project ]] ; then
-    echo -n 'Project: '
-    cat $virtualenv_path/.project
+    project=$(cat $virtualenv_path/.project)
+    echo "Project: $project"
 fi
