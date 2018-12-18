@@ -110,3 +110,6 @@
 [submodule ".vim/pack/dev/start/template"]
 	path = .vim/pack/base/start/template
 	url = https://github.com/aperezdc/vim-template.git
+[submodule ".vim/pack/base/start/template"]
+	path = .vim/pack/base/start/template
+	url = https://github.com/aperezdc/vim-template.git
