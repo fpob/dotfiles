@@ -44,7 +44,7 @@ for src in "${@}" ; do
         audio/*|video/*)
             dst=$(python -c 'import sys, os; print(os.path.basename(os.path.splitext(sys.argv[1])[0]))' "$src").mp3
             [[ -n $output ]] && dst="$output/$dst"
-            ffmpeg -i "$src" ${map:+-map} "$map" -codec:a libmp3lame -b:a "$bitrate" "$dst"
+            ffmpeg -i "$src" ${map:+-map} $map -codec:a libmp3lame -b:a "$bitrate" "$dst"
             ;;
 
         *)
