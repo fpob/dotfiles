@@ -1,5 +1,6 @@
 # IDE files
 /tags
+/.project
 .vim-template:*
 
 # direnv file
