@@ -1,11 +1,22 @@
 #!/usr/bin/env bash
 
 #
-# Fix Tilda position and size after change of primary monitor.
+# Fix Tilda position and size after change of display layout.
 #
+
+xrandr | grep -q 'connected primary' || {
+    echo 'Primary display is not connected' >&2
+    exit 1
+}
 
 while [[ $(pgrep -cu $USER tilda) -gt 0 ]] ; do
     pkill -u $USER tilda
+done
+
+# Keep only config_0 (config_{1..} is created when tilda is started multiple
+# times.
+for i in 1 2 ; do
+    rm -f ~/.config/tilda/config_$i
 done
 
 eval "$(xrandr | grep -w primary | sed -re \
