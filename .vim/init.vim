@@ -554,6 +554,9 @@ let g:pymode_options = 1
 let g:pymode_options_colorcolumn = 1
 let g:pymode_options_max_line_length = 79
 
+let g:pymode_preview_height = 12
+let g:pymode_preview_position = 'below'
+
 let g:pymode_folding = 0
 let g:pymode_indent = 1
 
