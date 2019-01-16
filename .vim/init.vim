@@ -81,6 +81,7 @@ endif
 set textwidth=79
 set colorcolumn=+1  " Zvýraznění &textwidth+1 sloupce
 set wrap
+set linebreak       " zalamovani za 'breakat', ne za poslednim znakem
 set breakindent     " Wrap s odsazováním
 set showbreak=↳     " znak na začátku zalomeného řádku
 set nojoinspaces    " při spojování ř.(S-j) nedává 2 mezery za větu

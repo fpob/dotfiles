@@ -1,21 +1,26 @@
 " nekontrolovat pravopis v komentářích
 let g:tex_comment_nospell = 1
 
-setlocal colorcolumn=80
-setlocal textwidth=80       " Automatické zalamování
-setlocal nolinebreak        " Zalamování na hranicích slov
-setlocal showbreak=         " Nijak neoznačovat vizuální zalomení řádku
-setlocal formatoptions+=t
+" automaticke zalamovani radku a zvyrazneni sloupce
+setlocal textwidth=80
+
 setlocal spell              " kontrola pravopisu
 setlocal tabstop=2
 setlocal shiftwidth=2
-setlocal wrap
-setlocal linebreak
 setlocal nolist
 
-inoremap <Char-0xA0> ~
-imap <S-Space> ~
+imap <buffer> <Char-0xA0> ~
+imap <buffer> <S-Space> ~
 
-nnoremap <F7> :VimtexTocToggle<Cr>
-"nnoremap <F9> :VimtexCompileSS<Cr>
-nnoremap <F10> :VimtexView<Cr>
+function! TexCompile()
+    if filereadable('Makefile') || filereadable('makefile') || filereadable('GNUmakefile')
+        execute 'make!'
+    else
+        execute 'VimtexCompileSS'
+    endif
+endfun
+command! TexCompile call TexCompile()
+
+nnoremap <buffer> <F7> :VimtexTocToggle<Cr>
+nnoremap <buffer> <F9> :TexCompile<Cr>
+nnoremap <buffer> <F10> :VimtexView<Cr>
