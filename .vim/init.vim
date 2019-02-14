@@ -148,14 +148,8 @@ let g:user_email = Chomp(system('git config --includes --get user.email 2>/dev/n
 
 " ColorScheme --------------------------------------------------------------{{{1
 
-autocmd ColorScheme molokai
-    \   hi CursorLine ctermbg=234 guibg=#242828
-    \|  hi CursorColumn ctermbg=234 guibg=#242828
-
-" Underline spell errors in terminal
-autocmd ColorScheme *
-    \   hi SpellBad cterm=underline
-    \|  hi SpellCap cterm=underline
+" Tweak colors
+autocmd ColorScheme * runtime after/colors.vim
 
 silent! colorscheme molokai     " Barevné schéma
 
