@@ -91,7 +91,7 @@ ZLE_REMOVE_SUFFIX_CHARS=""
 
 # Pluginy
 plugins=(zsh_reload history-substring-search
-         sudo git git-flow autojump taskwarrior redis-cli
+         sudo git git-flow autojump taskwarrior redis-cli transfer
          python pip virtualenvwrapper docker docker-compose oc go)
 # custom
 plugins+=(cheat ranger zsh-syntax-highlighting direnv)
