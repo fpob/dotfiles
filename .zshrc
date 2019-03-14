@@ -92,7 +92,7 @@ ZLE_REMOVE_SUFFIX_CHARS=""
 # Pluginy
 plugins=(zsh_reload history-substring-search
          sudo git git-flow autojump taskwarrior redis-cli transfer
-         python pip virtualenvwrapper docker docker-compose oc go)
+         python pip virtualenvwrapper docker docker-compose kubectl oc go)
 # custom
 plugins+=(cheat ranger zsh-syntax-highlighting direnv)
 
@@ -107,7 +107,7 @@ fpath=($ZSH_CUSTOM/completions $ZSH_CUSTOM/functions $fpath)
 typeset -Ug fpath
 
 # Reload completions
-autoload -Uz compinit && compinit
+#autoload -Uz compinit && compinit
 
 # Load run-help function
 autoload -Uz run-help
@@ -224,6 +224,10 @@ alias -g N='&>/dev/null'
 case $PARENT in
     ranger|vim|nvim) alias $PARENT='exit' ;;
 esac
+
+# Completion aliasses ------------------------------------------------------{{{1
+
+#compdef '_dispatch git git' yadm
 
 # Color man pages ----------------------------------------------------------{{{1
 
