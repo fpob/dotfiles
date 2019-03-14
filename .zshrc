@@ -234,11 +234,3 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;31m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;34m'
-
-
-# Functions-----------------------------------------------------------------{{{1
-
-formiko-vim () {
-    # detach command
-    (command formiko-vim "$1" &>/dev/null &)
-}
