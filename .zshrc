@@ -55,7 +55,7 @@ ZSH_CUSTOM=$ZSHRC_D/oh-my-zsh-custom
 if [[ -n $MC_SID || $TERM = 'linux' ]] ; then
     ZSH_THEME="simple"
 else
-    ZSH_THEME="powerlevel9k/powerlevel9k"
+    ZSH_THEME="powerlevel10k/powerlevel10k"
 fi
 
 #CASE_SENSITIVE="true"
@@ -133,7 +133,7 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
 
 # powerlevel9k setup -------------------------------------------------------{{{1
 
-if [[ $ZSH_THEME = 'powerlevel9k/powerlevel9k' ]] ; then
+if [[ $ZSH_THEME =~ powerlevel* ]] ; then
 
 # Enable precmd and preexec, without this powerlevel9k will not work properly
 autoload -U add-zsh-hook
