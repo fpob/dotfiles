@@ -108,6 +108,10 @@ unset config_file
 # Load run-help function
 autoload -Uz run-help
 
+# Try automaticaly activate virtualenv. chpwd_functions are not triggered when
+# shell is started with changed PWD (tmux new split/panel, ...).
+[[ ! $DISABLE_VENV_CD -eq 1 ]] && workon_cwd
+
 # History setup ------------------------------------------------------------{{{1
 # Has to be done after OMZ setup
 
