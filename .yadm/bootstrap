@@ -3,19 +3,6 @@
 umask g-w,o-w
 cd "$HOME"
 
-[[ ! -n $ZSH ]] && ZSH=$HOME/.oh-my-zsh
-
-echo '>>> Initialize Oh My Zsh'
-[[ ! -f $ZSH/oh-my-zsh.sh ]] && {
-    cd "$ZSH"
-    git init
-    git remote add origin 'https://github.com/robbyrussell/oh-my-zsh.git'
-    cd "$HOME"
-}
-
-echo '>>> Update Oh My Zsh'
-git -C "$ZSH" pull origin master
-
 echo '>>> Update Git submodules'
 yadm submodule update --recursive --init
 

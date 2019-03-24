@@ -14,30 +14,9 @@ if [[ -z $TMUX && -z $MC_SID ]] ; then
     fi
 fi
 
-# Paths --------------------------------------------------------------------{{{1
-
-# Bin path
-path=(~/.bin ~/.local/bin ~/.go/bin $path)
-typeset -gU path
-
-# Man path
-MANPATH=$(env MANPATH= manpath)
-manpath=(~/.local/man $manpath)
-typeset -gU manpath
-
 # Variables ----------------------------------------------------------------{{{1
 
-# Parent process name
-PARENT=$(ps -p $PPID -o comm=)
-
-if [[ -n $SSH_CONNECTION || -n $MC_SID ]]; then
-    export BROWSER=${BROWSER:-lynx}
-    export EDITOR=${EDITOR:-vim}
-else
-    export BROWSER=${BROWSER:-firefox}
-    export EDITOR=${EDITOR:-vim}
-fi
-
+export EDITOR=${EDITOR:-vim}
 export FILE_MANAGER=${FILE_MANAGER:-ranger}
 
 # Python startup script
@@ -54,26 +33,24 @@ export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 # golang
 export GOPATH=$HOME/.go
 
-# ssh key
-#export SSH_KEY_PATH="~/.ssh/dsa_id"
+# Paths --------------------------------------------------------------------{{{1
 
-# History
-HISTFILE=$HOME/.zsh_history
-HISTSIZE=2500
-SAVEHIST=5000
+# Bin path
+path=(~/.bin ~/.local/bin $GOPATH/bin $path)
+typeset -gU path
 
-# Customize highlighting
-# https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
-typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[path]='none'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=245'
-ZSH_HIGHLIGHT_STYLES[redirection]='fg=245'
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=42'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
+# Man path
+MANPATH=$(env MANPATH= manpath)
+manpath=(~/.local/man $manpath)
+typeset -gU manpath
 
-# Oh My Zsh ----------------------------------------------------------------{{{1
+# Oh My Zsh / zshrc.d ------------------------------------------------------{{{1
 
-export ZSH=$HOME/.oh-my-zsh
+ZSHRC_D=$HOME/.zshrc.d
+
+# OMZ paths
+ZSH=$ZSHRC_D/oh-my-zsh
+ZSH_CUSTOM=$ZSHRC_D/oh-my-zsh-custom
 
 if [[ -n $MC_SID || $TERM = 'linux' ]] ; then
     ZSH_THEME="simple"
@@ -81,44 +58,83 @@ else
     ZSH_THEME="powerlevel9k/powerlevel9k"
 fi
 
-# Nastaveni
 #CASE_SENSITIVE="true"
 DISABLE_AUTO_TITLE="true"
-ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="false"
 COMPLETION_WAITING_DOTS="true"
 DISABLE_AUTO_UPDATE="true"
 ZLE_REMOVE_SUFFIX_CHARS=""
 
-# Pluginy
-plugins=(zsh_reload history-substring-search
-         sudo git git-flow autojump taskwarrior redis-cli transfer
-         python pip virtualenvwrapper docker docker-compose kubectl oc go)
-# custom
-plugins+=(cheat ranger zsh-syntax-highlighting direnv)
-
-# Pridani podpory precmd a preexec, bez toho nefunguje theme powerlevel9k
-autoload -U add-zsh-hook
-add-zsh-hook precmd  omz_termsupport_precmd
-add-zsh-hook preexec omz_termsupport_preexec
+plugins=(
+    autojump
+    cheat
+    direnv
+    docker
+    docker-compose
+    git
+    git-flow
+    go
+    history-substring-search
+    kubectl
+    oc
+    pip
+    python
+    ranger
+    redis-cli
+    sudo
+    taskwarrior
+    transfer
+    virtualenvwrapper
+    zsh_reload
+    zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
-fpath=($ZSH_CUSTOM/completions $ZSH_CUSTOM/functions $fpath)
-typeset -Ug fpath
+# Remove all aliases from OMZ plugins
+unalias -m '*'
 
-# Reload completions
-#autoload -Uz compinit && compinit
+# Add a function path
+fpath=($ZSHRC_D/functions $ZSHRC_D/completions $fpath)
+# reload completion functions
+autoload -Uz compinit && compinit
+
+# Load all custom config files
+for config_file ($ZSHRC_D/*.zsh(N)) ; do
+    source $config_file
+done
+unset config_file
 
 # Load run-help function
 autoload -Uz run-help
 
-# Opravy jen u nazvu prikazu, ne vsude
-unsetopt correct_all
-setopt correct
+# History setup ------------------------------------------------------------{{{1
+# Has to be done after OMZ setup
 
-# Prompt -------------------------------------------------------------------{{{1
+export HISTFILE=$HOME/.zsh_history
+export HISTSIZE=65536
+export SAVEHIST=$HISTSIZE
+
+# Ignore commands that starts with space and duplicates of the prevous command
+export HISTCONTROL=ignorespace:ignoredups
+
+# Syntax highlight setup ---------------------------------------------------{{{1
+# https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
+
+ZSH_HIGHLIGHT_STYLES[path]='none'
+ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=245'
+ZSH_HIGHLIGHT_STYLES[redirection]='fg=245'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=42'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
+
+# powerlevel9k setup -------------------------------------------------------{{{1
 
 if [[ $ZSH_THEME = 'powerlevel9k/powerlevel9k' ]] ; then
+
+# Enable precmd and preexec, without this powerlevel9k will not work properly
+autoload -U add-zsh-hook
+add-zsh-hook precmd  omz_termsupport_precmd
+add-zsh-hook preexec omz_termsupport_preexec
 
 # Rename function `getUniqueFolder` to `original_getUniqueFolder`
 eval "original_$(declare -f getUniqueFolder)"
@@ -135,7 +151,15 @@ function getUniqueFolder() {
     echo $trunc_path
 }
 
-POWERLEVEL9K_CUSTOM_PARENT="case \$PARENT in ranger|vim|nvim) echo -n "\$PARENT" ;; esac"
+# Parent process name
+prompt_parent_cache=$(ps -p $PPID -o comm=)
+function prompt_parent() {
+    case $prompt_parent_cache in
+        ranger|vim|nvim) echo $prompt_parent_cache ;;
+    esac
+}
+
+POWERLEVEL9K_CUSTOM_PARENT="prompt_parent"
 POWERLEVEL9K_CUSTOM_PARENT_FOREGROUND="yellow"
 POWERLEVEL9K_CUSTOM_PARENT_BACKGROUND="black"
 
@@ -151,15 +175,12 @@ fi # END powerlevel9k
 
 # Aliasses -----------------------------------------------------------------{{{1
 
-# Remove all aliases
-unalias -m '*'
-
 alias e='$EDITOR'
 alias f='$FILE_MANAGER'
 
 # Colors
 alias ls="ls -v --color=auto"
-alias grep="grep --color=auto --exclude-dir=.git"
+alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}"
 
 # ls shortcuts
 alias l='ls -CF'
@@ -219,15 +240,6 @@ alias -g G='|grep -Pi'
 alias -g T='|tail'
 alias -g H='|head'
 alias -g N='&>/dev/null'
-
-# Start new instance only if it is not running in current shell
-case $PARENT in
-    ranger|vim|nvim) alias $PARENT='exit' ;;
-esac
-
-# Completion aliasses ------------------------------------------------------{{{1
-
-#compdef '_dispatch git git' yadm
 
 # Color man pages ----------------------------------------------------------{{{1
 

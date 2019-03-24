@@ -1,5 +1,5 @@
 [submodule ".oh-my-zsh/custom/themes/powerlevel9k"]
-	path = .oh-my-zsh/custom/themes/powerlevel9k
+	path = .zshrc.d/oh-my-zsh-custom/themes/powerlevel9k
 	url = https://github.com/bhilburn/powerlevel9k.git
 [submodule ".vim/bundle/airline"]
 	path = .vim/pack/base/start/airline
@@ -71,7 +71,7 @@
 	path = .vim/pack/dev/start/vimtex
 	url = https://github.com/lervag/vimtex.git
 [submodule ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
-	path = .oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+	path = .zshrc.d/oh-my-zsh-custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule ".vim/bundle/matchit"]
 	path = .vim/pack/base/start/matchit
@@ -116,3 +116,6 @@
 [submodule ".vim/pack/dev/start/nix"]
 	path = .vim/pack/dev/start/nix
 	url = https://github.com/LnL7/vim-nix.git
+[submodule ".zshrc.d/oh-my-zsh"]
+	path = .zshrc.d/oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh.git
