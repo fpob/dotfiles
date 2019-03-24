@@ -103,10 +103,11 @@ CTRLP                                            *ide-pluginy-ctrlp*
 
 <Ctrl-P>  zobrazit
 <Ctrl-D>  přepnutí vyhledávání mezi jménem souboru a cestou (výchozí)
+<Ctrl-B>  prepnuti mezi vyhledavanim souboru a bufferu
 <Ctrl-R>  přepnutí mezi výchozím řetězcovým vyhledáváním a regexu
-<Ctrl-T>  otevřít soubor v nové záložce
-<Ctrl-V>  vertikální rozdělení
-<Ctrl-S>  horizontální rozdělení
+<Ctrl-T>  otevřít soubor (nebo vsechny oznacene) v nové záložce
+<Ctrl-V>  vertikální rozdělení (vybrany nebo vsechny oznacene)
+<Ctrl-S>  horizontální rozdělení (vybrany nebo vsechny oznacene)
 <Ctrl-Z>  označení souboru
 <Ctrl-O>  otevření všech označených souborů
 <Tab>     doplnění názvu adresáře

@@ -323,6 +323,9 @@ let g:airline#extensions#tabline#buffers_label = 'b'
 let g:airline#extensions#tabline#tabs_label = 't'
 let g:airline#extensions#tabline#show_close_button = 0
 
+" Hide 'tab number/count' in the right side
+let g:airline#extensions#tabline#show_tab_count = 0
+
 " Filename formatting in tabs
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#fnamemod = ':t'
@@ -426,10 +429,17 @@ autocmd VimEnter,ColorScheme *
 
 " Pack base/nerdtree -------------------------------------------------------{{{1
 
-let NERDTreeIgnore = ['^__pycache__$[[dir]]', '^tags$[[file]]']
+let NERDTreeIgnore = [
+    \   '^__pycache__$[[dir]]',
+    \   '^.git$[[dir]]',
+    \   '^tags\(\.temp\|\.lock\)\?$[[file]]'
+    \]
 
 " Nezobrazovat napovedu
 let NERDTreeMinimalUI = 1
+
+" Show hidden files by default
+let NERDTreeShowHidden = 1
 
 " Pri mazani souboru automaticky zrusi stary buffer
 let NERDTreeAutoDeleteBuffer = 1
