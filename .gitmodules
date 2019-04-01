@@ -68,7 +68,7 @@
 	path = .vim/pack/dev/start/vimtex
 	url = https://github.com/lervag/vimtex.git
 [submodule ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
-	path = .zshrc.d/oh-my-zsh-custom/plugins/zsh-syntax-highlighting
+	path = .zsh/oh-my-zsh-custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule ".vim/bundle/matchit"]
 	path = .vim/pack/base/start/matchit
@@ -114,8 +114,8 @@
 	path = .vim/pack/dev/start/nix
 	url = https://github.com/LnL7/vim-nix.git
 [submodule ".zshrc.d/oh-my-zsh"]
-	path = .zshrc.d/oh-my-zsh
+	path = .zsh/oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
 [submodule ".zshrc.d/oh-my-zsh-custom/themes/powerlevel10k"]
-	path = .zshrc.d/oh-my-zsh-custom/themes/powerlevel10k
+	path = .zsh/oh-my-zsh-custom/themes/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git

@@ -44,13 +44,13 @@ MANPATH=$(env MANPATH= manpath)
 manpath=(~/.local/man $manpath)
 typeset -gU manpath
 
-# Oh My Zsh / zshrc.d ------------------------------------------------------{{{1
+# Oh My Zsh / load .zsh ----------------------------------------------------{{{1
 
-ZSHRC_D=$HOME/.zshrc.d
+ZSH_D=$HOME/.zsh
 
 # OMZ paths
-ZSH=$ZSHRC_D/oh-my-zsh
-ZSH_CUSTOM=$ZSHRC_D/oh-my-zsh-custom
+ZSH=$ZSH_D/oh-my-zsh
+ZSH_CUSTOM=$ZSH_D/oh-my-zsh-custom
 
 if [[ -n $MC_SID || $TERM = 'linux' ]] ; then
     ZSH_THEME="simple"
@@ -95,12 +95,12 @@ source $ZSH/oh-my-zsh.sh
 unalias -m '*'
 
 # Add a function path
-fpath=($ZSHRC_D/functions $ZSHRC_D/completions $fpath)
+fpath=($ZSH_D/functions $ZSH_D/completions $fpath)
 # reload completion functions
 autoload -Uz compinit && compinit
 
 # Load all custom config files
-for config_file ($ZSHRC_D/*.zsh(N)) ; do
+for config_file ($ZSH_D/*.zsh(N)) ; do
     source $config_file
 done
 unset config_file
