@@ -3,6 +3,3 @@
 
 # Update cached $PATH entries
 rehash
-
-# Remove overrided cd command. See postactivate
-unset -f cd

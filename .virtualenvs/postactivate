@@ -3,14 +3,3 @@
 
 # Update cached $PATH entries
 rehash
-
-# Change default behavior of `cd` (without parameters). Lets cd to know about
-# virtualenv and istead of going to ~ go to virtualenv root.
-cd () {
-    if (( $# == 0 ))
-    then
-        cdproject
-    else
-        builtin cd "$@"
-    fi
-}
