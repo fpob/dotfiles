@@ -431,7 +431,7 @@ autocmd VimEnter,ColorScheme *
 
 let NERDTreeIgnore = [
     \   '^__pycache__$[[dir]]',
-    \   '^.git$[[dir]]',
+    \   '^.git$',
     \   '^tags\(\.temp\|\.lock\)\?$[[file]]'
     \]
 
@@ -454,6 +454,12 @@ endfun
 command! NERDTreeFocusOrClose call NERDTreeFocusOrClose()
 
 nnoremap <F8> :NERDTreeFocusOrClose<Cr>
+
+" Start NERDtree if vim was started with no arguments
+autocmd VimEnter *
+    \   if argc() == 0
+    \|      NERDTree
+    \|  endif
 
 " Pack base/template -------------------------------------------------------{{{1
 
