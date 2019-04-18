@@ -4,78 +4,134 @@
 [core]
     editor = vim
     autocrlf = input
-    pager = less -FKRX
+    pager = less -KRFX
 
 [commit]
     # Show 'diff --cached' when writing commit message
     verbose = true
 
-[log]
-    date = iso
+[diff]
+    tool = vimdiff
+    guitool = gvimdiff
+    algorithm = patience
 
-[push]
-    default = matching
-
-[credential]
-    helper = cache
+[fetch]
+    prune = true
+    pruneTags = true
 
 [grep]
     lineNumber = true
     patternType = perl
 
-[diff]
-    tool = vimdiff
-    guitool = gvimdiff
+[log]
+    date = iso
+    decorate = true
 
 [merge]
     tool = vimdiff
     guitool = gvimdiff
 
+[pull]
+    rebase = true
+
+[push]
+    default = current
+
+[rebase]
+    autoSquash = true
+    missingCommitsCheck = error
+
+[status]
+    showStash = true
+
 [alias]
     s = status
+
+    # show hash of current commit
+    h = rev-parse --verify HEAD
+    hs = rev-parse --short --verify HEAD
+
+    l = log -n 10 --date-order --oneline
+    ll = log -n 10 --graph --date-order --show-signature --stat
+    la = log --all --graph --date-order --oneline
+    lla = log --all --graph --date-order --show-signature --stat
+
     a = add
+    aa = add -A
     au = add -u
     ap = add --patch
-
-    c = commit
-    sc = commit -sS     # signed commit
-    uncommit = reset HEAD^
-
-    l = log --oneline --graph --decorate --all --date-order
-    ll = log --show-signature --graph --decorate --all --stat --date-order
-    lg = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset) - %C(cyan)%ai%C(reset)%C(bold green)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an [%G?]%C(reset)' --all
-
-    pa = push origin --all --follow-tags
-    po = push origin HEAD
-    pd = push origin --delete
-    pu = push upstream HEAD
-
-    b = branch
-    bd = branch --delete
-
-    ch = checkout
-
-    m = merge --no-ff
-    mf = merge --ff
-
-    r = rebase
-    ri = rebase --interactive
+    # undo add
+    ua = reset HEAD
+    uap = reset --patch HEAD
 
     d = diff
+    dm = diff master
     dc = diff --cached
-    du = diff @{upstream}
+
+    c = commit
+    ca = commit --amend
+    can = commit --amend --no-edit
+    cf = commit --fixup
+    cfh = commit --fixup HEAD
+    # undo commit
+    uc = reset --soft HEAD~
+
+    b = branch
+    bm = branch -m
+    bd = branch --delete
+    # delete merged branch except current, master and develop
+    bdm = !git branch --merged | grep -vE '^(\\* |  (master|develop)$)' | xargs -r git branch --delete
+
+    ch = checkout
+    chm = checkout --merge
+    chb = checkout -b
+    chbm = checkout -b --merge
+
+    m = merge
+    mc = merge --continue
+    ma = merge --abort
+
+    rb = rebase
+    rbm = rebase master
+    rbi = rebase --interactive
+    rbim = rebase --interactive master
+    rbc = rebase --continue
+    rba = rebase --abort
+
+    f = fetch
+    fa = fetch --all --tags
+
+    pl = pull --recurse-submodules
+    plo = pull --recurse-submodules origin
+    plu = pull --recurse-submodules upstream
+
+    po = push origin
+    poa = push origin --all --follow-tags
+    pot = push origin --tags
+    pu = push upstream
+    pua = push upstream --all --follow-tags
+    put = push upstream --tags
 
     rs = remote show
     rso = remote show origin
     rsu = remote show upstream
 
+    st = stash
+    stl = stash list --stat
+    sts = stash show --patch
+
+    bi = bisect
+
+    cl = clean --interactive
+
     w = worktree
+    wl = worktree list
     wa = worktree add
     wp = worktree prune
 
     sub = submodule
-
-    stash-unapply = !git stash show -p | git apply -R
+    suba = submodule add
+    subu = submodule update
 
     ffs = flow feature start
     ffc = flow feature checkout
@@ -88,5 +144,6 @@
     frs = flow release start
     frf = flow release finish --fetch
 
-    dt = difftool --gui
-    mt = mergetool --tool=gvimdiff
+    dt = difftool
+    dtc = difftool --cached
+    mt = mergetool
