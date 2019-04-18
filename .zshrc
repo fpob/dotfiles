@@ -33,6 +33,9 @@ export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 # golang
 export GOPATH=$HOME/.go
 
+# Default less options
+export LESS=-RK
+
 # Paths --------------------------------------------------------------------{{{1
 
 # Bin path
@@ -182,11 +185,7 @@ fi # END powerlevel9k
 alias e='$EDITOR'
 alias f='$FILE_MANAGER'
 
-# Colors
 alias ls="ls -v --color=auto"
-alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}"
-
-# ls shortcuts
 alias l='ls -CF'
 alias ll='l -hl --time-style="+%Y-%m-%d %H:%M"'
 alias la='l -A'
@@ -199,6 +198,9 @@ alias cp='cp --reflink=auto'
 alias du='du -khc'
 alias df='df -kTh'
 alias free='free -th'
+
+alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}"
+alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto -nT'
 
 # Python3
 alias py='python3'
@@ -219,11 +221,10 @@ alias co='xsel -ob'
 # Cut long lines
 alias cll='cut -c -$COLUMNS'
 
-# git-grep with external grep
-alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto -nT'
-
 # Curl with kerberos auth
 alias kcurl='curl -u : --negotiate'
+# JSON Curl
+alias jcurl='curl -H "Accept: application/json" -H "Content-type: application/json"'
 
 # Syntax highlight
 alias syn='pygmentize -f 256 -O bg=dark,style=monokai'
@@ -238,8 +239,8 @@ alias bc='bc -ql'
 alias octave='octave -qW'
 
 # Global aliasses
-alias -g L='|less -FKRX'
-alias -g LL='2>&1|less -FKRX'
+alias -g L='|less -FX'
+alias -g LL='2>&1|less -FX'
 alias -g G='|grep -Pi'
 alias -g T='|tail'
 alias -g H='|head'
