@@ -16,9 +16,11 @@ def hash_str(algorithm, string):
     return hashlib.new(algorithm, string.encode('utf-8')).hexdigest()
 
 
-# Completion
-import readline, rlcompleter
-readline.parse_and_bind("tab: complete")
-del readline, rlcompleter
+# IPython settings
+if 'get_ipython' in globals():
+    ipy = get_ipython()
+    # Disable exit confirmation
+    ipy.confirm_exit = False
+
 
 # vim:ft=python
