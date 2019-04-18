@@ -1,9 +1,0 @@
-#!/bin/sh
-
-if [ -n "$1" ] ; then
-    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$1"
-    exit 0
-else
-    echo "Usage: $(basename "$0") <container>" >&2
-    exit 1
-fi
