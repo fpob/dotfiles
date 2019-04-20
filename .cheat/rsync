@@ -1,0 +1,30 @@
+# Copy all files matchich the pattern *.c to /src on the machine foo.
+# Command will create /src if not exists.
+rsync *.c foo:/src
+
+# Recursively (-r) copy the directory /data/src to /data/dest/src. Command will
+# create /data/dest/src if it not exists.
+rsync -r /data/src /data/dest
+
+# Recursively (-r) copy the CONTENTS of the directory /data/src to /data/dest.
+rsync -r /data/src/ /data/dest
+
+# Trailing slash means "copy the contents of this directory" as oposed "copy
+# the directory by name".
+# Each of the following commands copies the files in the same way.
+rsync -av /src/foo /dest        # copy by name
+rsync -av /src/foo/ /dest/foo   # copy content
+
+# Options:
+# -v    verbose
+# -z    compress data during the transfer
+# -a    recurse into directories, preserve file attributes (time, owner, group,
+#       perms) and copy symlinks
+# -c    use chechsum to detect if the file has changed (default is time & size)
+# -u    skip files that are newer on the receiver
+# -x    don't cross filesystem boundaries
+# --delete  delete files which exists in destination but not in source
+# --exclude exclude files matching given pattern
+# --include don't exclude files matching given pattern
+# Example: backup server
+rsync -avz --delete --exclude tmp server:/data/ /backup/server

@@ -1,0 +1,40 @@
+# Use bit more secure version of docker / docker for kubernetes users
+alias docker=podman
+
+# Run container as daemon. Container name is optional.
+docker run -d IMAGE [--name CONTAINER_NAME]
+
+# Run container with interactive terminal (-it) and automatically remove when
+# exits (--rm).
+docker run --rm -it IMAGE
+
+# Publish container port to the host.
+docker run -p HOST_PORT:CONTAINER_PORT IMAGE
+
+# Create a bind mount.
+docker run -v HOST_PATH:CONTAINER_PATH IMAGE
+
+# Start bash in existing container.
+docker exec -it CONTAINER bash
+
+# Shop IP of running container
+docker inspect -f '{{ .NetworkSettings.IPAddress }}' CONTAINER
+
+# Show list of exposed ports
+docker inspect -f '{{range $k, $v := .Config.ExposedPorts}}{{$k}} {{end}}' CONTAINER
+
+# Copy file from host to container or from container to host
+docker cp HOST_FILE CONTAINER:CONTAINER_FILE
+docker cp CONTAINER:CONTAINER_FILE HOST_FILE
+
+# List of running containers (add -a to show all containers)
+docker ps
+
+# Remove all containers, even running containers
+docker ps -aq | xargs docker rm
+
+# Remove all exited containers
+docker ps -f status=exited -q | xargs docker rm
+
+# Remove <none> images
+docker images --filter "dangling=true" -q --no-trunc | xargs docker rmi

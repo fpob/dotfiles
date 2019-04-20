@@ -1,0 +1,20 @@
+# Change project
+oc project <project name>
+
+# Process and apply template
+oc process -f <template> | oc apply -f
+
+# Pass parameters to template
+oc process -p <key>=<value> ...
+
+# Start build (BuildConfig)
+oc start-build <build name>
+
+# Get list of PODs
+oc get pods
+
+# Execute command in container running in OpenShift
+oc exec <pod name> -- <command> ...
+
+# Remove all PODs in Error state
+oc get pods | awk '/Error/ { print $1 }' | xargs -r oc delete pod --force

@@ -1,0 +1,76 @@
+# Generate new key.
+gpg --gen-key
+
+# Gerate revocation certificate.
+gpg --gen-revoke <key id>
+
+# Export public key in ASCII format.
+gpg -a --export <keyid>
+
+# Import key.
+gpg --import <file.key>
+
+# List public keys. Key ID is optional, if not provided, all keys are listed.
+gpg -k [key id]
+gpg --list-key [key id]
+
+# List all private keys. Key ID is optional, if not provided, all keys are
+# listed.
+gpg -K [key id]
+gpg --list-secret-keys [key id]
+
+# List who signed key.
+gpg --list-sig <key id>
+
+# List who signed key, but signatures are verified.
+gpg --check-sigs <key id>
+
+# Sign key.
+gpg --sign-key <key id>
+
+# Show key fingerprint.
+gpg --fingerprint <key id>
+
+# Edit key (sign, trust, ...).
+gpg --edit <key id>
+
+# Search keyservers for given name/email/ID/...
+gpg --search-keys <name/email/id>
+
+# Import key from keyserver.
+gpg --recv-keys <key id>
+
+# Send key to keyserver.
+gpg --send-keys <key id>
+
+# Encrypt file. Creates <file>.gpg (or <file>.asc with -a option). Can be used
+# in pipe as filter.
+gpg -e -r <recipient id> <file>
+gpg --encrypt --recipient <recipient id> <file>
+
+# Symmetric encryption (with secret password). Creates <file>.gpg (or
+# <file>.asc with -a option).
+gpg -c <file>
+gpg --symmetric <file>
+
+# Decrypt file. Creates <file> without .gpg or .asc extension.
+gpg -d <file>
+gpg --decrypt <file>
+
+# Sign file. Created <file>.gpg (or <file>.asc with -a option) contains both
+# signature and content of file.
+gpg -s <file>
+gpg --sign <file>
+
+# Sign text file. Creates file <file>.asc with content of original file
+# followed by signature.
+gpg -s -a -t <file>
+gpg --sign --armor --textmode <file>
+
+# Sign file. Creates file <file>.gpg (or <file>.asc with -a option) with just
+# signature (content of file is not included).
+gpg -b <file>
+gpg --detach-sign <file>
+
+# Verify signature.
+gpg --verify <file>

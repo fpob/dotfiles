@@ -1,0 +1,42 @@
+# Create PV
+pvcreate /dev/sda
+
+# Display info about PV
+pvdisplay /dev/sda
+
+# Create VG
+vgcreate vg0 /dev/sda
+
+# Display info about VG
+vgdispay vg0
+
+# Add PV to VG, PV must be created before
+vgextend vg0 /dev/sdb
+
+# Remove PV from PV
+pvmove /dev/sdb         # Move data from PV
+vgreduce data /dev/sdb
+
+# Deactivate VG, do this before physically removing some device
+vgchange --activate n vg0
+
+# Create LV
+lvcreate --name root --size 8G vg0
+
+# Extend LV size
+lvextend --size 16G vg0/root
+
+# Reduce LV size, FS must be resized first!
+lvreduce --size 8G vg0/root
+
+# Remove LV
+lvremove vg0/root
+
+# Create mirrored LV (RAID1)
+lvcreate --name root --size 8G --mirrors 1 data vg0
+
+# Enable mirroring on existing LV
+lvconvert --mirrors 1 vg0/root
+
+# Create stripped LV (RAID0)
+lvcreate --name root --size 8G --stripes 2 --stripesize 4 vg0

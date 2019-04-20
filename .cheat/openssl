@@ -1,0 +1,30 @@
+# Create a 2048-bit private key
+openssl genrsa -out server.key.pem 2048
+
+# Create the Certificate Signing Request (CSR)
+openssl req -new -key server.key.pem -out server.csr.pem
+
+# Sign a certificate using a private key and CSR
+openssl x509 -req -days 365 -in server.csr.pem -signkey server.key.pem -out server.cert.pem
+
+# Generate self-signed certificate for localhost in a single command
+openssl req -x509 -newkey rsa:2048 -nodes -days 365 \
+    -keyout localhost.key.pem -out localhost.cert.pem -subj '/CN=localhost'
+
+# Show certificate information for a certificate signing request
+openssl req -text -noout -in server.cert.pem
+
+# Show certificate information for generated certificate
+openssl x509 -text -noout -in server.cert.pem
+
+# Get the sha256 fingerprint of a certificate
+openssl x509 -in server.cert.pem -noout -sha256 -fingerprint
+
+# Generate Diffie-Hellman parameters
+openssl dhparam -outform PEM -out dh2048.pem 2048
+
+# Encrypt key with AES256 (far mor better than DES!), add or change password
+openssl rsa -aes256 -in old.key.pem -out new.key.pem
+
+# Decrypt key, remove password
+openssl rsa -in old.key.pem -out new.key.pem

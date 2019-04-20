@@ -1,0 +1,59 @@
+# List all units
+systemctl
+
+# List only service units, omit type option to list units of all types
+systemctl --type service
+
+# List failed services
+systemctl --failed --type service
+
+# Check the status of a service
+systemctl status <unit>
+
+# Start a service
+systemctl start <unit>
+
+# Restart a service
+systemctl restart <unit>
+
+# Stop a service
+systemctl stop <unit>
+
+# Reload a service's configuration
+systemctl reload <unit>
+
+# Enable a service to startup on boot
+systemctl enable <unit>
+
+# Disable a service to startup on boot
+systemctl disable <unit>
+
+# Completely disable service from being startet, bot manually and at boot
+systemctl mask <unit>
+
+# Make masked service available
+systemctl unmask <unit>
+
+# List the dependencies of a service
+# when no service name is specified, lists the dependencies of default.target
+systemctl list-dependencies <unit>
+
+# Check if unit is active/enabled/failed, add --silent option to supress output
+systemctl is-active <unit>
+systemctl is-enabled <unit>
+systemctl is-failed <unit>
+
+# List state of all service units
+systemctl list-units --type service --all
+
+# List state of all service unit files
+systemctl list-unit-files --type service --all
+
+# List all available targets
+systemctl list-units --type target --all
+
+# Change current target without rebooting
+systemctl isolate <name>.target
+
+# Change default target
+systemctl set-default <name>.target
