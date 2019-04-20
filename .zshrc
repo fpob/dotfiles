@@ -182,6 +182,9 @@ fi # END powerlevel9k
 
 # Aliasses -----------------------------------------------------------------{{{1
 
+# Sudo with alias expansion, see aliases section in man bash
+alias sudo_='sudo '
+
 alias e='$EDITOR'
 alias f='$FILE_MANAGER'
 
