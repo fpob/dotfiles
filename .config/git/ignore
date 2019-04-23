@@ -1,6 +1,7 @@
 # IDE files
 /tags
 /.project
+/.ropeproject
 .vim-template:*
 
 # direnv file

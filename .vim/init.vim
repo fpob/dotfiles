@@ -263,9 +263,6 @@ nnoremap <silent> yp :let @+=expand("%:p")<Cr>
 " Yank file name
 nnoremap <silent> yn :let @+=expand("%:t")<Cr>
 
-" Make file executable
-nnoremap <Leader>x :silent !chmod +x %<Cr>
-
 " Close preview window
 nnoremap <Leader>z <C-W>z
 
@@ -432,6 +429,7 @@ autocmd VimEnter,ColorScheme *
 let NERDTreeIgnore = [
     \   '^__pycache__$[[dir]]',
     \   '^.git$',
+    \   '^.ropeproject$',
     \   '^tags\(\.temp\|\.lock\)\?$[[file]]'
     \]
 
@@ -483,17 +481,17 @@ endfunction
 
 " Pack dev/youcompleteme ---------------------------------------------------{{{1
 
-" <Tab> koliduje s UltiSnips
+" <Tab> is used by UltiStip
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 
-" Zobrazovat i triggery snippetu
+" Show ultisnip IDs
 let g:ycm_use_ultisnips_completer = 1
 
-" Minimum znaku pro doplnovani
-let g:ycm_min_num_of_chars_for_completion = 2
+" Disable completion auto-triggering
+let g:ycm_min_num_of_chars_for_completion = 256
 
-" Zavrit okno s nahledem tagu
+" Automatically close preview window
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 
@@ -574,6 +572,9 @@ let g:pymode_indent = 1
 let g:pymode_python = 'python3'
 let g:pymode_syntax_print_as_function = 1
 
+let g:pymode_run_bind = '<Leader>x'
+    let g:pymode_rope_completion_bind = '<C-Space>'
+
 let g:pymode_lint = 1
 let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'pylint']
 let g:pymode_lint_cwindow = 0
@@ -583,15 +584,27 @@ let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_l
 let g:pymode_lint_options_pylint = {'errors-only': 1}
 
 let g:pymode_rope = 1
-" Create .ropeproject in /tmp not in PWD
-let g:pymode_rope_project_root = tempname()
 
-let g:pymode_rope_completion = 0
+if !(isdirectory('.git') || isdirectory('.ropeproject'))
+    " Create .ropeproject in /tmp not in PWD
+    let g:pymode_rope_project_root = tempname()
+endif
+
+let g:pymode_rope_completion = 1
+let g:pymode_rope_complete_on_dot = 0
 
 let g:pymode_rope_show_doc_bind = 'K'
 let g:pymode_rope_goto_definition_bind = 'gd'
-let g:pymode_rope_rename_bind = '<Leader>R'
-let g:pymode_rope_organize_imports_bind = '<Leader>I'
+
+let g:pymode_rope_rename_bind = '<Leader>rr'
+let g:pymode_rope_rename_module_bind = '<Leader>r1r'
+let g:pymode_rope_organize_imports_bind = '<Leader>ro'
+let g:pymode_rope_module_to_package_bind = '<Leader>r1p'
+let g:pymode_rope_extract_method_bind = '<Leader>rm'
+let g:pymode_rope_extract_variable_bind = '<Leader>rl'
+let g:pymode_rope_use_function_bind = '<Leader>ru'
+let g:pymode_rope_use_function_bind = '<Leader>ru'
+let g:pymode_rope_change_signature_bind = '<Leader>rs'
 
 " Pack dev/go --------------------------------------------------------------{{{1
 
