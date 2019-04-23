@@ -403,7 +403,7 @@ let g:grepper.highlight = 1
 " Use location list, not quickfix
 let g:grepper.quickfix = 0
 " Do not copen/lwindow after grep finished
-let g:grepper.open = 0
+let g:grepper.open = 1
 " Change CWD before grepping
 let g:grepper.dir = 'repo,cwd'
 
