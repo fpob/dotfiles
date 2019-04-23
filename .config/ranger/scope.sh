@@ -26,7 +26,7 @@ trim() {
     head -n "$maxln"
 }
 highlight() {
-    pygmentize -f 256 -O 'bg=dark,style=monokai' "$@"
+    pygmentize -f 256 -O 'bg=dark,style=monokai' "$@" | expand -t4
     test $? -eq 0 -o $? -eq 141
 }
 
