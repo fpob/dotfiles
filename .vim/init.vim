@@ -614,13 +614,3 @@ let g:go_template_autocreate = 0
 
 let g:vimtex_quickfix_mode = 0
 
-" Pack org/* ---------------------------------------------------------------{{{1
-
-let g:org_indent = 1
-let g:org_aggressive_conceal = 1
-
-let g:org_todo_keywords=['TODO', 'WIP', '|', 'DONE']
-
-" Open link in firefox
-let g:utl_cfg_hdl_scm_http_system = "silent !firefox '%u' &"
-
