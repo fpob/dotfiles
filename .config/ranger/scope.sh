@@ -26,7 +26,7 @@ trim() {
     head -n "$maxln"
 }
 highlight() {
-    pygmentize -f 256 -O 'bg=dark,style=monokai' "$@" | expand -t4
+    pygmentize -f 256 -O 'bg=dark,style=monokai' "$@"
     test $? -eq 0 -o $? -eq 141
 }
 
@@ -74,11 +74,11 @@ esac
 
 case "$mimetype" in
     text/* | */xml)
-        try highlight "$path" && { dump | trim; exit 5; } || exit 2
+        try highlight "$path" && { dump | trim | expand -t4; exit 5; } || exit 2
         ;;
 
     image/*|video/*|audio/*)
-        try exiftool "$path" && { dump | trim; exit 5; } || exit 1
+        try exiftool "$path" && { dump | trim | expand -t4; exit 5; } || exit 1
         ;;
 esac
 
