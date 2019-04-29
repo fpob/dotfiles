@@ -78,8 +78,8 @@ if has('mouse')
 endif
 
 " Zalamování řádků
-set textwidth=79
-set colorcolumn=+1  " Zvýraznění &textwidth+1 sloupce
+set textwidth=80
+set colorcolumn=+1,+9  " Zvýraznění &textwidth+1/+9 sloupce
 set wrap
 set linebreak       " zalamovani za 'breakat', ne za poslednim znakem
 set breakindent     " Wrap s odsazováním
@@ -181,6 +181,10 @@ augroup vimrc
     autocmd FileType gitcommit
         \   exec 'au VimEnter * call setpos(".", [0, 1, 1, 0])'
         \|  setlocal foldmethod=syntax
+
+    " Show colorcolumn as +1,+10%
+    autocmd OptionSet textwidth
+        \ exec 'set colorcolumn=+1,+' . (float2nr(round(&textwidth * 0.1)) + 1)
 augroup END
 
 " Mappings -----------------------------------------------------------------{{{1
@@ -429,7 +433,8 @@ autocmd VimEnter,ColorScheme *
 let NERDTreeIgnore = [
     \   '^__pycache__$[[dir]]',
     \   '^.git$',
-    \   '^.ropeproject$',
+    \   '^.\(ropeproject\|tox\|pytest_cache\|cache\)$[[dir]]',
+    \   '^.\(coverage\)$[[file]]',
     \   '^tags\(\.temp\|\.lock\)\?$[[file]]'
     \]
 
@@ -559,9 +564,7 @@ nmap ]c <Plug>GitGutterNextHunk
 
 " Pack dev/python-mode -----------------------------------------------------{{{1
 
-let g:pymode_options = 1
-let g:pymode_options_colorcolumn = 1
-let g:pymode_options_max_line_length = 79
+let g:pymode_options = 0
 
 let g:pymode_preview_height = 12
 let g:pymode_preview_position = 'below'
@@ -573,14 +576,19 @@ let g:pymode_python = 'python3'
 let g:pymode_syntax_print_as_function = 1
 
 let g:pymode_run_bind = '<Leader>x'
-    let g:pymode_rope_completion_bind = '<C-Space>'
+let g:pymode_rope_completion_bind = '<C-Space>'
 
 let g:pymode_lint = 1
 let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'pylint']
 let g:pymode_lint_cwindow = 0
 let g:pymode_lint_signs = 0
 
-let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_length}
+" Warn only if line length exceeds max line length by more than 10%.
+" flake8 --max-line-length=80 --select=C,E,F,W,B,B950 --ignore=E501
+let g:pymode_lint_select = ['C', 'E', 'F', 'W', 'B', 'B950']
+let g:pymode_lint_ignore = ['E501']
+
+let g:pymode_lint_options_pep8 = {'max_line_length': &textwidth}
 let g:pymode_lint_options_pylint = {'errors-only': 1}
 
 let g:pymode_rope = 1
