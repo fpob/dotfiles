@@ -28,6 +28,7 @@
     decorate = true
 
 [merge]
+    ff = false
     tool = vimdiff
     guitool = gvimdiff
 
