@@ -18,3 +18,6 @@ oc exec <pod name> -- <command> ...
 
 # Remove all PODs in Error state
 oc get pods | awk '/Error/ { print $1 }' | xargs -r oc delete pod --force
+
+# Receive OpenShift token
+oc get secret <secret name> -o jsonpath='{.data.token}' | base64 -d
