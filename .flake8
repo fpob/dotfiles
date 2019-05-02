@@ -1,0 +1,17 @@
+# deps: flake8 flake8-bugbear
+[flake8]
+max-line-length = 80
+max-complexity = 10
+select = C,E,F,W,B,B950
+ignore =
+    # Line break before binary operator, using B950
+    W503,
+    # Line too long
+    E501
+exclude =
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    old,
+    build,
+    dist
