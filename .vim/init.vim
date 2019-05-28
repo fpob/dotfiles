@@ -458,9 +458,10 @@ command! NERDTreeFocusOrClose call NERDTreeFocusOrClose()
 
 nnoremap <F8> :NERDTreeFocusOrClose<Cr>
 
-" Start NERDtree if vim was started with no arguments
+" Start NERDtree if vim was started with no arguments and not reading stdin
+autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter *
-    \   if argc() == 0
+    \   if !argc() && !exists("s:std_in")
     \|      NERDTree
     \|  endif
 
