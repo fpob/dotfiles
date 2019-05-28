@@ -36,6 +36,9 @@ export GOPATH=$HOME/.go
 # Default less options
 export LESS=-RK
 
+# https://stackoverflow.com/questions/51504367
+export GPG_TTY=$(tty)
+
 # Paths --------------------------------------------------------------------{{{1
 
 # Bin path
