@@ -3,7 +3,6 @@ from importlib import reload
 from glob import glob
 import os
 import re
-import hashlib
 import math
 
 try:
@@ -13,7 +12,32 @@ except ImportError:
 
 
 def hash_str(algorithm, string):
+    import hashlib
     return hashlib.new(algorithm, string.encode('utf-8')).hexdigest()
+
+
+def json_load(path):
+    import json
+    with open(path, 'r') as f:
+        return json.load(f)
+
+
+def json_dump(obj, path):
+    import json
+    with open(path, 'w') as f:
+        json.dump(obj, f)
+
+
+def yaml_load(path):
+    import yaml
+    with open(path, 'r') as f:
+        return yaml.load(f.read(), Loader=yaml.SafeLoader)
+
+
+def yaml_dump(obj, path):
+    import yaml
+    with open(path, 'w') as f:
+        f.write(yaml.dump(obj, Dumper=yaml.SafeDumper))
 
 
 # IPython settings
