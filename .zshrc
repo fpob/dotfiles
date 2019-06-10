@@ -214,18 +214,12 @@ alias pyc='py3compile'
 alias pydoc='pydoc3'
 alias ipy='ipython3'
 
-# TaskWarrior
-alias t='nocorrect task'
-
 # force 256 colors
 alias tmux='tmux -2'
 
 # Copy & Paste Clipboard
 alias ci='xsel -ib'
 alias co='xsel -ob'
-
-# Cut long lines
-alias cll='cut -c -$COLUMNS'
 
 # Curl with kerberos auth
 alias kcurl='curl -u : --negotiate'
@@ -237,8 +231,11 @@ alias syn='pygmentize -f 256 -O bg=dark,style=monokai'
 # Markdown viewer
 alias mdv='mdv -t 884.0134 -c $(tput cols) -u i'
 
+# Cut long lines
+alias cll='cut -c -$COLUMNS'
+# Format CSV/TSV as table (aligned)
+alias csv="column -t -s,"
 alias tsv="column -t -s$'\t'"
-alias json="python -mjson.tool"
 
 alias gdb='gdb -q'
 alias bc='bc -ql'
