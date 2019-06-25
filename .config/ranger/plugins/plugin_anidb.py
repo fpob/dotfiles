@@ -32,7 +32,7 @@ class MyLinemode(LinemodeBase):
 
 class anidb_open(Command):
     def anidb_open_aid(self, aid):
-        self.fm.execute_command("$BROWSER 'https://anidb.net/a{}'".format(aid))
+        self.fm.execute_command("xdg-open 'https://anidb.net/a{}'".format(aid))
 
     def execute(self):
         if self.arg(1):
