@@ -146,12 +146,17 @@ let g:user = Chomp(system('id -un'))
 let g:user_name = Chomp(system('git config --includes --get user.name 2>/dev/null'))
 let g:user_email = Chomp(system('git config --includes --get user.email 2>/dev/null'))
 
-" ColorScheme --------------------------------------------------------------{{{1
+" Colors -------------------------------------------------------------------{{{1
 
 " Tweak colors
 autocmd ColorScheme * runtime after/colors.vim
 
 silent! colorscheme molokai     " Barevné schéma
+
+" Highlight groups for use in `:match`
+highlight R ctermbg=darkred guibg=darkred
+highlight G ctermbg=darkgreen guibg=darkgreen
+highlight B ctermbg=darkblue guibg=darkblue
 
 " Autocommands -------------------------------------------------------------{{{1
 
@@ -246,6 +251,15 @@ nnoremap <F5> :nohlsearch<Cr>
 nnoremap <F6> @q
 " <F7>, <F8> mapped by plugins
 nnoremap <F9> :make<Cr>
+
+" Insert the word/WORD under the cursor
+cnoremap <Leader>w <C-r><C-w>
+cnoremap <Leader>W <C-r><C-a>
+" Insert the line under the cursor
+cnoremap <Leader>l <C-r><C-l>
+
+" Insert word regex (/\<word\>/) for the word under the cursor
+cnoremap <Leader>rw /\<<C-r><C-w>\>/
 
 " Word to uppercase
 inoremap <C-u> <esc>viwUea
