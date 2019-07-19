@@ -85,12 +85,12 @@ plugins=(
     oc
     pip
     python
+    pyvenv
     ranger
     redis-cli
     sudo
     taskwarrior
     transfer
-    virtualenvwrapper
     zsh_reload
     zsh-syntax-highlighting
 )
@@ -113,10 +113,6 @@ unset config_file
 
 # Load run-help function
 autoload -Uz run-help
-
-# Try automaticaly activate virtualenv. chpwd_functions are not triggered when
-# shell is started with changed PWD (tmux new split/panel, ...).
-[[ ! $DISABLE_VENV_CD -eq 1 ]] && workon_cwd
 
 # History setup ------------------------------------------------------------{{{1
 # Has to be done after OMZ setup
@@ -164,7 +160,7 @@ POWERLEVEL9K_SHORTEN_STRATEGY="truncate_to_unique"
 POWERLEVEL9K_ROOT_ICON="\u2622"
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(root_indicator context dir)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs vcs virtualenv custom_parent ssh)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs vcs pyvenv custom_parent ssh)
 
 fi # END powerlevel9k
 
@@ -197,6 +193,7 @@ alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto
 alias py='python3'
 alias pyc='py3compile'
 alias pydoc='pydoc3'
+alias pyvenv='python3 -m venv'
 alias ipy='ipython3'
 
 # force 256 colors

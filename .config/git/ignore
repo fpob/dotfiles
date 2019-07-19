@@ -6,3 +6,5 @@
 
 # direnv file
 .envrc
+# python venv
+.venv
