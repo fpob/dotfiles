@@ -22,6 +22,7 @@ bindsym $mod+u exec cherrytree
 # Start dmenu
 bindsym $mod+space exec rofi -show combi
 bindsym $mod+slash exec rofi -show window
+bindsym $mod+Shift+t exec rofi -show tmux
 
 # Screenshot
 bindsym Print exec xfce4-screenshooter
