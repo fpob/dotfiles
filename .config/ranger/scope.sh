@@ -8,6 +8,7 @@ cached="$4"  # Path that should be used to cache image previews
 maxln=200    # Stop after $maxln lines.  Can be used like ls | head -n $maxln
 
 mimetype=$(file --mime-type -Lb "$path")
+name=$(basename "$path")
 extension=$(echo -E "${path##*.}" | tr "[:upper:]" "[:lower:]")
 case $extension in
     bz|bz2|gz|lz|lha|lzh|lzma|lzo|rz|xz)
@@ -29,6 +30,20 @@ highlight() {
     pygmentize -f 256 -O 'bg=dark,style=monokai' "$@"
     test $? -eq 0 -o $? -eq 141
 }
+
+case "$name" in
+    *.cert.pem|*.crt)
+        try openssl x509 -noout -text -in "$path" && { dump | trim; exit 5; }
+        ;;
+
+    *.csr.pem|*.csr)
+        try openssl csr -noout -text -in "$path" && { dump | trim; exit 5; }
+        ;;
+
+    *.crl.pem|*.crl)
+        try openssl crl -noout -text -in "$path" && { dump | trim; exit 5; }
+        ;;
+esac
 
 case "$extension" in
     #7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
