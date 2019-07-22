@@ -33,8 +33,10 @@ function workon_cwd {
 
     local pyvenv_path=$project_root/.venv
     if [[ -d $pyvenv_path ]] ; then
-        echo "Activating Python venv '$pyvenv_path'"
-        source $pyvenv_path/bin/activate && export PYVENV_WORKDIR=$project_root
+        if [[ -z $VIRTUAL_ENV ]] ; then
+            echo "Activating Python venv '$pyvenv_path'"
+            source $pyvenv_path/bin/activate && export PYVENV_WORKDIR=$project_root
+        fi
     elif [[ -n $VIRTUAL_ENV && -n $PYVENV_WORKDIR ]] ; then
         echo "Deactivating Python venv '$VIRTUAL_ENV'"
         deactivate && unset PYVENV_WORKDIR
