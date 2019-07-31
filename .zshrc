@@ -10,7 +10,7 @@ esac
 if [[ -z $TMUX && -z $MC_SID ]] ; then
     if [[ -n $SSH_CONNECTION ]] ; then
         # If session "main" exists then attach otherwise create
-        tmux new -A -s main
+        [[ $(id -u) -ge 1000 ]] && tmux -2 new -A -s main
     fi
 fi
 
