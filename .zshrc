@@ -231,6 +231,12 @@ alias -g T='|tail'
 alias -g H='|head'
 alias -g N='&>/dev/null'
 
+# Suffix aliasess
+alias -s py='python3'
+alias -s sh='bash'
+alias -s zsh='zsh'
+alias -s awk='awk -f'
+
 # Color man pages ----------------------------------------------------------{{{1
 
 export LESS_TERMCAP_mb=$'\E[41m'
