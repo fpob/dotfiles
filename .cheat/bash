@@ -8,3 +8,11 @@ echo ${PIPESTATUS[0]}  # replace 0 with N
 # pipe output to variable, see: man 1 bash
 shopt -s lastpipe
 echo bar | read bar
+
+# Execute catch() function if script has failed. `set -e` to make script fail at
+# first failed command.
+catch () {
+    echo catch
+}
+trap catch ERR
+set -e
