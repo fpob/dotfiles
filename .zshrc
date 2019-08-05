@@ -133,37 +133,6 @@ ZSH_HIGHLIGHT_STYLES[redirection]='fg=245'
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=42'
 ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
 
-# powerlevel9k setup -------------------------------------------------------{{{1
-
-if [[ $ZSH_THEME =~ powerlevel* ]] ; then
-
-# Enable precmd and preexec, without this powerlevel9k will not work properly
-autoload -U add-zsh-hook
-add-zsh-hook precmd  omz_termsupport_precmd
-add-zsh-hook preexec omz_termsupport_preexec
-
-# Parent process name
-prompt_parent_cache=$(ps -p $PPID -o comm=)
-function prompt_parent() {
-    case $prompt_parent_cache in
-        ranger|vim|nvim) echo $prompt_parent_cache ;;
-    esac
-}
-
-POWERLEVEL9K_CUSTOM_PARENT="prompt_parent"
-POWERLEVEL9K_CUSTOM_PARENT_FOREGROUND="yellow"
-POWERLEVEL9K_CUSTOM_PARENT_BACKGROUND="black"
-
-POWERLEVEL9K_STATUS_CROSS=true
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
-POWERLEVEL9K_SHORTEN_STRATEGY="truncate_to_unique"
-POWERLEVEL9K_ROOT_ICON="\u2622"
-
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(root_indicator context dir)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs vcs pyvenv custom_parent ssh)
-
-fi # END powerlevel9k
-
 # Aliasses -----------------------------------------------------------------{{{1
 
 # Sudo with alias expansion, see aliases section in man bash

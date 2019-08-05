@@ -5,19 +5,19 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 function prompt_pyvenv {
     [[ -n ${VIRTUAL_ENV} ]] || return
 
-    local prompt=$'\uF01C '
+    local icon=$'\uF01C'
+    local text=
 
     # If PYVENV_WORKDIR is not set add virtualenv name to prompt.
     if [[ -z $PYVENV_WORKDIR ]] ; then
-        local name=${VIRTUAL_ENV:t} # basename
+        text=${VIRTUAL_ENV:t} # basename
         # Instead of showing '.venv' as name of virtualenv show parent dir name.
         if [[ $name = .venv ]] ; then
-            name=${VIRTUAL_ENV:h:t} # dirname . basename
+            text=${VIRTUAL_ENV:h:t} # dirname . basename
         fi
-        prompt+=$name
     fi
 
-    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" 'PYTHON_ICON' 0 '' "$prompt"
+    p10k segment -f blue -i "$icon" -t "$text"
 }
 
 # Activate or deactivate virtualenv depending on current working directory or
