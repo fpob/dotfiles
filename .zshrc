@@ -25,11 +25,6 @@ export FILE_MANAGER=${FILE_MANAGER:-ranger}
 # `ts` environment
 export TS_ENV="pwd"
 
-# Python virtualenvwrapper variables
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Projects
-export VIRTUALENVWRAPPER_PYTHON=$(which python3)
-
 # golang
 export GOPATH=$HOME/.go
 
@@ -134,9 +129,6 @@ ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=42'
 ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
 
 # Aliasses -----------------------------------------------------------------{{{1
-
-# Sudo with alias expansion, see aliases section in man bash
-alias sudo_='sudo '
 
 alias e='$EDITOR'
 alias f='$FILE_MANAGER'
