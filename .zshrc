@@ -6,11 +6,11 @@ esac
 
 # Tmux ---------------------------------------------------------------------{{{1
 
-# If not in tmux and not in mc subshell
-if [[ -z $TMUX && -z $MC_SID ]] ; then
-    if [[ -n $SSH_CONNECTION ]] ; then
+if [[ $(id -u) -ge 1000 ]] ; then
+    # If not in tmux and not in mc subshell and connected via SSH
+    if [[ -z $TMUX && -z $MC_SID && -n $SSH_CONNECTION ]] ; then
         # If session "main" exists then attach otherwise create
-        [[ $(id -u) -ge 1000 ]] && tmux -2 new -A -s main
+        tmux -2 new -A -s main
     fi
 fi
 
