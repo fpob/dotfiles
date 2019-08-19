@@ -147,7 +147,7 @@ alias du='du -khc'
 alias df='df -kTh'
 alias free='free -th'
 
-alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}"
+alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox}"
 alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto -nT'
 
 # Python3

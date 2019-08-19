@@ -2,13 +2,13 @@
 alias gpg-cat='gpg -qd -o-'
 
 # Source GPG encrypted shell file.
-gpg-source () {
+function gpg-source {
     source =(gpg-cat $@)
 }
 
 # Execute GPG encrypted file. By default executes in current running shell.
 # Shell can be changed by '-s SHELL' option.
-gpg-run () {
+function gpg-run {
     local shell=$SHELL
 
     while getopts s: opt ; do
