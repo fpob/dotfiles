@@ -14,6 +14,7 @@
     tool = vimdiff
     guitool = gvimdiff
     algorithm = patience
+    ignoreSubmodules = untracked
 
 [fetch]
     prune = true
@@ -44,6 +45,7 @@
 
 [status]
     showStash = true
+    ignoreSubmodules = untracked
 
 [alias]
     s = status
@@ -98,6 +100,7 @@
     rbim = rebase --interactive master
     rbc = rebase --continue
     rba = rebase --abort
+    rbs = rebase --skip
 
     f = fetch
     fa = fetch --all --tags
@@ -123,7 +126,7 @@
 
     bi = bisect
 
-    cl = clean --interactive
+    cl = clean -d --interactive
 
     w = worktree
     wl = worktree list
