@@ -1,105 +1,165 @@
 #!/usr/bin/env bash
+# https://github.com/ranger/ranger/blob/master/ranger/data/scope.sh
 
-path="$1"    # Full path of the selected file
-width="$2"   # Width of the preview pane (number of fitting characters)
-height="$3"  # Height of the preview pane (number of fitting characters)
-cached="$4"  # Path that should be used to cache image previews
+# 'pipefail' is required to make 'false | true && echo ok || echo fail' work as
+# needed - fail is printed even if last command in pipe succeeded.
+set -o noclobber -o noglob -o nounset -o pipefail
+IFS=$'\n'
 
-maxln=200    # Stop after $maxln lines.  Can be used like ls | head -n $maxln
 
-mimetype=$(file --mime-type -Lb "$path")
-name=$(basename "$path")
-extension=$(echo -E "${path##*.}" | tr "[:upper:]" "[:lower:]")
-case $extension in
-    bz|bz2|gz|lz|lha|lzh|lzma|lzo|rz|xz)
-        tmp=$(echo -E "${path##*.}" | tr "[:upper:]" "[:lower:]")
-        [[ $tmp = tar ]] && extension=$tmp.$extension
-        ;;
-esac
+# File to preview.
+FILE_PATH="${1}"
+FILE_MIME=$(file --mime-type -Lb "${FILE_PATH}")
+FILE_EXT=$(printf '%s' "${FILE_PATH##*.}" | tr '[:upper:]' '[:lower:]')
 
-try() {
-    output=$(eval '"$@"')
-}
-dump() {
-    echo -E "$output"
-}
-trim() {
-    head -n "$maxln"
-}
-highlight() {
-    pygmentize -f 256 -O 'bg=dark,style=monokai' "$@"
-    test $? -eq 0 -o $? -eq 141
+# Preview size.
+PV_WIDTH="${2}"
+PV_HEIGHT="${3}"
+
+# Max file size to highlight or process.
+MAX_FILE_SIZE=262144    # 256KiB
+
+
+# Convert tabs to spaces.
+retab () {
+    expand -t4 "$@"
 }
 
-case "$name" in
+# Wrap long lines.
+wrap () {
+    fmt -scw "${PV_WIDTH}" "$@"
+}
+
+# Trim file to MAX_FILE_SIZE size.
+trim () {
+    head -c${MAX_FILE_SIZE} "$@"
+}
+
+# Highlight source code. If file is too large or highlighting timed out file is
+# printed as it is (without highlighting).
+highlight () {
+    local file_path="${1}"
+    local file_size=0
+    local syntax="${2:-}"
+
+    if [[ "${file_path}" == '-' ]] ; then
+        # Pass `-s` option to pygmentize instead of file path.
+        file_path=-s
+    else
+        file_size="$(stat --printf='%s' -- "${file_path}")"
+    fi
+
+    if [[ "${file_size}" -gt "${MAX_FILE_SIZE}" ]] ; then
+        return 1
+    fi
+
+    timeout 5 pygmentize -f 256 -O 'bg=dark,style=monokai' \
+        ${syntax:+-l${syntax}} "${file_path}"
+}
+
+
+case "${FILE_PATH}" in
     *.cert.pem|*.crt)
-        try openssl x509 -noout -text -in "$path" && { dump | trim; exit 5; }
+        openssl x509 -noout -text -in "${FILE_PATH}" && exit 5
         ;;
 
     *.csr.pem|*.csr)
-        try openssl csr -noout -text -in "$path" && { dump | trim; exit 5; }
+        openssl csr -noout -text -in "${FILE_PATH}" && exit 5
         ;;
 
     *.crl.pem|*.crl)
-        try openssl crl -noout -text -in "$path" && { dump | trim; exit 5; }
+        openssl crl -noout -text -in "${FILE_PATH}" && exit 5
+        ;;
+
+    *.html.j2)
+        highlight "${FILE_PATH}" html+jinja && exit 5
+        ;;
+
+    *.xml.j2)
+        highlight "${FILE_PATH}" xml+jinja && exit 5
         ;;
 esac
 
-case "$extension" in
-    #7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
-    #rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|z|zip)
-    #    try als "$path" && { dump | trim; exit 0; }
-    #    try acat "$path" && { dump | trim; exit 3; }
-    #    try bsdtar -lf "$path" && { dump | trim; exit 0; }
-    #    exit 1
-    #    ;;
-    #rar)
-    #    try unrar -p- lt "$path" && { dump | trim; exit 0; } || exit 1
-    #    ;;
 
+case "${FILE_EXT}" in
     pdf)
-        try pdftotext -l 10 -nopgbrk -q "$path" - \
-            && { dump | trim | fmt -s -w $width; exit 0; } || exit 1
+        pdftotext -l 10 -nopgbrk -q "${FILE_PATH}" - | wrap && exit 4
         ;;
 
     htm|html|xhtml)
-        try lynx   -dump "$path" && { dump | trim | fmt -s -w $width; exit 4; }
-        ;; # fall back to highlight/cat if the text browsers fail
+        grep -q '{%.*%}\|\|{#.*#}{{.*}}' "${FILE_PATH}" \
+            && highlight "${FILE_PATH}" html+jinja && exit 5
+        lynx -dump "${FILE_PATH}" | wrap && exit 4
+        ;;
 
     tsv)
-        try column -t -s $'\t' "$path" && { dump | trim; exit 5; } || exit 2
+        trim "${FILE_PATH}" | column -t -s$'\t' && exit 5
+        ;;
+
+    csv)
+        # Convert to TSV first.
+        trim "${FILE_PATH}" \
+            | python3 -c "import csv, sys; csv.writer(sys.stdout, 'excel-tab').writerows(csv.reader(sys.stdin))" \
+            | column -t -s$'\t' \
+            && exit 5
         ;;
 
     deb)
-        try dpkg --info "$path" && { dump | trim; exit 5; } || exit 1
+        dpkg --info "${FILE_PATH}" control | highlight - control && exit 5
+        ar p "${FILE_PATH}" control.tar.gz | tar xzO ./control \
+            | highlight - control && exit 5
+        ar p "${FILE_PATH}" control.tar.xz | tar xJO ./control \
+            | highlight - control && exit 5
         ;;
 
     rpm)
-        try rpm -qip "$path" && { dump | trim; exit 5; } || exit 1
+        rpm -qip "${FILE_PATH}" && exit 5
         ;;
 
-    txt)
-        cat "$path" | trim; exit 5
+    json)
+        jq -C . "${FILE_PATH}" | trim && exit 5
+        python3 -m json.tool -- "${FILE_PATH}" | highlight - json | trim && exit 5
+        ;;
+
+    xml)
+        xmllint --format "${FILE_PATH}" | highlight - xml && exit 5
         ;;
 
     md|markdown)
-        try mdv -t 884.0134 -c $width -u i "$path" && { dump | trim; exit 5; }
-        ;; # fall back to highlight/cat
+        mdv -t 884.0134 -c ${PV_WIDTH} -u inline "${FILE_PATH}" | wrap && exit 4
+        ;;
+
+    desktop|service|target|socket)
+        [[ "${FILE_MIME}" =~ text/* ]] && highlight "${FILE_PATH}" ini && exit 5
+        ;;
+
+    j2)
+        highlight "${FILE_PATH}" jinja && exit 5
+        ;;
+
+    yml|yaml)
+        highlight "${FILE_PATH}" yaml && exit 5
+        ;;
 esac
 
-case "$mimetype" in
-    text/* | */xml)
-        try highlight "$path" && { dump | trim | expand -t4; exit 5; } || exit 2
+
+case "${FILE_MIME}" in
+    text/*|*/xml)
+        highlight "${FILE_PATH}" | retab && exit 5
+        exit 2
         ;;
 
     image/*|video/*|audio/*)
-        try exiftool "$path" && { dump | trim | expand -t4; exit 5; } || exit 1
+        exiftool "${FILE_PATH}" && exit 5
         ;;
 esac
 
-echo '----- File Type Classification -----' \
-    && file --dereference --brief -- "$path" | fmt -sw $width \
-    && file --dereference --brief --mime -- "$path" | fmt -sw $width \
-    && exit 5
+
+# Fallback preview.
+echo '[1m----- File Type Classification -----[0m' \
+    && file --dereference --brief -- "${FILE_PATH}" | wrap \
+    && file --dereference --brief --mime -- "${FILE_PATH}" | wrap \
+    && exit 4
+
 
 exit 1
