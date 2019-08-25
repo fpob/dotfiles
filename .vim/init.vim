@@ -26,7 +26,7 @@ set tabstop=4
 set smarttab                    " inteligetní tab
 set smartindent                 " inteligetní odsazení
 set autoindent
-set formatoptions=tcqlron
+set formatoptions=cqlron
 
 " Foldy
 set foldmethod=marker
@@ -53,6 +53,7 @@ set virtualedit=block
 
 " Splits
 set splitright
+set splitbelow
 
 if has('conceal')
     set conceallevel=0
@@ -164,9 +165,6 @@ highlight B ctermbg=darkblue guibg=darkblue
 augroup vimrc
     autocmd!
 
-    autocmd BufNewFile * set fileformat=unix
-    autocmd Filetype man,help setlocal colorcolumn=0
-
     " Automatické uložení a načtení viewů (foldy, pozice kurzoru, ...)
     autocmd BufLeave,VimLeave *
         \   if expand('%') != '' && &buftype !~ 'nofile'
@@ -176,16 +174,6 @@ augroup vimrc
         \   if expand('%') != '' && &buftype !~ 'nofile'
         \|    silent! loadview
         \|  endif
-
-    " Vymazání bufferu `q` po spuštění
-    autocmd VimEnter * let @q=''
-    " Vymazání posledniho hledani po spuštění
-    autocmd VimEnter * let @/=''
-
-    " Always start git commit at first line and change foldmethod
-    autocmd FileType gitcommit
-        \   exec 'au VimEnter * call setpos(".", [0, 1, 1, 0])'
-        \|  setlocal foldmethod=syntax
 
     " Show colorcolumn as +1,+10%
     autocmd OptionSet textwidth
@@ -248,9 +236,9 @@ nnoremap <S-F3> :wqa<Cr>
 nnoremap <S-F4> :qa<Cr>
 
 nnoremap <F5> :nohlsearch<Cr>
-nnoremap <F6> @q
 " <F7>, <F8> mapped by plugins
 nnoremap <F9> :make<Cr>
+nnoremap <F10> :make run<Cr>
 
 " Insert the word/WORD under the cursor
 cnoremap <Leader>w <C-r><C-w>
@@ -411,7 +399,7 @@ vmap gs <plug>(GrepperOperator)
 runtime PACK plugin/grepper.vim
 
 let g:grepper.tools = ['grep', 'git']
-let g:grepper.grep.grepprg .= ' -P -- '
+let g:grepper.grep.grepprg .= ' -P -I --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox} -- '
 let g:grepper.git.grepprg .= ' -P -- '
 
 let g:grepper.simple_prompt = 1
@@ -427,7 +415,7 @@ let g:grepper.dir = 'repo,cwd'
 
 let g:grepper.operator.tools = ['grep', 'git']
 
-command! Todo :Grepper -noprompt -side -query '(TODO|FIXME)'
+command! Todo :Grepper -noprompt -query '(TODO|FIXME)'
 
 " Pack base/indent-guides --------------------------------------------------{{{1
 
@@ -471,13 +459,6 @@ endfun
 command! NERDTreeFocusOrClose call NERDTreeFocusOrClose()
 
 nnoremap <F8> :NERDTreeFocusOrClose<Cr>
-
-" Start NERDtree if vim was started with no arguments and not reading stdin
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter *
-    \   if !argc() && !exists("s:std_in")
-    \|      NERDTree
-    \|  endif
 
 " Pack base/template -------------------------------------------------------{{{1
 
@@ -590,10 +571,10 @@ let g:pymode_indent = 1
 let g:pymode_python = 'python3'
 let g:pymode_syntax_print_as_function = 1
 
-let g:pymode_run_bind = '<Leader>x'
+let g:pymode_run_bind = '<F10>'
 let g:pymode_rope_completion_bind = '<C-Space>'
 
-let g:pymode_lint = 1
+let g:pymode_lint = 0
 let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'pylint']
 let g:pymode_lint_cwindow = 0
 let g:pymode_lint_signs = 0
