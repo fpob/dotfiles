@@ -133,6 +133,8 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
 alias e='$EDITOR'
 alias f='$FILE_MANAGER'
 
+alias xo='xdg-open'
+
 alias ls="ls -v --color=auto"
 alias l='ls -CF'
 alias ll='l -hl --time-style="+%Y-%m-%d %H:%M"'
@@ -191,12 +193,6 @@ alias -g G='|grep -Pi'
 alias -g T='|tail'
 alias -g H='|head'
 alias -g N='&>/dev/null'
-
-# Suffix aliasess
-alias -s py='python3'
-alias -s sh='bash'
-alias -s zsh='zsh'
-alias -s awk='awk -f'
 
 # Color man pages ----------------------------------------------------------{{{1
 
