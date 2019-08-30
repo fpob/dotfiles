@@ -237,15 +237,15 @@ nnoremap <Leader>- :new<Cr>
 nnoremap <Space> za
 vnoremap <Space> zf
 
-" Change default help
-nnoremap <F1> :help ide<Cr>
+" Disable help
+nnoremap <F1> <nop>
 
 " Faster saving and closing
 nnoremap <F2> :w<Cr>
-nnoremap <F3> :wq<Cr>
+nnoremap <F3> :x<Cr>
 nnoremap <F4> :q<Cr>
 nnoremap <S-F2> :wa<Cr>
-nnoremap <S-F3> :wqa<Cr>
+nnoremap <S-F3> :xa<Cr>
 nnoremap <S-F4> :qa<Cr>
 
 nnoremap <F5> :nohlsearch<Cr>
@@ -281,16 +281,6 @@ nnoremap <silent> yn :let @+=expand("%:t")<Cr>
 
 " Close preview window
 nnoremap <Leader>z <C-W>z
-
-if has('nvim')
-    nnoremap <Leader>t :terminal<Cr>
-    nnoremap <Leader>T :terminal<Space>
-else
-    nnoremap <Leader>t :terminal ++close ++curwin<Cr>
-    nnoremap <Leader>T :terminal ++curwin<Space>
-    vnoremap <Leader>t :terminal<Cr>
-    vnoremap <Leader>T :terminal<Space>
-endif
 
 " Pack base/airline --------------------------------------------------------{{{1
 
