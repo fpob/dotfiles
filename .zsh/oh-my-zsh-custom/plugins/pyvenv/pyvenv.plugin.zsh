@@ -24,11 +24,14 @@ function prompt_pyvenv {
 # git repository root. If {.venv,venv} directory exists virtualenv is activated
 # otherwise deactivated.
 function workon_cwd {
-    local project_root=${PWD:A}
+    local project_root=$(git rev-parse --show-toplevel 2>/dev/null)
 
-    local git_repo_root=$(git rev-parse --show-toplevel 2>/dev/null)
-    if [[ -n $git_repo_root ]] ; then
-        project_root=$git_repo_root
+    # Try to find venv in parent directory.
+    if [[ -z $project_root ]] ; then
+        project_root=${PWD:A}
+        while [[ ${#project_root} -gt 1 && ! -d $project_root/.venv ]] ; do
+            project_root=${project_root:h}
+        done
     fi
 
     local pyvenv_path=$project_root/.venv
