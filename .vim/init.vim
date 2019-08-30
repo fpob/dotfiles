@@ -214,11 +214,24 @@ nnoremap <Right> gt
 nnoremap <C-h> gT
 nnoremap <C-l> gt
 
+" New tab shortcut (similar to tmux mapping)
+nnoremap <Leader>c :tabedit<Cr>
+
 " Buffer switching
 nnoremap <Up> :bp<Cr>
 nnoremap <Down> :bn<Cr>
 nnoremap <C-k> :bp<Cr>
 nnoremap <C-j> :bn<Cr>
+
+" Window switching (alt)
+nnoremap <M-h> <C-w>h
+nnoremap <M-l> <C-w>l
+nnoremap <M-k> <C-w>k
+nnoremap <M-j> <C-w>j
+
+" New window shortcuts (similar to tmux mapping)
+nnoremap <Leader>\ :vnew<Cr>
+nnoremap <Leader>- :new<Cr>
 
 " Fold with spacebar
 nnoremap <Space> za
@@ -258,9 +271,6 @@ inoremap <Leader><Leader>' “
 inoremap <Leader><Leader>" “
 inoremap <Leader><Leader>- –
 inoremap <Leader><Leader>. …
-
-" cd to directory of currently edited file
-nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 
 " Yank directory
 nnoremap <silent> yd :let @+=expand("%:p:h")<Cr>
