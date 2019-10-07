@@ -64,7 +64,7 @@ endif
 set wildchar=<Tab>  " autocompl ex příkazů
 set wildmenu
 set wildmode=longest:full,full
-set wildignore+=*.o,*~,*.pyc,__pycache__/,.git/
+set wildignore+=*.o,*~,*.pyc,__pycache__/,.git/,.tox/,.venv/
 
 " Nevydávát otravné zvuky!
 if v:version >= 800
@@ -144,8 +144,18 @@ function! Chomp(string)
 endfunction
 
 let g:user = Chomp(system('id -un'))
-let g:user_name = Chomp(system('git config --includes --get user.name 2>/dev/null'))
-let g:user_email = Chomp(system('git config --includes --get user.email 2>/dev/null'))
+
+if getenv('GIT_AUTHOR_NAME') != v:null
+    let g:user_name = getenv('GIT_AUTHOR_NAME')
+else
+    let g:user_name = Chomp(system('git config --includes --get user.name 2>/dev/null'))
+endif
+
+if getenv('GIT_AUTHOR_EMAIL') != v:null
+    let g:user_email = getenv('GIT_AUTHOR_EMAIL')
+else
+    let g:user_email = Chomp(system('git config --includes --get user.email 2>/dev/null'))
+endif
 
 " Colors -------------------------------------------------------------------{{{1
 
@@ -176,7 +186,7 @@ augroup vimrc
         \|  endif
 
     " Show colorcolumn as +1,+10%
-    autocmd OptionSet textwidth
+    autocmd BufReadPost,OptionSet textwidth
         \ exec 'set colorcolumn=+1,+' . (float2nr(round(&textwidth * 0.1)) + 1)
 augroup END
 
@@ -214,9 +224,6 @@ nnoremap <Right> gt
 nnoremap <C-h> gT
 nnoremap <C-l> gt
 
-" New tab shortcut (similar to tmux mapping)
-nnoremap <Leader>c :tabedit<Cr>
-
 " Buffer switching
 nnoremap <Up> :bp<Cr>
 nnoremap <Down> :bn<Cr>
@@ -228,10 +235,6 @@ nnoremap <M-h> <C-w>h
 nnoremap <M-l> <C-w>l
 nnoremap <M-k> <C-w>k
 nnoremap <M-j> <C-w>j
-
-" New window shortcuts (similar to tmux mapping)
-nnoremap <Leader>\ :vnew<Cr>
-nnoremap <Leader>- :new<Cr>
 
 " Fold with spacebar
 nnoremap <Space> za
@@ -364,7 +367,16 @@ let g:ctrlp_user_command = {
 \   'types': {
 \       1: ['.git', 'cd %s && git ls-files . -co --exclude-standard'],
 \   },
-\   'fallback': 'find %s -type f | grep -vP "(\.git|~$|__pycache__|\.py[co]$|\.o$)"',
+\   'fallback': join([
+\       "find %s -type f",
+\       "-not -name '*~'",
+\       "-not -name '*.o'",
+\       "-not -name '*.pyc'",
+\       "-not -path '*/__pycache__/*'",
+\       "-not -path '*/.git/*'",
+\       "-not -path '*/.venv/*'",
+\       "-not -path '*/.tox/*'",
+\   ], " ")
 \}
 
 " Pack base/easymotion -----------------------------------------------------{{{1
@@ -423,7 +435,7 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'org']
+let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'go']
 
 let g:indent_guides_auto_colors = 0
 autocmd VimEnter,ColorScheme *
@@ -435,7 +447,7 @@ autocmd VimEnter,ColorScheme *
 let NERDTreeIgnore = [
     \   '^__pycache__$[[dir]]',
     \   '^.git$',
-    \   '^.\(ropeproject\|tox\|pytest_cache\|cache\)$[[dir]]',
+    \   '^.\(ropeproject\|tox\|pytest_cache\|cache\|venv\)$[[dir]]',
     \   '^.\(coverage\)$[[file]]',
     \   '^tags\(\.temp\|\.lock\)\?$[[file]]'
     \]
@@ -546,6 +558,14 @@ au FileType markdown
 
 let g:better_whitespace_filetypes_blacklist = ['mail', 'diff', 'gitcommit', 'help']
 let g:show_spaces_that_precede_tabs = 1
+
+" Pack dev/editorconfig ----------------------------------------------------{{{1
+
+" Don't change formations (adds 't' when max_line_length is set).
+let g:EditorConfig_preserve_formatoptions = 1
+
+" Set only 'textwidth', don't change colorcolumn.
+let g:EditorConfig_max_line_indicator = 'none'
 
 " Pack dev/gitgutter -------------------------------------------------------{{{1
 
