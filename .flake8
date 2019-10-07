@@ -15,4 +15,4 @@ exclude =
     old,
     build,
     dist
-import-order-style = google
+import-order-style = pep8

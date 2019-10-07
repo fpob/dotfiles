@@ -8,3 +8,6 @@
 .envrc
 # python venv
 .venv
+
+# Env files
+.env*
