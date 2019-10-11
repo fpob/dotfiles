@@ -5,6 +5,17 @@ import yaml
 import json
 
 
+class MyDumper(yaml.SafeDumper):
+    """
+    Dumper that will indent block collection entries (items starting with `-`,
+    `?` and `:`).
+
+    See: https://stackoverflow.com/q/25108581
+    """
+    def increase_indent(self, flow=False, indentless=False):
+        return super(MyDumper, self).increase_indent(flow, False)
+
+
 @click.command()
 @click.argument('input_file', type=click.File('r'), default='-')
 @click.option('-o', '--output-file', type=click.File('w'), default='-')
@@ -15,7 +26,7 @@ def cli(ctx, input_file, output_file, width):
     """Parse JSON file and print data as YAML."""
     try:
         data = json.load(input_file)
-        output_file.write(yaml.dump(data, Dumper=yaml.SafeDumper, width=width))
+        output_file.write(yaml.dump(data, Dumper=MyDumper, width=width))
     except Exception as e:
         click.echo(e, err=True)
         ctx.exit(1)
