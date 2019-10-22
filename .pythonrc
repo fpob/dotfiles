@@ -4,11 +4,16 @@ from glob import glob
 import os
 import re
 import math
+import logging
 
 try:
     import sh
 except ImportError:
     pass
+
+
+# Disable tab-completion messages in ipython/ipdb
+logging.getLogger('parso').setLevel(logging.ERROR)
 
 
 def hash_str(algorithm, string):
