@@ -13,4 +13,4 @@ echo '>>> Build YouCompleteMe'
 .vim/pack/dev/start/youcompleteme/install.py
 
 echo '>>> Generate Vim helptags'
-find .vim/pack -maxdepth 4 -name doc -type d -exec vim -T dumb -e -c 'helptags {}' -c q \;
+find .vim/pack -maxdepth 4 -name doc -type d -exec vim -e -c 'helptags {}' -c q \; &>/dev/null
