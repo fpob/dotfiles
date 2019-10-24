@@ -43,6 +43,20 @@ function workon_cwd {
     elif [[ -n $VIRTUAL_ENV && -n $PYVENV_WORKDIR ]] ; then
         echo "Deactivating Python venv '$VIRTUAL_ENV'"
         deactivate && unset PYVENV_WORKDIR
+    else
+        return 1
+    fi
+}
+
+function workon {
+    if [[ -z $1 ]] ; then
+        workon_cwd || echo "Virtualenv not found in current or parent directories"
+    else
+        if [[ -f $1/pyvenv.cfg ]] ; then
+            source "$1/bin/activate"
+        else
+            source "$1/.venv/bin/activate"
+        fi
     fi
 }
 
