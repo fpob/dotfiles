@@ -1,0 +1,33 @@
+# Authenticate using LDAP method.
+vault login -method=ldap username=<username>
+
+# Logout - revoke currently using token (~/.vault-token). This will also revoke
+# all child tokens, add -mode=orphan to keep child tokens valid.
+vault token revoke -self
+
+# Create new kv (key-value) secret at kv/test path with user and pass attribute.
+# This way can be secret also modified.
+# Any modification is stored as new version in kv-v2 engine.
+vault kv put kv/test user=<username> pass=<password>
+
+# Show secret at kv/test path. Printed in pretty human readable format.
+vault kv get kv/test
+
+# Show secret kv/test in parseable format, supported is JSON and YAML.
+vault kv get -format=json kv/test
+
+# Get attribute pass from kv/test secret.
+vault kv get -field=pass kv/test
+
+# Delete secret kv/test.
+# This will delete only latest version of secret in kv-v2 engine.
+vault kv delete kv/test
+
+# Show metadata for secret. This provides information about all versions.
+vault kv metadata get kv/test
+
+# Delete all versions of secret in kv-v2 engine.
+vault kv delete kv/test
+
+# List secrets in kv storage at kv/ path
+vault kv list kv/
