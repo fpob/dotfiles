@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+
+import re
+
+import click
+from click.termui import _ansi_colors
+
+
+COLORS = [c for c in _ansi_colors.keys() if c != 'reset']
+
+PATTERN_FLAGS = {
+    'i': re.IGNORECASE,
+}
+
+
+class HighlightPattern(click.ParamType):
+    PARSE_PATTERN = re.compile(
+        f"""
+        ^
+        (?P<color>{'|'.join(COLORS)})
+        (?P<delimiter>.)
+        (?P<pattern>.*)
+        (?P=delimiter)
+        (?P<flags>[{''.join(PATTERN_FLAGS.keys())}]*)
+        """,
+        re.VERBOSE
+    )
+
+    name = 'highlight_pattern'
+
+    def convert(self, value, param, ctx):
+        match = self.PARSE_PATTERN.match(value)
+        if not match:
+            self.fail(f'Could not parse highlight pattern "{value}"')
+
+        color = match.group('color')
+        if color not in COLORS:
+            self.fail(f'Unknown color "{color}", choose from {", ".join(COLORS)}')
+
+        flags = match.group('flags')
+        pattern_flags = 0
+        for flag in flags:
+            if flag not in PATTERN_FLAGS:
+                self.fail(f'Unknown flag "{flag}", '
+                          f'choose from {", ".join(PATTERN_FLAGS.keys())}')
+            pattern_flags |= PATTERN_FLAGS[flag]
+
+        pattern = re.compile(match.group('pattern'), pattern_flags)
+
+        return color, pattern
+
+
+@click.command()
+@click.option('-i', '--input', type=click.File('r'), default='-')
+@click.option('-o', '--output', type=click.File('w'), default='-')
+@click.argument('highlight', type=HighlightPattern(), nargs=-1)
+def hi(input, output, highlight):
+    """
+    Simple tool to higlight parts of text that match specified regex. Something
+    like `grep -C9999 ...` with multiple patterns and colors.
+
+    Higlight pattern has format '<color>/<pattern>/[flags]', where color will be
+    used for highlighting (color names from click), delimiter (/) can be any
+    character (similar to sed) and flags is optional regex flag, currently can
+    be only 'i' to ignore case.
+
+    Example highlight regexes:
+
+    \b
+        red/error/i     -- red 'error', ignore case
+        green/OK/       -- green 'OK', case sensitive
+
+    Note 'hi' group (`?P<hi>`) can be used to highlight only specific part of
+    match instead of whole match.
+
+    Example regex to highlight only ERROR in lines that starts with 'Check':
+
+    \b
+        'red/^Check.*(?P<hi>ERROR)/'
+
+    """
+    for line in input:
+        for color, pattern in highlight:
+            bits = []
+            rest = line
+            while rest:
+                found = pattern.search(rest)
+                if found:
+                    try:
+                        start, end = found.start('hi'), found.end('hi')
+                    except IndexError:
+                        start, end = found.start(0), found.end(0)
+                    bits.append(rest[:start])
+                    bits.append(click.style(rest[start:end], fg=color, bold=True))
+                    rest = rest[end:]
+                else:
+                    bits.append(rest)
+                    rest = None
+            line = ''.join(bits)
+        output.write(line)
+
+
+if __name__ == '__main__':
+    # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+    hi()
