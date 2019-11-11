@@ -5,8 +5,19 @@ def ${1:cli}():
 
 
 if __name__ == '__main__':
-    # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
-    $1()
+	# pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+	$1()
+endsnippet
+
+snippet @cg "click.group" b
+@click.group()$0
+def ${1:cli}():
+	${2:pass}
+
+
+if __name__ == '__main__':
+	# pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+	$1()
 endsnippet
 
 snippet @ca "click.argument" b

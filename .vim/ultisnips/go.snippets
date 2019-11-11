@@ -2,19 +2,19 @@ snippet pack "package" b
 package ${1:main}$0
 endsnippet
 
-snippet import "import factored"
+snippet imp "import factored" b
 import (
 	$0
 )
 endsnippet
 
-snippet var "var factored"
+snippet var "var factored" b
 var (
 	$0
 )
 endsnippet
 
-snippet const "const factored"
+snippet const "const factored" b
 const (
 	$0
 )
@@ -32,71 +32,71 @@ func init() {
 }
 endsnippet
 
-snippet if
+snippet if "if ..." b
 if ${1:/* condition */} {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet elif
+snippet elif "else if ..."
 else if ${1:/* condition */} {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet else
+snippet else "else"
 else {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet for
+snippet for "for ..." b
 for ${1} {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet fori
+snippet fori "for i = 0..." b
 for ${1:i} := 0; $1 < ${2:count}; $1++ {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet fore "foreach"
+snippet fore "foreach" b
 for ${1:item} := range ${2:array} {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet switch
+snippet switch "switch ..." b
 switch ${1} {
 	$0
 }
 endsnippet
 
-snippet select
+snippet select "select" b
 select {
 	$0
 }
 endsnippet
 
-snippet case
+snippet case "case ..." b
 case ${1}:
 	$0
 endsnippet
 
-snippet default
+snippet default "default" b
 default:
 	$0
 endsnippet
 
-snippet struct "" b
+snippet struct "type ... struct" b
 type ${1:name} struct {
 	$0
 }
 endsnippet
 
-snippet iface "" b
+snippet iface "type ... interface" b
 type ${1:name} interface {
 	$0
 }
