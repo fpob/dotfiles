@@ -1,9 +1,3 @@
-# Term ---------------------------------------------------------------------{{{1
-
-case $TERM in
-    xterm*) export TERM="xterm-256color" ;;
-esac
-
 # Tmux ---------------------------------------------------------------------{{{1
 
 if [[ $(id -u) -ge 1000 ]] ; then
@@ -203,3 +197,20 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;31m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;34m'
+
+# Kitty (completion, aliasses, ...) ----------------------------------------{{{1
+
+# Kitty is installed and currently using it.
+if command -V kitty &>/dev/null && [[ $TERM = xterm-kitty ]] ; then
+
+    source =(kitty + complete setup zsh)
+
+    # Show image in terminal.
+    alias icat='kitty +kitten icat'
+
+    # SSH kitten is just wrapper around ssh command that fixes terminfo.
+    # *Required* because *#$%@! in ncurses database, see discussion on
+    # https://github.com/kovidgoyal/kitty/issues/879
+    alias ssh='kitty +kitten ssh'
+
+fi

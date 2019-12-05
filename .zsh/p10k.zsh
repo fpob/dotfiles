@@ -47,7 +47,7 @@ fi
   # Enable default icons for all segments.
   typeset -g POWERLEVEL9K_VISUAL_IDENTIFIER_EXPANSION='${P9K_VISUAL_IDENTIFIER}'
   # Font mode.
-  typeset -g POWERLEVEL9K_MODE=nerdfont-complete
+  typeset -g POWERLEVEL9K_MODE='awesome-fontconfig'
   # Place icons before content in the left prompt and after content in the right
   # prompt.
   typeset -g POWERLEVEL9K_ICON_BEFORE_CONTENT=

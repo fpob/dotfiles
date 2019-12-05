@@ -13,7 +13,7 @@ floating_modifier $mod
 mouse_warping none
 
 # Start terminal
-bindsym $mod+t exec mate-terminal
+bindsym $mod+t exec kitty
 # Start FileManager
 bindsym $mod+y exec caja --browser ~
 # Start note taker
@@ -189,7 +189,7 @@ for_window [class="(?i)tilda"] floating enable
 
 for_window [class="(?i)firefox" tiling] border pixel 2
 for_window [class="(?i)thunderbird" tiling] border pixel 2
-for_window [class="(?i)terminal" tiling] border pixel 2
+for_window [class="(?i)kitty" tiling] border pixel 2
 for_window [class="(?i)vim" tiling] border pixel 2
 for_window [class="(?i)mpv" tiling] border pixel 2
 
