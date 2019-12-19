@@ -1,0 +1,207 @@
+" Pack base/airline --------------------------------------------------------{{{1
+
+let g:airline_powerline_fonts = 1
+" Nezobrazovat oddelovace prazdnych sekci (branch apod.)
+let g:airline_skip_empty_sections = 1
+
+" Kratsi text modu (insert, replace, ...)
+let g:airline_mode_map = {
+    \ '__' : '-',
+    \ 'c'  : 'C',
+    \ 'i'  : 'I',
+    \ 'ic' : 'I',
+    \ 'ix' : 'I',
+    \ 'n'  : 'N',
+    \ 'ni' : 'N',
+    \ 'no' : 'N',
+    \ 'R'  : 'R',
+    \ 'Rv' : 'R',
+    \ 's'  : 'S',
+    \ 'S'  : 'S',
+    \ '' : 'S',
+    \ 't'  : 'T',
+    \ 'v'  : 'V',
+    \ 'V'  : 'V',
+    \ '' : 'V',
+    \ }
+
+" přidání ASCII kódu vpravo dole na panel
+"let g:airline_section_z = '%3p%% %#__accent_bold#%{g:airline_symbols.linenr}%#__accent_bold#%4l%#__restore__#%#__restore__#:%3v [0x%02B]'
+let g:airline_section_z = '%3p%% [0x%02B]'
+
+" Tabs
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_splits = 0
+
+" Tab indexes
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#tab_nr_type = 1
+
+" Shorter text in tabs
+let g:airline#extensions#tabline#buffers_label = 'b'
+let g:airline#extensions#tabline#tabs_label = 't'
+let g:airline#extensions#tabline#show_close_button = 0
+
+" Hide 'tab number/count' in the right side
+let g:airline#extensions#tabline#show_tab_count = 0
+
+" Filename formatting in tabs
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+" Tab switching
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+
+" Other airline plugins
+let g:airline#extensions#tagbar#enabled = 0
+let g:airline#extensions#whitespace#enabled = 0
+
+" Pack base/ctrlp ----------------------------------------------------------{{{1
+
+" Maximální počet souborů pro skenování
+let g:ctrlp_max_files = 4096
+" Maximální zanoření v adresářích
+let g:ctrlp_max_depth = 16
+" Soubory otevírat v aktuálním okně
+let g:ctrlp_open_new_file = 'r'
+" Otevírání více souborů: 1 v aktuálním okně a další v nových záložkách
+let g:ctrlp_open_multiple_files = 'tjr'
+" Prikaz pro vyhledani souboru, g:ctrlp_custom_ignore se pouziva pokud neni
+" zadano 'ignore':1
+let g:ctrlp_user_command = {
+\   'types': {
+\       1: ['.git', 'cd %s && git ls-files . -co --exclude-standard'],
+\   },
+\   'fallback': join([
+\       "find %s -type f",
+\       "-not -name '*~'",
+\       "-not -name '*.o'",
+\       "-not -name '*.pyc'",
+\       "-not -path '*/__pycache__/*'",
+\       "-not -path '*/.git/*'",
+\       "-not -path '*/.venv/*'",
+\       "-not -path '*/.tox/*'",
+\   ], " ")
+\}
+
+" Pack base/easymotion -----------------------------------------------------{{{1
+
+let g:EasyMotion_smartcase = 1
+
+" Character jumps
+nmap <Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader>F <Plug>(easymotion-overwin-f)
+
+" Faster HJKL motion
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+" Keep cursor column when JK motion
+let g:EasyMotion_startofline = 0
+
+" Searching
+map  <Leader>/ <Plug>(easymotion-sn)
+map  <Leader>n <Plug>(easymotion-next)
+map  <Leader>N <Plug>(easymotion-prev)
+let g:EasyMotion_add_search_history = 0
+
+" Pack base/grepper --------------------------------------------------------{{{1
+
+nnoremap <leader>g :Grepper<cr>
+nmap gs <plug>(GrepperOperator)
+vmap gs <plug>(GrepperOperator)
+
+" Initialize g:grepper with default values.
+runtime PACK plugin/grepper.vim
+
+let g:grepper.tools = ['grep', 'git']
+let g:grepper.grep.grepprg .= ' -P -I --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox} -- '
+let g:grepper.git.grepprg .= ' -P -- '
+
+let g:grepper.simple_prompt = 1
+
+" Highlight matches
+let g:grepper.highlight = 1
+" Use location list, not quickfix
+let g:grepper.quickfix = 0
+" Do not copen/lwindow after grep finished
+let g:grepper.open = 1
+" Change CWD before grepping
+let g:grepper.dir = 'repo,cwd'
+
+let g:grepper.operator.tools = ['grep', 'git']
+
+command! Todo :Grepper -noprompt -query '(TODO|FIXME)'
+
+" Pack base/indent-guides --------------------------------------------------{{{1
+
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+
+let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'go']
+
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,ColorScheme *
+    \   hi IndentGuidesOdd ctermbg=235 guibg=#262626
+    \|  hi IndentGuidesEven ctermbg=235 guibg=#262626
+
+" Pack base/nerdtree -------------------------------------------------------{{{1
+
+let NERDTreeIgnore = [
+    \   '^__pycache__$[[dir]]',
+    \   '^.git$',
+    \   '^.\(ropeproject\|tox\|pytest_cache\|cache\|venv\)$[[dir]]',
+    \   '^.\(coverage\)$[[file]]',
+    \   '^tags\(\.temp\|\.lock\)\?$[[file]]'
+    \]
+
+" Nezobrazovat napovedu
+let NERDTreeMinimalUI = 1
+
+" Show hidden files by default
+let NERDTreeShowHidden = 1
+
+" Pri mazani souboru automaticky zrusi stary buffer
+let NERDTreeAutoDeleteBuffer = 1
+
+function! NERDTreeFocusOrClose()
+    if exists('t:NERDTreeBufName') && bufname('%') ==? t:NERDTreeBufName
+        execute 'NERDTreeClose'
+    else
+        execute 'NERDTreeFocus'
+    endif
+endfun
+command! NERDTreeFocusOrClose call NERDTreeFocusOrClose()
+
+nnoremap <F8> :NERDTreeFocusOrClose<Cr>
+
+" Pack base/template -------------------------------------------------------{{{1
+
+let g:templates_no_builtin_templates = 1
+
+" Global templates config
+let g:templates_directory = ['~/.vim/templates']
+let g:templates_global_name_prefix = 'template:'
+
+" Change %USER% and %MAIL% value
+let g:username = g:user_name
+let g:email = g:user_email
+
+let g:templates_user_variables = [
+    \   ['PARENT', 'GetParentDirName']
+    \ ]
+
+function! GetParentDirName()
+    return expand('%:p:h:t')
+endfunction
+
