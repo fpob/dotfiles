@@ -28,6 +28,9 @@ bindsym $mod+Shift+t exec rofi -show tmux
 bindsym Print exec xfce4-screenshooter
 bindsym Ctrl+Print exec xfce4-screenshooter --window
 
+exec --no-startup-id kitti3 -p top -s 1.0 1.0 -- --config ~/.config/kitty/kitty-transparent.conf
+bindsym F12 nop kitti3
+
 # Window/layout bindings ---------------------------------------------------{{{1
 
 # Kill focused window
