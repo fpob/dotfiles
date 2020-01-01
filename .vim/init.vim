@@ -6,11 +6,11 @@ set nocompatible
 set backup
 set backupdir=~/.vim/tmp,/tmp
 set directory=~/.vim/tmp,/tmp
-set history=50
+set history=500
 set viewoptions-=options
 
 " Undo configuration
-set undolevels=100
+set undolevels=1000
 if has('persistent_undo')
     set undofile
     set undodir=~/.vim/undo,/tmp
@@ -128,9 +128,7 @@ if has('gui_running')
 endif
 
 " Vlastní dokumentace, pokud adresář existuje
-if isdirectory($HOME . "/.vim/doc")
-    helptags $HOME/.vim/doc
-endif
+silent! helptags ~/.vim/doc
 
 " Syntax
 syntax enable
@@ -144,17 +142,15 @@ function! Chomp(string)
 endfunction
 
 let g:user = Chomp(system('id -un'))
+let g:user_name = Chomp(system('git config --includes --get user.name 2>/dev/null'))
+let g:user_email = Chomp(system('git config --includes --get user.email 2>/dev/null'))
 
-if getenv('GIT_AUTHOR_NAME') != v:null
-    let g:user_name = getenv('GIT_AUTHOR_NAME')
-else
-    let g:user_name = Chomp(system('git config --includes --get user.name 2>/dev/null'))
+if $GIT_AUTHOR_NAME != ""
+    let g:user_name = $GIT_AUTHOR_NAME
 endif
 
-if getenv('GIT_AUTHOR_EMAIL') != v:null
-    let g:user_email = getenv('GIT_AUTHOR_EMAIL')
-else
-    let g:user_email = Chomp(system('git config --includes --get user.email 2>/dev/null'))
+if $GIT_AUTHOR_EMAIL != ""
+    let g:user_email = $GIT_AUTHOR_EMAIL
 endif
 
 " Colors -------------------------------------------------------------------{{{1

@@ -1,4 +1,4 @@
-" Pack dev/youcompleteme ---------------------------------------------------{{{1
+" youcompleteme ------------------------------------------------------------{{{1
 
 " <Tab> is used by UltiStip
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -16,17 +16,20 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 
 let g:ycm_collect_identifiers_from_tags_files = 0
 
+" Disable syntax errors signs
+let g:ycm_enable_diagnostic_signs = 0
+
 nmap <Leader>K :YcmCompleter GetDoc<Cr>
 nmap <Leader>G :YcmCompleter GoTo<Cr>
 
-" Pack dev/ultisnips -------------------------------------------------------{{{1
+" ultisnips ----------------------------------------------------------------{{{1
 
 let g:snips_author = g:user_name
 let g:snips_author_email = g:user_email
 
 let g:UltiSnipsSnippetDirectories = ["ultisnips"]
 
-" Pack dev/tagbar ----------------------------------------------------------{{{1
+" tagbar -------------------------------------------------------------------{{{1
 
 nnoremap <F7> :TagbarToggle<Cr>
 
@@ -35,12 +38,12 @@ let g:tagbar_autoclose = 1
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 
-" Pack dev/gutentags -------------------------------------------------------{{{1
+" gutentags ----------------------------------------------------------------{{{1
 
 let g:gutentags_project_root = ['tags']
 let g:gutentags_add_default_project_roots = 0
 
-" Pack dev/delimitmate -----------------------------------------------------{{{1
+" delimitmate --------------------------------------------------------------{{{1
 
 let delimitMate_expand_cr = 1
 
@@ -60,12 +63,12 @@ au FileType python
 au FileType markdown
     \   let b:delimitMate_nesting_quotes = ['`']
 
-" Pack dev/better-whitespace -----------------------------------------------{{{1
+" better-whitespace --------------------------------------------------------{{{1
 
 let g:better_whitespace_filetypes_blacklist = ['mail', 'diff', 'gitcommit', 'help']
 let g:show_spaces_that_precede_tabs = 1
 
-" Pack dev/editorconfig ----------------------------------------------------{{{1
+" editorconfig -------------------------------------------------------------{{{1
 
 " Don't change formations (adds 't' when max_line_length is set).
 let g:EditorConfig_preserve_formatoptions = 1
@@ -73,8 +76,9 @@ let g:EditorConfig_preserve_formatoptions = 1
 " Set only 'textwidth', don't change colorcolumn.
 let g:EditorConfig_max_line_indicator = 'none'
 
-" Pack dev/gitgutter -------------------------------------------------------{{{1
+" gitgutter ----------------------------------------------------------------{{{1
 
+" Disable default mappings
 let g:gitgutter_map_keys = 0
 
 nmap <leader>dp <Plug>GitGutterPreviewHunk
@@ -84,10 +88,12 @@ nmap <leader>du <Plug>GitGutterUndoHunk
 nmap [c <Plug>GitGutterPrevHunk
 nmap ]c <Plug>GitGutterNextHunk
 
-" Pack dev/python-mode -----------------------------------------------------{{{1
+" python-mode --------------------------------------------------------------{{{1
 
+" Disable changing some options, see docs
 let g:pymode_options = 0
 
+" Change preview appearance (documentation and run output)
 let g:pymode_preview_height = 12
 let g:pymode_preview_position = 'below'
 
@@ -100,27 +106,19 @@ let g:pymode_syntax_print_as_function = 1
 let g:pymode_run_bind = '<F10>'
 let g:pymode_rope_completion_bind = '<C-Space>'
 
+" Disable lint checks, flake8 is not supported
 let g:pymode_lint = 0
-let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'pylint']
-let g:pymode_lint_cwindow = 0
-let g:pymode_lint_signs = 0
 
-" Warn only if line length exceeds max line length by more than 10%.
-" flake8 --max-line-length=80 --select=C,E,F,W,B,B950 --ignore=E501
-let g:pymode_lint_select = ['C', 'E', 'F', 'W', 'B', 'B950']
-let g:pymode_lint_ignore = ['E501']
-
-let g:pymode_lint_options_pep8 = {'max_line_length': &textwidth}
-let g:pymode_lint_options_pylint = {'errors-only': 1}
-
+" Enable rope. Required to make gd, K, etc. work.
 let g:pymode_rope = 1
 
+" Create .ropeproject in /tmp not in PWD
 if !(isdirectory('.git') || isdirectory('.ropeproject'))
-    " Create .ropeproject in /tmp not in PWD
     let g:pymode_rope_project_root = tempname()
 endif
 
-let g:pymode_rope_completion = 1
+" Seems completion is not needed, YCM is enough
+let g:pymode_rope_completion = 0
 let g:pymode_rope_complete_on_dot = 0
 
 let g:pymode_rope_show_doc_bind = 'K'
@@ -136,14 +134,17 @@ let g:pymode_rope_use_function_bind = '<Leader>ru'
 let g:pymode_rope_use_function_bind = '<Leader>ru'
 let g:pymode_rope_change_signature_bind = '<Leader>rs'
 
-" Pack dev/go --------------------------------------------------------------{{{1
+" go -----------------------------------------------------------------------{{{1
 
 let g:go_template_autocreate = 0
 
 " Using YCM instead
 let g:go_code_completion_enabled = 0
 
-" Pack dev/vimtex ----------------------------------------------------------{{{1
+let g:go_highlight_diagnostic_errors = 0
+let g:go_highlight_diagnostic_warnings = 0
+
+" vimtex -------------------------------------------------------------------{{{1
 
 let g:vimtex_quickfix_mode = 0
 

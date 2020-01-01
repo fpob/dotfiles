@@ -1,10 +1,10 @@
-" Pack base/airline --------------------------------------------------------{{{1
+" airline ------------------------------------------------------------------{{{1
 
 let g:airline_powerline_fonts = 1
-" Nezobrazovat oddelovace prazdnych sekci (branch apod.)
+" Do not draw separators for empty sections.
 let g:airline_skip_empty_sections = 1
 
-" Kratsi text modu (insert, replace, ...)
+" Shorter mode text.
 let g:airline_mode_map = {
     \ '__' : '-',
     \ 'c'  : 'C',
@@ -25,9 +25,13 @@ let g:airline_mode_map = {
     \ '' : 'V',
     \ }
 
-" přidání ASCII kódu vpravo dole na panel
-"let g:airline_section_z = '%3p%% %#__accent_bold#%{g:airline_symbols.linenr}%#__accent_bold#%4l%#__restore__#%#__restore__#:%3v [0x%02B]'
+" Don't show 'utf-8[unix]', it is expected, show encoding/format only when it is
+" something else.
+let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
+
+" Percentage and ASCII code of character under cursor.
 let g:airline_section_z = '%3p%% [0x%02B]'
+"let g:airline_section_z = '%3p%% %#__accent_bold#%{g:airline_symbols.linenr}%#__accent_bold#%4l%#__restore__#%#__restore__#:%3v [0x%02B]'
 
 " Tabs
 let g:airline#extensions#tabline#enabled = 1
@@ -64,7 +68,7 @@ nmap <leader>9 <Plug>AirlineSelectTab9
 let g:airline#extensions#tagbar#enabled = 0
 let g:airline#extensions#whitespace#enabled = 0
 
-" Pack base/ctrlp ----------------------------------------------------------{{{1
+" ctrlp --------------------------------------------------------------------{{{1
 
 " Maximální počet souborů pro skenování
 let g:ctrlp_max_files = 4096
@@ -92,7 +96,7 @@ let g:ctrlp_user_command = {
 \   ], " ")
 \}
 
-" Pack base/easymotion -----------------------------------------------------{{{1
+" easymotion ---------------------------------------------------------------{{{1
 
 let g:EasyMotion_smartcase = 1
 
@@ -109,12 +113,13 @@ map <Leader>h <Plug>(easymotion-linebackward)
 let g:EasyMotion_startofline = 0
 
 " Searching
-map  <Leader>/ <Plug>(easymotion-sn)
-map  <Leader>n <Plug>(easymotion-next)
-map  <Leader>N <Plug>(easymotion-prev)
+map <Leader>/ <Plug>(easymotion-sn)
+map <Leader>n <Plug>(easymotion-next)
+map <Leader>N <Plug>(easymotion-prev)
+" Don't add search pattern to @/.
 let g:EasyMotion_add_search_history = 0
 
-" Pack base/grepper --------------------------------------------------------{{{1
+" grepper ------------------------------------------------------------------{{{1
 
 nnoremap <leader>g :Grepper<cr>
 nmap gs <plug>(GrepperOperator)
@@ -123,9 +128,9 @@ vmap gs <plug>(GrepperOperator)
 " Initialize g:grepper with default values.
 runtime PACK plugin/grepper.vim
 
-let g:grepper.tools = ['grep', 'git']
-let g:grepper.grep.grepprg .= ' -P -I --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox} -- '
-let g:grepper.git.grepprg .= ' -P -- '
+let g:grepper.tools = ['git', 'grep']
+let g:grepper.grep.grepprg .= ' -P --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox,.venv}'
+let g:grepper.git.grepprg .= ' -P'
 
 let g:grepper.simple_prompt = 1
 
@@ -138,24 +143,29 @@ let g:grepper.open = 1
 " Change CWD before grepping
 let g:grepper.dir = 'repo,cwd'
 
-let g:grepper.operator.tools = ['grep', 'git']
-
 command! Todo :Grepper -noprompt -query '(TODO|FIXME)'
 
-" Pack base/indent-guides --------------------------------------------------{{{1
+" indent-guides ------------------------------------------------------------{{{1
 
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'go']
+" Disable on TABs
+let g:indent_guides_tab_guides = 0
 
+" Disable default mapping <Leader>ig
+let g:indent_guides_default_mapping = 0
+
+let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
+
+" Use custom colors
 let g:indent_guides_auto_colors = 0
 autocmd VimEnter,ColorScheme *
     \   hi IndentGuidesOdd ctermbg=235 guibg=#262626
     \|  hi IndentGuidesEven ctermbg=235 guibg=#262626
 
-" Pack base/nerdtree -------------------------------------------------------{{{1
+" nerdtree -----------------------------------------------------------------{{{1
 
 let NERDTreeIgnore = [
     \   '^__pycache__$[[dir]]',
@@ -165,15 +175,15 @@ let NERDTreeIgnore = [
     \   '^tags\(\.temp\|\.lock\)\?$[[file]]'
     \]
 
-" Nezobrazovat napovedu
+" Dont show help
 let NERDTreeMinimalUI = 1
-
 " Show hidden files by default
 let NERDTreeShowHidden = 1
-
-" Pri mazani souboru automaticky zrusi stary buffer
+" When deleting file delete also buffer
 let NERDTreeAutoDeleteBuffer = 1
 
+" Custom function+command to focus NERDTree if it is not currently window and if
+" is active then close it.
 function! NERDTreeFocusOrClose()
     if exists('t:NERDTreeBufName') && bufname('%') ==? t:NERDTreeBufName
         execute 'NERDTreeClose'
@@ -185,7 +195,7 @@ command! NERDTreeFocusOrClose call NERDTreeFocusOrClose()
 
 nnoremap <F8> :NERDTreeFocusOrClose<Cr>
 
-" Pack base/template -------------------------------------------------------{{{1
+" template -----------------------------------------------------------------{{{1
 
 let g:templates_no_builtin_templates = 1
 
@@ -197,6 +207,7 @@ let g:templates_global_name_prefix = 'template:'
 let g:username = g:user_name
 let g:email = g:user_email
 
+" Custom variables, mapping variable-name -> value generator (function name)
 let g:templates_user_variables = [
     \   ['PARENT', 'GetParentDirName']
     \ ]
