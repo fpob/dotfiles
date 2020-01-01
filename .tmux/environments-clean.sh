@@ -4,7 +4,7 @@
 tmux ls &>/dev/null || exit
 
 # Keep only last 50 environments
-find "$HOME/.tmux/environments" -type f | sort -r | tail -n +51 | xargs rm
+find "$HOME/.tmux/environments" -type f | sort -r | tail -n +51 | xargs -r rm
 
 # Fix broken link
 if [[ ! -f "$HOME/.tmux/environments/last" ]] ; then
