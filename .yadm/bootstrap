@@ -10,7 +10,8 @@ echo '>>> Change Git push URL'
 yadm remote set-url --push origin 'git@gitlab.com:fpob/dotfiles.git'
 
 echo '>>> Build YouCompleteMe'
-.vim/pack/dev/start/youcompleteme/install.py
+# Force building under python3 (#! is env python) + enable Go completer.
+python3 .vim/pack/dev/start/youcompleteme/install.py --go-completer
 
 echo '>>> Generate Vim helptags'
 find .vim/pack -maxdepth 4 -name doc -type d -exec vim -e -c 'helptags {}' -c q \; &>/dev/null
