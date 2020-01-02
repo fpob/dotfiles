@@ -4,6 +4,7 @@ umask g-w,o-w
 cd "$HOME"
 
 echo '>>> Update Git submodules'
+yadm submodule sync --recursive  # needed to sync URLs from .gitmodules
 yadm submodule update --recursive --init
 
 echo '>>> Change Git push URL'
