@@ -181,6 +181,12 @@ alias gdb='gdb -q'
 alias bc='bc -ql'
 alias octave='octave -qW'
 
+# "Rename" back commands that are renamed in Debian packages because of
+# conflicts with some other commands.
+if ( . /etc/os-release && [[ $ID == debian ]] ) ; then
+    alias bat=batcat
+fi
+
 # Global aliasses
 alias -g L='|less -FX'
 alias -g LL='2>&1|less -FX'
