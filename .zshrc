@@ -213,4 +213,6 @@ if command -V kitty &>/dev/null && [[ $TERM = xterm-kitty ]] ; then
     # https://github.com/kovidgoyal/kitty/issues/879
     alias ssh='kitty +kitten ssh'
 
+    # Diff Styled -- diff with colors, syntax, ...
+    alias difs='kitty +kitten diff'
 fi
