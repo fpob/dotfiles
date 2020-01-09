@@ -66,6 +66,7 @@ plugins=(
     direnv
     docker
     docker-compose
+    fzf
     git
     git-flow
     go
@@ -139,9 +140,9 @@ alias lla='ll -A'
 alias cp='cp --reflink=auto'
 
 # Human readable sizes
-alias du='du -khc'
-alias df='df -kTh'
-alias free='free -th'
+alias du=$_GRC'du -khc'
+alias df=$_GRC'df -kTh'
+alias free=$_GRC'free -th'
 
 alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox}"
 alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto -nT'
