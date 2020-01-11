@@ -119,11 +119,15 @@ add-zsh-hook precmd term_title_precmd
 # Has to be done after OMZ setup
 
 export HISTFILE=$HOME/.zsh_history
-export HISTSIZE=65536
+export HISTSIZE=25000
 export SAVEHIST=$HISTSIZE
 
-# Ignore commands that starts with space and duplicates of the prevous command
-export HISTCONTROL=ignorespace:ignoredups
+# Don't record an entry starting with a space.
+setopt HIST_IGNORE_SPACE
+# Delete old recorded entry if new entry is a duplicate.
+setopt HIST_IGNORE_ALL_DUPS
+# Don't write duplicate entries in the history file.
+setopt HIST_SAVE_NO_DUPS
 
 # Syntax highlight setup ---------------------------------------------------{{{1
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
