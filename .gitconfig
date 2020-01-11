@@ -11,10 +11,20 @@
     verbose = true
 
 [diff]
-    tool = vimdiff
-    guitool = gvimdiff
+    tool = kitty
+    guitool = kitty.gui
     algorithm = patience
     ignoreSubmodules = untracked
+
+[difftool]
+    trustExitCode = true
+    prompt = false
+
+[difftool "kitty"]
+    cmd = kitty +kitten diff $LOCAL $REMOTE
+
+[difftool "kitty.gui"]
+    cmd = kitty kitty +kitten diff $LOCAL $REMOTE
 
 [fetch]
     prune = true
@@ -148,6 +158,6 @@
     frs = flow release start
     frf = flow release finish --fetch
 
-    dt = difftool
-    dtc = difftool --cached
+    dt = difftool --dir-diff
+    dtc = difftool --dir-diff --cached
     mt = mergetool
