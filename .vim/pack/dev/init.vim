@@ -112,10 +112,11 @@ let g:pymode_lint = 0
 " Enable rope. Required to make gd, K, etc. work.
 let g:pymode_rope = 1
 
-" Create .ropeproject in /tmp not in PWD
-if !(isdirectory('.git') || isdirectory('.ropeproject'))
-    let g:pymode_rope_project_root = tempname()
-endif
+" Disable project regen on every save. Auroregex is slowing down vim a lot.
+let g:pymode_rope_regenerate_on_write = 0
+
+" Regenerate command is available only in python files.
+autocmd FileType python nmap <leader>R :PymodeRopeRegenerate<Cr>
 
 " Seems completion is not needed, YCM is enough
 let g:pymode_rope_completion = 0
@@ -130,7 +131,6 @@ let g:pymode_rope_organize_imports_bind = '<Leader>ro'
 let g:pymode_rope_module_to_package_bind = '<Leader>r1p'
 let g:pymode_rope_extract_method_bind = '<Leader>rm'
 let g:pymode_rope_extract_variable_bind = '<Leader>rl'
-let g:pymode_rope_use_function_bind = '<Leader>ru'
 let g:pymode_rope_use_function_bind = '<Leader>ru'
 let g:pymode_rope_change_signature_bind = '<Leader>rs'
 
