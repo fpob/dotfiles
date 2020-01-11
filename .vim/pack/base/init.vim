@@ -163,7 +163,7 @@ let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
 let g:indent_guides_auto_colors = 0
 autocmd VimEnter,ColorScheme *
     \   hi IndentGuidesOdd ctermbg=235 guibg=#262626
-    \|  hi IndentGuidesEven ctermbg=235 guibg=#262626
+    \|  hi IndentGuidesEven ctermbg=234 guibg=#212121
 
 " nerdtree -----------------------------------------------------------------{{{1
 
