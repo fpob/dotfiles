@@ -1,5 +1,3 @@
-#!/usr/bin/env zsh
-
 if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
     # GRC prefix for other aliasses in .zshrc for example. If GRC is not
     # installed or cannot be used this var will be empty (default shell var
@@ -9,6 +7,11 @@ if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
     # Set alias for available colorfiles and commands.
     for conf in ~/.grc/conf.*(.N) /usr/local/share/grc/conf.*(.N) /usr/share/grc/conf.*(.N) ; do
         name=${conf##*conf.}
+
+        # Don't use it for builtins
+        if (( $+builtins[$name] )) ; then
+            continue
+        fi
 
         if (( $+commands[$name] )) ; then
             alias $name="$_GRC$(whence $name) "
