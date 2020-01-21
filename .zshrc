@@ -104,6 +104,18 @@ unset config_file
 # Load run-help function
 autoload -Uz run-help
 
+# Inspired by oh-my-zsh/lib/termsupport.zsh
+function term_title_precmd {
+    # %3~ = 3 trailing components of path
+    local tab_title="zsh:%15<..<%3~%<<"     # 15 char left truncated PWD
+    local win_title="zsh:%3~"               # 3 elements of path
+    title $tab_title $win_title
+}
+
+# Run before showing the prompt
+autoload -U add-zsh-hook
+add-zsh-hook precmd term_title_precmd
+
 # History setup ------------------------------------------------------------{{{1
 # Has to be done after OMZ setup
 
@@ -195,6 +207,40 @@ alias -g T='|tail'
 alias -g H='|head'
 alias -g N='&>/dev/null'
 
+# Functions ----------------------------------------------------------------{{{1
+
+# Simple function to read env variables from file, eg. from `.env` for
+# docker-compose.
+function load-env () {
+    awk '/^\w.*=.*/' $@ | while read line ; do
+        export "$line"
+    done
+}
+
+# Load env vars from GPG encrypted file.
+function gpg-load-env {
+    gpg -qd -o- $@ | load-env
+}
+
+# Execute GPG encrypted file. By default executes in current running shell.
+# Shell can be changed by '-s SHELL' option.
+function gpg-run {
+    local shell=$SHELL
+
+    while getopts s: opt ; do
+        case $opt in
+            s) shell=$OPTARG ;;
+            *) echo "Unknown option '$opt'" ;;
+        esac
+    done
+    shift $((--OPTIND))
+
+    local script=$1
+    shift 1
+
+    $shell =(gpg-cat "$script") $@
+}
+
 # Color man pages ----------------------------------------------------------{{{1
 
 export LESS_TERMCAP_mb=$'\E[41m'
@@ -222,4 +268,33 @@ if command -V kitty &>/dev/null && [[ $TERM = xterm-kitty ]] ; then
 
     # Diff Styled -- diff with colors, syntax, ...
     alias difs='kitty +kitten diff'
+
+fi
+
+# GRC (autoapply for commands) ---------------------------------------------{{{1
+
+if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
+
+    # GRC prefix for other aliasses in .zshrc for example. If GRC is not
+    # installed or cannot be used this var will be empty (default shell var
+    # value).
+    export _GRC='grc --colour=auto '
+
+    # Set alias for available colorfiles and commands.
+    for conf in ~/.grc/conf.*(.N) /usr/local/share/grc/conf.*(.N) /usr/share/grc/conf.*(.N) ; do
+        name=${conf##*conf.}
+
+        # Don't use it for builtins
+        if (( $+builtins[$name] )) ; then
+            continue
+        fi
+
+        if (( $+commands[$name] )) ; then
+            alias $name="$_GRC$(whence $name) "
+        fi
+    done
+
+    # Clean up variables
+    unset conf name
+
 fi
