@@ -11,7 +11,6 @@ fi
 # Variables ----------------------------------------------------------------{{{1
 
 export EDITOR=${EDITOR:-vim}
-export FILE_MANAGER=${FILE_MANAGER:-ranger}
 
 # Python startup script
 [[ -f $HOME/.pythonrc ]] && export PYTHONSTARTUP=$HOME/.pythonrc
@@ -138,7 +137,8 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
 # Aliasses -----------------------------------------------------------------{{{1
 
 alias e='$EDITOR'
-alias f='$FILE_MANAGER'
+alias f='ranger'
+alias g='git'
 
 alias xo='xdg-open'
 
@@ -159,12 +159,10 @@ alias free=$_GRC'free -th'
 alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox}"
 alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto -nT'
 
-# Python3
 alias py='python3'
-alias pyc='py3compile'
 alias pydoc='pydoc3'
 alias pyvenv='python3 -m venv'
-alias ipy='ipython3'
+alias ipy='ipython3 --pdb'      # start debugger on unchaught exception
 
 # force 256 colors
 alias tmux='tmux -2'
@@ -178,11 +176,6 @@ alias kcurl='curl -u : --negotiate'
 # JSON Curl
 alias jcurl='curl -H "Accept: application/json" -H "Content-type: application/json"'
 
-# Syntax highlight
-alias syn='pygmentize -f 256 -O bg=dark,style=monokai'
-# Markdown viewer
-alias mdv='mdv -t 884.0134 -c $(tput cols) -u i'
-
 # Cut long lines
 alias cll='cut -c -$COLUMNS'
 # Format CSV/TSV as table (aligned)
@@ -193,9 +186,22 @@ alias gdb='gdb -q'
 alias bc='bc -ql'
 alias octave='octave -qW'
 
+# Cat GPG encrypted file.
+alias gpg-cat='gpg -qd -o-'
+
+alias t='task'
+alias ta='task add'
+alias td='task done'
+
+alias a='ansible'
+alias ap='ansible-playbook'
+alias av='ansible-vault'
+alias ad='ansible-doc'
+alias adl='ansible-doc -t lookup'
+
 # "Rename" back commands that are renamed in Debian packages because of
 # conflicts with some other commands.
-if ( . /etc/os-release && [[ $ID == debian ]] ) ; then
+if ( source /etc/os-release && [[ $ID == debian ]] ) ; then
     alias bat=batcat
 fi
 
