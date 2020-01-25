@@ -207,6 +207,7 @@ alias adl='ansible-doc -t lookup'
 # conflicts with some other commands.
 if ( source /etc/os-release && [[ $ID == debian ]] ) ; then
     alias bat=batcat
+    alias fd=fdfind
 fi
 
 # Global aliasses
@@ -274,7 +275,8 @@ if command -V kitty &>/dev/null && [[ $TERM = xterm-kitty ]] ; then
     # SSH kitten is just wrapper around ssh command that fixes terminfo.
     # *Required* because *#$%@! in ncurses database, see discussion on
     # https://github.com/kovidgoyal/kitty/issues/879
-    alias ssh='kitty +kitten ssh'
+    #alias ssh='kitty +kitten ssh'
+    alias ssh='TERM=xterm-256color ssh'
 
     # Diff Styled -- diff with colors, syntax, ...
     alias difs='kitty +kitten diff'
@@ -290,21 +292,23 @@ if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
     # value).
     export _GRC='grc --colour=auto '
 
+    blacklist=(ls)
+
     # Set alias for available colorfiles and commands.
     for conf in ~/.grc/conf.*(.N) /usr/local/share/grc/conf.*(.N) /usr/share/grc/conf.*(.N) ; do
         name=${conf##*conf.}
 
         # Don't use it for builtins
-        if (( $+builtins[$name] )) ; then
-            continue
-        fi
+        (( $+builtins[$name] )) && continue
+        # Blacklist some commands
+        (( $blacklist[(Ie)$name] )) && continue
 
         if (( $+commands[$name] )) ; then
-            alias $name="$_GRC$(whence $name) "
+            alias $name="$_GRC$(whence $name)"
         fi
     done
 
     # Clean up variables
-    unset conf name
+    unset conf name blacklist
 
 fi
