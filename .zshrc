@@ -27,6 +27,9 @@ export LESS=-RK
 # https://stackoverflow.com/questions/51504367
 export GPG_TTY=$(tty)
 
+# Change jq colors, see `man jq`
+export JQ_COLORS='1;31:1;35:1;35:0;39:0;32:1;39:1;39'
+
 # Paths --------------------------------------------------------------------{{{1
 
 # Bin path
