@@ -64,8 +64,8 @@
     h = rev-parse --verify HEAD
     hs = rev-parse --short --verify HEAD
 
-    l = log -n 10 --date-order --oneline
-    ll = log -n 10 --graph --date-order --show-signature --stat
+    l = log --graph --date-order --oneline
+    ll = log --graph --date-order --show-signature --stat
     la = log --all --graph --date-order --oneline
     lla = log --all --graph --date-order --show-signature --stat
 
