@@ -43,9 +43,6 @@
 [submodule ".vim/bundle/youcompleteme"]
 	path = .vim/pack/dev/start/youcompleteme
 	url = https://github.com/valloric/youcompleteme
-[submodule ".vim/bundle/fugitive"]
-	path = .vim/pack/dev/start/fugitive
-	url = https://github.com/tpope/vim-fugitive
 [submodule ".vim/bundle/gitgutter"]
 	path = .vim/pack/dev/start/gitgutter
 	url = https://github.com/airblade/vim-gitgutter
@@ -92,9 +89,6 @@
 [submodule ".vim/pack/base/start/template"]
 	path = .vim/pack/base/start/template
 	url = https://github.com/aperezdc/vim-template.git
-[submodule ".vim/pack/dev/start/nix"]
-	path = .vim/pack/dev/start/nix
-	url = https://github.com/LnL7/vim-nix.git
 [submodule ".zshrc.d/oh-my-zsh"]
 	path = .zsh/oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
