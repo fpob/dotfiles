@@ -115,9 +115,9 @@
     f = fetch
     fa = fetch --all --tags
 
-    pl = pull --recurse-submodules
-    plo = pull --recurse-submodules origin
-    plu = pull --recurse-submodules upstream
+    pl = pull
+    plo = pull origin
+    plu = pull upstream
 
     po = push origin
     poa = push origin --all --follow-tags
