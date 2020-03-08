@@ -1,10 +1,10 @@
 # Default theme
-feh --quiet --image-bg black --scale-down --title 'image %u/%l - %n [%wx%h]'
+feh --quiet --image-bg black --scale-down --title '%u/%l: %f [%wx%h]'
 
 # Thumbnail mode (-t/-i/-m)
 thumbs --quiet --image-bg black --scale-down --sort filename \
        --title 'thumbs - %l images' --thumb-title 'feh %u/%l - %n [%wx%h]' \
-       --thumbnails --thumb-width 256 --thumb-height 256 --limit-width 1280 \
+       --thumbnails --thumb-width 256 --thumb-height 256 --limit-width 1920 \
        --index-info '%n\n%wx%h'
 
 # Slideshow
