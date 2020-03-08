@@ -81,12 +81,12 @@ let g:EditorConfig_max_line_indicator = 'none'
 " Disable default mappings
 let g:gitgutter_map_keys = 0
 
-nmap <leader>dp <Plug>GitGutterPreviewHunk
-nmap <leader>ds <Plug>GitGutterStageHunk
-nmap <leader>du <Plug>GitGutterUndoHunk
+nmap <leader>dp <Plug>(GitGutterPreviewHunk)
+nmap <leader>ds <Plug>(GitGutterStageHunk)
+nmap <leader>du <Plug>(GitGutterUndoHunk)
 
-nmap [c <Plug>GitGutterPrevHunk
-nmap ]c <Plug>GitGutterNextHunk
+nmap [c <Plug>(GitGutterPrevHunk)
+nmap ]c <Plug>(GitGutterNextHunk)
 
 " python-mode --------------------------------------------------------------{{{1
 
