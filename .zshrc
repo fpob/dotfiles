@@ -169,7 +169,7 @@ alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto
 alias py='python3'
 alias pydoc='pydoc3'
 alias pyvenv='python3 -m venv'
-alias ipy='ipython3 --pdb'      # start debugger on unchaught exception
+alias ipy='ipython3 --pdb --'   # start debugger on unchaught exception
 
 # force 256 colors
 alias tmux='tmux -2'
