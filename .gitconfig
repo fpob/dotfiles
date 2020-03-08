@@ -60,10 +60,6 @@
 [alias]
     s = status
 
-    # show hash of current commit
-    h = rev-parse --verify HEAD
-    hs = rev-parse --short --verify HEAD
-
     l = log --graph --date-order --oneline
     ll = log --graph --date-order --show-signature --stat
     la = log --all --graph --date-order --oneline
@@ -78,14 +74,12 @@
     uap = reset --patch HEAD
 
     d = diff
-    dm = diff master
     dc = diff --cached
 
     c = commit
     ca = commit --amend
     can = commit --amend --no-edit
     cf = commit --fixup
-    cfh = commit --fixup HEAD
     # undo commit
     uc = reset --soft HEAD~
 
@@ -98,7 +92,6 @@
     ch = checkout
     chm = checkout --merge
     chb = checkout -b
-    chbm = checkout -b --merge
 
     m = merge
     mc = merge --continue
