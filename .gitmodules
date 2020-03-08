@@ -52,9 +52,6 @@
 [submodule ".vim/bundle/ultisnips"]
 	path = .vim/pack/dev/start/ultisnips
 	url = https://github.com/sirver/ultisnips
-[submodule ".tmux/plugins/continuum"]
-	path = .tmux/plugins/continuum
-	url = https://github.com/tmux-plugins/tmux-continuum.git
 [submodule ".tmux/plugins/yank"]
 	path = .tmux/plugins/yank
 	url = https://github.com/tmux-plugins/tmux-yank.git
@@ -98,6 +95,3 @@
 [submodule ".vim/pack/base/start/gnupg"]
 	path = .vim/pack/base/start/gnupg
 	url = https://github.com/jamessan/vim-gnupg.git
-[submodule ".tmux/plugins/resurrect"]
-	path = .tmux/plugins/resurrect
-	url = https://github.com/tmux-plugins/tmux-resurrect.git
