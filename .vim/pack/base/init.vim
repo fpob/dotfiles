@@ -169,9 +169,9 @@ autocmd VimEnter,ColorScheme *
 
 let NERDTreeIgnore = [
     \   '^__pycache__$[[dir]]',
-    \   '^.git$',
-    \   '^.\(ropeproject\|tox\|pytest_cache\|cache\|venv\)$[[dir]]',
-    \   '^.\(coverage\)$[[file]]',
+    \   '^\.git$',
+    \   '^\.\(ropeproject\|tox\|pytest_cache\|cache\|venv\)$[[dir]]',
+    \   '^\.\(coverage\(\..*\)\?\)$[[file]]',
     \   '^tags\(\.temp\|\.lock\)\?$[[file]]'
     \]
 
