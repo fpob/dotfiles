@@ -1,43 +1,23 @@
-# -*- coding: utf-8 -*-
-
-from ranger.api.commands import *
-from ranger.core.loader import CommandLoader
 import os
-import shlex
 import re
 import itertools
+import webbrowser
+
+from ranger.api.commands import Command
+from ranger.core.loader import CommandLoader
 
 
-def trim(string, length=200):
+def _trim_long(string, length=200):
     if len(string) > length:
         return string[:length] + "…"
     return string
 
 
-class tar(Command):
-    def execute(self):
-        cwd = self.fm.thisdir
-        original_path = cwd.path
-
-        flags = self.arg(1)
-        if not flags:
-            return
-
-        files = [os.path.relpath(f.path, cwd.path)
-                 for f in self.fm.thistab.get_selection()]
-        if not files:
-            return
-        if self.arg(2):
-            files.insert(0, self.arg(2))
-
-        def refresh(_):
-            cwd = self.fm.get_directory(original_path)
-            cwd.load_content()
-
-        obj = CommandLoader(args=["tar", flags] + files,
-                            descr=trim("{} {}".format(self.line, " ".join(files))))
-        obj.signal_bind("after", refresh)
-        self.fm.loader.add(obj)
+def _find_command(commands):
+    for c in commands:
+        if os.system(f'which {c} >/dev/null 2>&1') == 0:
+            return c
+    return None
 
 
 class unar(Command):
@@ -48,16 +28,11 @@ class unar(Command):
     """
 
     def execute(self):
-        original_path = self.fm.thisdir.path
-
-        def refresh(_):
-            cwd = self.fm.get_directory(original_path)
-            cwd.load_content()
-
+        command = ['unar', '-q', '-o', self.fm.thisdir.path] + self.args[1:] + ['--']
         for file in self.fm.thistab.get_selection():
-            obj = CommandLoader(args=self.line.split() + ["-q", file.path],
-                                descr=trim("{} {}".format(self.line, file.path)))
-            obj.signal_bind("after", refresh)
+            obj = CommandLoader(args=command + [file.path],
+                                descr=_trim_long('unar ' + file.path))
+            obj.signal_bind('after', lambda _: self.fm.thisdir.load_content())
             self.fm.loader.add(obj)
 
 
@@ -65,8 +40,8 @@ class tmux(Command):
     escape_macros_for_shell = True
 
     def execute(self):
-        if not "TMUX" in os.environ:
-            return self.fm.notify("Not in tmux", bad=True)
+        if 'TMUX' not in os.environ:
+            return self.fm.notify('Not in tmux', bad=True)
         self.fm.execute_command(self.line)
 
 
@@ -89,19 +64,17 @@ class trash(Command):
     Move selection or files passed in arguments to trash.
     """
 
-    TRASH_CMD = "trash"      # trash-cli
-    #TRASH_CMD = "gvfs-trash" # gvfs-bin
+    THRASH_CMD = _find_command(['trash', 'gvfs-trash'])
 
     allow_abbrev = False
     escape_macros_for_shell = True
 
     def execute(self):
-        if self.rest(1):
-            files = shlex.split(self.rest(1))
-        else:
-            files = [file.path for file in self.fm.thistab.get_selection()]
+        files = [file.path for file in self.fm.thistab.get_selection()]
         if files:
-            obj = CommandLoader(args=[self.TRASH_CMD, "--"] + files, descr="Trash")
+            obj = CommandLoader(args=[self.THRASH_CMD, '--'] + files,
+                                descr='Trash')
+            obj.signal_bind('after', lambda _: self.fm.thisdir.load_content())
             self.fm.loader.add(obj)
 
     def tab(self, tabnum):
@@ -121,7 +94,7 @@ class links(Command):
 
     FILE_NAMES = ('.links', '_links', 'links', '_links.txt', 'links.txt')
     HINT_KEYS = tuple('asdfghjklqwertyuiopzxcvbnm')
-    LINK_CRE = re.compile('^\s*https?://.+/.*\s*$', re.I)
+    LINK_CRE = re.compile(r'^https?://.+/.*$', re.I)
 
     def _find_links_file(self):
         selection = iter(self.fm.thistab.get_selection())
@@ -142,14 +115,17 @@ class links(Command):
         links = list()
         if file_path:
             with open(file_path) as f:
-                links = [line.strip() for line in f
-                         if self.LINK_CRE.match(line)]
+                for line in f:
+                    line = line.strip()
+                    if line not in links and self.LINK_CRE.match(line):
+                        links.append(line)
         return links
 
     def _get_hint_keys(self, length=1):
         if length == 1:
             return self.HINT_KEYS
-        return [''.join(keys) for keys in itertools.product(self.HINT_KEYS, repeat=length)]
+        return [''.join(keys)
+                for keys in itertools.product(self.HINT_KEYS, repeat=length)]
 
     def _get_links(self):
         links = self._parse_links_file(self._find_links_file())
@@ -161,15 +137,14 @@ class links(Command):
     def _draw_list(self):
         links = sorted(self._get_links().items(),
                        key=lambda i: tuple(self.HINT_KEYS.index(c) for c in i[0]))
-        self.fm.ui.browser.draw_info = [" | ".join(i) for i in links]
+        self.fm.ui.browser.draw_info = [' | '.join(i) for i in links]
 
     def execute(self):
         links = self._get_links()
-        if self.arg(1):
-            if self.arg(1) in links:
-                self.fm.execute_command("$BROWSER '%s'" % links[self.arg(1)])
+        if self.arg(1) in links:
+            webbrowser.open(links[self.arg(1)])
         elif len(links) == 1:
-            self.fm.execute_command("$BROWSER '%s'" % links['a'])
+            webbrowser.open(links['a'])
         else:
             self._draw_list()
             self.fm.open_console('links ')

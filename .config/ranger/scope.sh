@@ -105,7 +105,8 @@ case "${FILE_EXT}" in
         ;;
 
     deb)
-        dpkg --info "${FILE_PATH}" control | highlight - control && exit 5
+        dpkg --info "${FILE_PATH}" control \
+            | highlight - control && exit 5
         ar p "${FILE_PATH}" control.tar.gz | tar xzO ./control \
             | highlight - control && exit 5
         ar p "${FILE_PATH}" control.tar.xz | tar xJO ./control \

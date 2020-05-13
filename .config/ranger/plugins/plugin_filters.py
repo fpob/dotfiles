@@ -1,7 +1,7 @@
 from ranger.core.filter_stack import stack_filter, BaseFilter
 
 
-@stack_filter("tag")
+@stack_filter('tag')
 class TagFilter(BaseFilter):
     def __init__(self, tag):
         self.tag = tag
@@ -11,7 +11,7 @@ class TagFilter(BaseFilter):
                 and fobj.fm.tags.marker(fobj.realpath) == self.tag)
 
     def __str__(self):
-        return "<Filter: tag == {}>".format(self.tag)
+        return f'<Filter: tag == {self.tag}>'
 
 
 @stack_filter("tagged")
@@ -23,4 +23,4 @@ class TaggedFilter(BaseFilter):
         return fobj.realpath in fobj.fm.tags
 
     def __str__(self):
-        return "<Filter: tagged>"
+        return '<Filter: tagged>'
