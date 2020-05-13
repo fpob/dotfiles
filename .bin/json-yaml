@@ -5,15 +5,38 @@ import yaml
 import json
 
 
-class MyDumper(yaml.SafeDumper):
-    """
-    Dumper that will indent block collection entries (items starting with `-`,
-    `?` and `:`).
+class PrettyDumper(yaml.SafeDumper):
+    """Dumps prettier YAML than default SafeDumper."""
 
-    See: https://stackoverflow.com/q/25108581
-    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Disable keys sorting under Python >=3.7, keep dict order.
+        # https://stackoverflow.com/a/55171433
+        # https://mail.python.org/pipermail/python-dev/2017-December/151283.html
+        if sys.version_info >= (3, 7):
+            self.sort_keys = False
+
     def increase_indent(self, flow=False, indentless=False):
-        return super(MyDumper, self).increase_indent(flow, False)
+        # Indent block collection entries (intems starting with `-`, `?` or `:`.
+        # See: https://stackoverflow.com/q/25108581
+        return super().increase_indent(flow=flow, indentless=False)
+
+    def write_plain(self, *args, **kwargs):
+        # Don't put document end marker when dumping plain scalars.
+        # See: https://stackoverflow.com/q/56950391
+        super().write_plain(*args, **kwargs)
+        self.open_ended = False
+
+    def represent_scalar(self, tag, value, style=None):
+        if tag.endswith(':str'):
+            # Dump multiline strings as '|' blocks.
+            if '\n' in value:
+                style = '|'
+            # Use double-quotes if string contains single-quote. Single-quote escape
+            # (`''`) is less redable than backlash escape in double-quoted strings.
+            elif "'" in value:
+                style = '"'
+        return super().represent_scalar(tag, value, style=style)
 
 
 @click.command()
@@ -26,7 +49,7 @@ def cli(ctx, input_file, output_file, width):
     """Parse JSON file and print data as YAML."""
     try:
         data = json.load(input_file)
-        output_file.write(yaml.dump(data, Dumper=MyDumper, width=width))
+        output_file.write(yaml.dump(data, Dumper=PrettyDumper, width=width))
     except Exception as e:
         click.echo(e, err=True)
         ctx.exit(1)

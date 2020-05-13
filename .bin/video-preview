@@ -1,77 +1,53 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-help_msg () {
-    cat <<EOF
-Použití: $(basename "$0") [-r RATE] [-t TITLE] [-s SCALE] [-c COLUMNS] \\
-         [-f FFMPEG_ARGS] <INPUT> [OUTPUT]
+import os
+import tempfile
+import glob
+import click
+import sh
 
-Pro zadané video vygeneruje obrázek s náhledy z videa.
 
-Používá příkazy „ffmpeg“ a „montage“.
+@click.command()
+@click.option('-r', '--rate', default='1/300',
+              help='Screen snapshot interval rate (ffmpeg: frame rate)')
+@click.option('-t', '--title',
+              help='Image title, default is file name without extension')
+@click.option('-s', '--scale', default=300,
+              help='Snapshot width (original captured frame is resized)')
+@click.option('-c', '--columns',
+              help='Number of columns in output montage')
+@click.argument('input_file', type=click.Path(exists=False))
+@click.argument('output_file', type=click.Path(exists=False))
+def video_preview(rate, title, scale, columns, input_file, output_file):
+    if not title:
+        title = os.path.splitext(os.path.basename(input_file))[0]
 
-Parametry:
-    INPUT       vstupní video soubor
-    OUTPUT      výstupní soubor obrázku s náhledem
-                (výchozí: vstupní soubor se změněnou příponou na „png“)
-    -r RATE     intervaly, ve kterých bude vytvořen screenshot
-                (výchozí: 1/300 = 5 minut)
-    -t TITLE    nadpis, který bude ve výsledném obrázku
-                (výchozí: vstupní soubor bez přípony)
-    -s SCALE    šířka screenshotů
-                (výchozí: 320)
-    -c COLUMNS  počet sloupců (= počet screenshotů v jednom řádku)
-                (výchozí: automaticky)
-EOF
-    exit "$1"
-}
+    with tempfile.TemporaryDirectory() as temp:
+        sh.ffmpeg(
+            '-v', 16,
+            '-i', input_file,
+            '-r', rate,
+            '-vf', f'scale=-1:{scale}',
+            '-vcodec', 'png',
+            os.path.join(temp, '%04d.png'),
+            _fg=True,
+        )
 
-error () {
-    [[ -n $2 ]] && echo "$2" >&2
-    exit "$1"
-}
+        snapshots = glob.glob(os.path.join(temp, '*'))
+        if not columns:
+            # Output preview +- original aspect ratio.
+            columns = round(len(snapshots) ** 0.5)
 
-confirm () {
-    read -rep "${1:-Potvrdit} (y/n) "
-    if [[ -n $REPLY ]] ; then
-        [[ $REPLY = y || $REPLY = yes ]]
-    else
-        [[ $2 = y || $2 = yes ]]
-    fi
-}
+        sh.montage(
+            '-title', title,
+            '-geometry', '+4+4',
+            '-tile', columns,
+            snapshots,
+            output_file,
+            _fg=True,
+        )
 
-[[ $1 = '--help' ]] && help_msg 0
 
-TEMP=$(mktemp -d "/tmp/video-preview.XXXXXX")
-trap 'rm -rf $TEMP' EXIT
-
-while getopts "r:t:s:c:f:" o; do
-    case "$o" in
-        r) RATE=$OPTARG ;;
-        t) TITLE=$OPTARG ;;
-        s) SCALE=$OPTARG ;;
-        c) TILE=$OPTARG ;;
-        f) FFMPEG_ARGS="$OPTARG"
-    esac
-done
-shift $((OPTIND-1))
-
-[[ -z $1 ]] && help_msg 1
-
-INPUT=$1
-OUTPUT=${2:-${INPUT%.*}.png}
-TITLE=${TITLE:-${INPUT%.*}}
-RATE=${RATE:-1/300}
-SCALE=${SCALE:-320}
-
-! command -v ffmpeg montage &>/dev/null \
-    && error 127 'Příkaz „ffmpeg“ nebo „montage“ neexistuje'
-
-[[ ! -f $INPUT ]] && error 1 "Soubor „$INPUT“ neexistuje"
-
-if [[ -f $OUTPUT ]] ; then
-    confirm 'Výstupní soubor už existuje, odstranit?' \
-        && rm -f "$OUTPUT" || exit
-fi
-
-ffmpeg $FFMPEG_ARGS -i "$INPUT" -r "$RATE" -vf scale=-1:$SCALE -vcodec png "$TEMP/%04d.png"
-montage -title "$TITLE" -geometry +4+4 ${TILE:+-tile $TILE} "$TEMP"/* "$OUTPUT"
+if __name__ == '__main__':
+    # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+    video_preview()

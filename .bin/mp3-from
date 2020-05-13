@@ -1,54 +1,35 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-bitrate='320k'
-output=
-map=
+import os
+import click
+import sh
 
-if [[ $1 = '--help' ]] ; then
-    cat << EOF
-Usage: $(basename "$0") [-o DIR] [-b BITRATE] FILE [FILE ...]
 
-Zkonvertuje zadané audio/video soubory na mp3.
+@click.command()
+@click.option('-o', '--output', type=click.Path(file_okay=False), default='')
+@click.option('-b', '--bitrate', type=int, default=320)
+@click.option('-m', '--ffmpeg-map', default='0', help='See ffmpeg -map option')
+@click.argument('files', nargs=-1)
+def mp3_from(output, bitrate, ffmpeg_map, files):
+    if output and not os.path.isdir(output):
+        os.makedirs(output)
 
-Options:
-    -o DIR      adresář, do kterého se uloží zkovertované soubory
-    -b BITRATE  bitrate výstupní mp3 (default: $bitrate)
-    -m MAP      viz ffmpeg map
-EOF
-    exit
-fi
+    for src in files:
+        dst_name = os.path.basename(os.path.splitext(src)[0]) + '.mp3'
+        dst = os.path.join(output, dst_name)
 
-while getopts b:o:m: opt ; do
-    case "$opt" in
-        b)  bitrate=$OPTARG ;;
-        o)  output=$OPTARG ;;
-        m)  map=$OPTARG ;;
-        *)  echo "Neznámý parametr" >&2 ; exit 1 ;;
-    esac
-done
-((OPTIND--))
-shift $OPTIND
+        click.secho(f'{src!r} -> {dst!r}', bold=True)
+        sh.ffmpeg(
+            '-v', 16,
+            '-i', src,
+            '-map', ffmpeg_map,
+            '-codec:a', 'libmp3lame',
+            '-b:a', bitrate,
+            dst,
+            _fg=True,
+        )
 
-if [[ -n $output ]] ; then
-    [[ ! -d $output ]] && mkdir -p "$output"
-fi
 
-if [[ -z $1 ]] ; then
-    echo "Nebyl zadán žádný soubor k převedení"
-    exit 127
-fi
-
-for src in "${@}" ; do
-    mime=$(mimetype --output-format %m "$src")
-    case $mime in
-        audio/*|video/*)
-            dst=$(python -c 'import sys, os; print(os.path.basename(os.path.splitext(sys.argv[1])[0]))' "$src").mp3
-            [[ -n $output ]] && dst="$output/$dst"
-            ffmpeg -i "$src" ${map:+-map} $map -codec:a libmp3lame -b:a "$bitrate" "$dst"
-            ;;
-
-        *)
-            echo "'$src' není audio ani video soubor (mime: '$mime')" >&2
-            ;;
-    esac
-done
+if __name__ == '__main__':
+    # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+    mp3_from()

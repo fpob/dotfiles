@@ -1,27 +1,23 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-if [[ $1 == '--help' ]] ; then
-    cat <<EOF
-Použití: $(basename "$0") [-f FROM_ENCONDING] [INPUT [OUTPUT]]
+import unicodedata
+import click
 
-Převede text na ASCII, ne-ASCII znaky nahrazuje ASCII ekvivalenty
-(ě → e, ý → y, ...).
-Bez paramertů převádí UTF-8 ze stdin na stdout.
-EOF
-    exit
-fi
 
-from=utf-8
+@click.command()
+@click.option('-f', '--from', 'from_encoding', default='UTF-8')
+@click.argument('input_file', type=click.File('rb'), default='-')
+@click.argument('output_file', type=click.File('wb'), default='-')
+def asciize(from_encoding, input_file, output_file):
+    """
+    Convert unicode text to ASCII. Replaces non-ASCII characters with ASCII
+    equivalents.
+    """
+    for line in input_file:
+        output_file.write(unicodedata.normalize('NFKD', line.decode(from_encoding))
+                          .encode('ASCII', 'ignore'))
 
-while getopts f:o:i: opt ; do
-    case $opt in
-        f) from=$OPTARG ;;
-        *) echo "Neznámý přepínač '$opt'" ;;
-    esac
-done
-shift $((--OPTIND))
 
-input=${1:--}
-output=${2:--}
-
-iconv -f "$from" -t ascii//TRANSLIT -o "$output" "$input"
+if __name__ == '__main__':
+    # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+    asciize()
