@@ -6,7 +6,7 @@ function cheat-widget {
     zle accept-line
 }
 zle -N cheat-widget
-bindkey "\eH" cheat-widget
+bindkey "\eh" cheat-widget
 
 function _cheat {
     reply=($(cheat -l | cut -d' ' -f1))

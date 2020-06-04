@@ -13,7 +13,9 @@ fi
 export EDITOR=${EDITOR:-vim}
 
 # Python startup script
-[[ -f $HOME/.pythonrc ]] && export PYTHONSTARTUP=$HOME/.pythonrc
+export PYTHONSTARTUP=$HOME/.pythonrc
+# Use ipdb with Python 3.7 breakpoint
+export PYTHONBREAKPOINT=ipdb.set_trace
 
 # `ts` environment
 export TS_ENV="pwd"
@@ -43,11 +45,11 @@ typeset -gU manpath
 
 # Oh My Zsh / load .zsh ----------------------------------------------------{{{1
 
-ZSH_D=$HOME/.zsh
+export ZSH_D=$HOME/.zsh
 
 # OMZ paths
-ZSH=$ZSH_D/oh-my-zsh
-ZSH_CUSTOM=$ZSH_D/oh-my-zsh-custom
+export ZSH=$ZSH_D/oh-my-zsh
+export ZSH_CUSTOM=$ZSH_D/oh-my-zsh-custom
 
 if [[ -n $MC_SID || $TERM = 'linux' ]] ; then
     ZSH_THEME="simple"
@@ -55,23 +57,24 @@ else
     ZSH_THEME="powerlevel10k/powerlevel10k"
 fi
 
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/templates/zshrc.zsh-template
 #CASE_SENSITIVE="true"
 DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="false"
 COMPLETION_WAITING_DOTS="true"
 DISABLE_AUTO_UPDATE="true"
 ZLE_REMOVE_SUFFIX_CHARS=""
+DISABLE_MAGIC_FUNCTIONS="true"
 
 plugins=(
     autojump
     cheat
+    colored-man-pages
     direnv
     docker
-    docker-compose
+    fd
     fzf
-    git
-    git-flow
-    go
+    golang
     history-substring-search
     kubectl
     oc
@@ -83,6 +86,8 @@ plugins=(
     sudo
     taskwarrior
     transfer
+    vault
+    zsh-autosuggestions
     zsh_reload
     zsh-syntax-highlighting
 )
@@ -98,13 +103,14 @@ fpath=($ZSH_D/functions $ZSH_D/completions $fpath)
 autoload -Uz compinit && compinit
 
 # Load all custom config files
-for config_file ($ZSH_D/*.zsh(N)) ; do
-    source $config_file
-done
-unset config_file
+function {
+    local config_file
+    for config_file ($ZSH_D/*.zsh(N)) ; do
+        source $config_file
+    done
+}
 
-# Load run-help function
-autoload -Uz run-help
+# Terminal title -----------------------------------------------------------{{{1
 
 # Inspired by oh-my-zsh/lib/termsupport.zsh
 function term_title_precmd {
@@ -135,11 +141,40 @@ setopt HIST_SAVE_NO_DUPS
 # Syntax highlight setup ---------------------------------------------------{{{1
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
 
+typeset -A ZSH_HIGHLIGHT_STYLES
+
 ZSH_HIGHLIGHT_STYLES[path]='none'
 ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=245'
 ZSH_HIGHLIGHT_STYLES[redirection]='fg=245'
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=42'
 ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
+
+# GRC (autoapply for commands) ---------------------------------------------{{{1
+
+[[ "$TERM" != dumb ]] && (( $+commands[grc] )) && function {
+    local blacklist conf name
+
+    # GRC prefix for other aliasses in. If GRC is not installed or cannot be
+    # used this var will be empty (default shell var value).
+    export _GRC='grc --colour=auto '
+
+    blacklist=(ls)
+
+    # Set alias for available colorfiles and commands.
+    for conf in ~/.grc/conf.*(.N) /usr/local/share/grc/conf.*(.N) /usr/share/grc/conf.*(.N) ; do
+        name=${conf##*conf.}
+
+        # Don't use it for builtins
+        (( $+builtins[$name] )) && continue
+        # Blacklist some commands
+        (( $blacklist[(Ie)$name] )) && continue
+
+        if (( $+commands[$name] )) ; then
+            alias $name="$_GRC$(whence $name)"
+        fi
+    done
+
+}
 
 # Aliasses -----------------------------------------------------------------{{{1
 
@@ -149,8 +184,8 @@ alias g='git'
 
 alias xo='xdg-open'
 
-alias ls="ls -v --color=auto"
-alias l='ls -CF'
+alias ls='ls -v --color=auto -CF'
+alias l='ls'
 alias ll='l -hl --time-style="+%Y-%m-%d %H:%M"'
 alias la='l -A'
 alias lla='ll -A'
@@ -158,18 +193,25 @@ alias lla='ll -A'
 # COW copy if available
 alias cp='cp --reflink=auto'
 
+alias rs='rsync -hhh --progress'
+
 # Human readable sizes
 alias du=$_GRC'du -khc'
 alias df=$_GRC'df -kTh'
 alias free=$_GRC'free -th'
 
-alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox}"
-alias ggrep='git ls-files -co --exclude-standard -z | xargs -0 grep --color=auto -nT'
+alias grep='grep --color=auto'
+alias gr='grep --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox}'
+alias gri='gr -i'
+alias rgr='gr -r'
+alias rgri='gri -r'
+alias ggr='git ls-files --cached --others --exclude-standard -z | xargs -0 grep --color=auto -nT'
+alias ggri='ggr -i'
 
 alias py='python3'
 alias pydoc='pydoc3'
 alias pyvenv='python3 -m venv'
-alias ipy='ipython3 --pdb --'   # start debugger on unchaught exception
+alias ipy='ipython3 --pdb --'   # start debugger on uncaught exception
 
 # force 256 colors
 alias tmux='tmux -2'
@@ -216,7 +258,7 @@ fi
 # Global aliasses
 alias -g L='|less -FX'
 alias -g LL='2>&1|less -FX'
-alias -g G='|grep -Pi'
+alias -g G='|grep'
 alias -g T='|tail'
 alias -g H='|head'
 alias -g N='&>/dev/null'
@@ -255,20 +297,10 @@ function gpg-run {
     $shell =(gpg-cat "$script") $@
 }
 
-# Color man pages ----------------------------------------------------------{{{1
-
-export LESS_TERMCAP_mb=$'\E[41m'
-export LESS_TERMCAP_md=$'\E[01;32m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;31m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[04;34m'
-
 # Kitty (completion, aliasses, ...) ----------------------------------------{{{1
 
 # Kitty is installed and currently using it.
-if command -V kitty &>/dev/null && [[ $TERM = xterm-kitty ]] ; then
+if command -v kitty &>/dev/null && [[ $TERM = xterm-kitty ]] ; then
 
     source =(kitty + complete setup zsh)
 
@@ -283,35 +315,5 @@ if command -V kitty &>/dev/null && [[ $TERM = xterm-kitty ]] ; then
 
     # Diff Styled -- diff with colors, syntax, ...
     alias difs='kitty +kitten diff'
-
-fi
-
-# GRC (autoapply for commands) ---------------------------------------------{{{1
-
-if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
-
-    # GRC prefix for other aliasses in .zshrc for example. If GRC is not
-    # installed or cannot be used this var will be empty (default shell var
-    # value).
-    export _GRC='grc --colour=auto '
-
-    blacklist=(ls)
-
-    # Set alias for available colorfiles and commands.
-    for conf in ~/.grc/conf.*(.N) /usr/local/share/grc/conf.*(.N) /usr/share/grc/conf.*(.N) ; do
-        name=${conf##*conf.}
-
-        # Don't use it for builtins
-        (( $+builtins[$name] )) && continue
-        # Blacklist some commands
-        (( $blacklist[(Ie)$name] )) && continue
-
-        if (( $+commands[$name] )) ; then
-            alias $name="$_GRC$(whence $name)"
-        fi
-    done
-
-    # Clean up variables
-    unset conf name blacklist
 
 fi
