@@ -1,6 +1,9 @@
 [include]
     path = ~/.gitconfig.local
 
+[color]
+    ui = auto
+
 [core]
     editor = vim
     autocrlf = input
@@ -139,17 +142,6 @@
     sub = submodule
     suba = submodule add
     subu = submodule update
-
-    ffs = flow feature start
-    ffc = flow feature checkout
-    fff = flow feature finish --fetch --no-ff
-    fbs = flow bugfix start
-    fbc = flow bugfix checkout
-    fbf = flow bugfix finish --fetch --no-ff
-    fhs = flow hotfix start
-    fhf = flow hotfix finish --fetch
-    frs = flow release start
-    frf = flow release finish --fetch
 
     dt = difftool --dir-diff
     dtc = difftool --dir-diff --cached
