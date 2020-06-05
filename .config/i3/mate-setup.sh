@@ -10,3 +10,6 @@ gsettings set org.mate.background show-desktop-icons false
 
 # Hide unnecessary decorations
 gsettings set org.mate.interface gtk-decoration-layout 'menu'
+
+# Dont't manage background
+gsettings set org.mate.background draw-background false

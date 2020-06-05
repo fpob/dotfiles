@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# To make `echo ... | read VAR` work.
+shopt -s lastpipe
+
+# Input JSON is provided via STDIN.
+jq -r '(.button|tostring) + " " + .name' | read BUTTON NAME
+# Exit immediately if name is not set.
+[[ -z $NAME ]] && exit
+
+case $NAME in
+    cpu-usage|cpu-load|mem-usage)
+        [[ $BUTTON -eq 1 ]] && mate-system-monitor --show-resources-tab
+        ;;
+
+    fs-usage)
+        [[ $BUTTON -eq 1 ]] && mate-system-monitor --show-file-systems-tab
+        ;;
+esac

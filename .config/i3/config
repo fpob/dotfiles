@@ -1,8 +1,5 @@
 # General settings/bindings ------------------------------------------------{{{1
 
-# https://github.com/i3/i3/issues/2523
-# Numlock is the Mod2 key. When it’s enabled, Mod2 is pressed.
-
 # Mod1 = Alt, Mod4 = Win
 set $mod Mod4
 
@@ -167,10 +164,10 @@ client.urgent           #C72E2E #1E1E1E #C72E2E
 # finds out, if available)
 bar {
     position bottom
-    font pango:Noto Sans,FontAwesome 10
+    font pango:Noto Sans,ForkAwesome 10
     tray_output primary
 
-    status_command ~/.config/i3/status.sh
+    status_command ~/.config/i3/status
     separator_symbol " "
 
     colors {
@@ -188,15 +185,14 @@ bar {
 
 # Window settings ----------------------------------------------------------{{{1
 
-for_window [class="(?i)tilda"] floating enable
-
+# Hide window title.
 for_window [class="(?i)firefox" tiling] border pixel 2
 for_window [class="(?i)thunderbird" tiling] border pixel 2
 for_window [class="(?i)kitty" tiling] border pixel 2
 for_window [class="(?i)vim" tiling] border pixel 2
 for_window [class="(?i)mpv" tiling] border pixel 2
 
-for_window [instance="floating" class="mpv"] floating enable, sticky enable, border pixel 2
+for_window [class="mpv" instance="floating"] floating enable, sticky enable, border pixel 0
 
 # Start Wine desktop on primary monitor.
 for_window [class="^Wine$" title="desktop$"] move window to output primary
@@ -204,4 +200,4 @@ for_window [class="^Wine$" title="desktop$"] move window to output primary
 # Autostart ----------------------------------------------------------------{{{1
 
 # Execute autostart script if exists.
-exec --no-startup-id test -x ~/.config/i3/autostart.sh && ~/.config/i3/autostart.sh
+exec --no-startup-id test -x ~/.config/i3/autostart && ~/.config/i3/autostart
