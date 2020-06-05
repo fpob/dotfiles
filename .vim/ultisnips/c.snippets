@@ -35,8 +35,8 @@ snippet Def "#ifndef #define" b
 #endif
 endsnippet
 
-snippet #def "#define" b
-#define 
+snippet def "#define" b
+#define $0
 endsnippet
 
 snippet #ifdef "" b
@@ -110,20 +110,19 @@ endsnippet
 
 snippet switch
 switch (${1:variable}) {
-	case '${2:value}':
-		${3:// code...}
-		break;
+case ${2:value}:
 	$0
-	default:
-		${4:// code...}
-		break;
 }
 endsnippet
 
 snippet case
-case '${1:value}':
-	${2:// code...}
-	break;
+case ${1:value}:
+	$0
+endsnippet
+
+snippet default
+default:
+	$0
 endsnippet
 
 # Function

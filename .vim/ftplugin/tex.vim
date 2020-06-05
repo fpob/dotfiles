@@ -1,11 +1,10 @@
 " nekontrolovat pravopis v komentářích
 let g:tex_comment_nospell = 1
 
-" automaticke zalamovani radku a zvyrazneni sloupce
 setlocal formatoptions+=t
 setlocal textwidth=80
 
-setlocal spell              " kontrola pravopisu
+setlocal spell
 setlocal tabstop=2
 setlocal shiftwidth=2
 setlocal nolist

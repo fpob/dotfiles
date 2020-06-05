@@ -31,14 +31,12 @@ let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
 
 " Percentage and ASCII code of character under cursor.
 let g:airline_section_z = '%3p%% [0x%02B]'
-"let g:airline_section_z = '%3p%% %#__accent_bold#%{g:airline_symbols.linenr}%#__accent_bold#%4l%#__restore__#%#__restore__#:%3v [0x%02B]'
 
 " Tabs
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_splits = 0
 
 " Tab indexes
-let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
 
 " Shorter text in tabs
@@ -54,6 +52,7 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Tab switching
+let g:airline#extensions#tabline#buffer_idx_mode = 1
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
 nmap <leader>3 <Plug>AirlineSelectTab3
@@ -70,16 +69,15 @@ let g:airline#extensions#whitespace#enabled = 0
 
 " ctrlp --------------------------------------------------------------------{{{1
 
-" Maximální počet souborů pro skenování
+" The maximum number of files to scan
 let g:ctrlp_max_files = 4096
-" Maximální zanoření v adresářích
+" The maximum depth of a directory tree to recurse into
 let g:ctrlp_max_depth = 16
-" Soubory otevírat v aktuálním okně
+" Open file in the current window
 let g:ctrlp_open_new_file = 'r'
-" Otevírání více souborů: 1 v aktuálním okně a další v nových záložkách
-let g:ctrlp_open_multiple_files = 'tjr'
-" Prikaz pro vyhledani souboru, g:ctrlp_custom_ignore se pouziva pokud neni
-" zadano 'ignore':1
+" Open multiple files in tabs, first file the current window
+let g:ctrlp_open_multiple_files = 'tr'
+" External tool to use for listing files
 let g:ctrlp_user_command = {
 \   'types': {
 \       1: ['.git', 'cd %s && git ls-files . -co --exclude-standard'],
@@ -129,8 +127,8 @@ vmap gs <plug>(GrepperOperator)
 runtime PACK plugin/grepper.vim
 
 let g:grepper.tools = ['git', 'grep']
-let g:grepper.grep.grepprg .= ' -P --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox,.venv}'
-let g:grepper.git.grepprg .= ' -P'
+let g:grepper.grep.grepprg = 'grep -RIn --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox,.venv}'
+let g:grepper.git.grepprg = 'git grep -nGI'
 
 let g:grepper.simple_prompt = 1
 
@@ -161,9 +159,13 @@ let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
 
 " Use custom colors
 let g:indent_guides_auto_colors = 0
-autocmd VimEnter,ColorScheme *
-    \   hi IndentGuidesOdd ctermbg=235 guibg=#262626
-    \|  hi IndentGuidesEven ctermbg=234 guibg=#212121
+
+augroup vimrc_indent_guides
+    autocmd!
+    autocmd VimEnter,ColorScheme *
+        \   hi IndentGuidesOdd ctermbg=235 guibg=#262626
+        \|  hi IndentGuidesEven ctermbg=234 guibg=#212121
+augroup END
 
 " nerdtree -----------------------------------------------------------------{{{1
 

@@ -19,9 +19,6 @@
 [submodule ".vim/bundle/molokai"]
 	path = .vim/pack/base/start/molokai
 	url = https://github.com/tomasr/molokai
-[submodule ".vim/bundle/multiple-cursors"]
-	path = .vim/pack/dev/start/multiple-cursors
-	url = https://github.com/terryma/vim-multiple-cursors
 [submodule ".vim/bundle/nerdtree"]
 	path = .vim/pack/base/start/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
@@ -98,3 +95,6 @@
 [submodule ".zsh/oh-my-zsh-custom/plugins/zsh-autosuggestions"]
 	path = .zsh/oh-my-zsh-custom/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
+[submodule ".vim/pack/dev/start/yaml"]
+	path = .vim/pack/dev/start/yaml
+	url = https://github.com/stephpy/vim-yaml.git

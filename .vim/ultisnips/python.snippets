@@ -72,7 +72,7 @@ def ${1:fname}(${2:`indent('.') ? 'self' : ''`}):
 endsnippet
 
 snippet la "lambda ...: ..." b
-lambda ${2:vars}: $0
+lambda ${1}: $0
 endsnippet
 
 snippet try "try: ... except: ..." b
@@ -82,7 +82,7 @@ except ${2:Exception} as ${3:e}:
 	${4:pass}
 endsnippet
 
-snippet finally "finally" b
+snippet fin "finally" b
 finally:
 	${VISUAL}$0
 endsnippet

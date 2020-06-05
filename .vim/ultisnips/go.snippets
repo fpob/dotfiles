@@ -70,13 +70,15 @@ endsnippet
 
 snippet switch "switch ..." b
 switch ${1} {
-	$0
+case ${2}:
+	${VISUAL}$0
 }
 endsnippet
 
 snippet select "select" b
 select {
-	$0
+case ${2}:
+	${VISUAL}$0
 }
 endsnippet
 
@@ -104,7 +106,7 @@ endsnippet
 
 snippet func "function/closure"
 func ${1:functionName}(${2}) ${3} {
-	$0
+	${VISUAL}$0
 }
 endsnippet
 
