@@ -1,7 +1,7 @@
 configuration {
-    modi: "combi,window,drun,run,ssh,tmux:~/.config/rofi/tmux-sessions.sh";
-    combi-modi: "drun,ssh,tmux:~/.config/rofi/tmux-sessions.sh";
-    theme: "abrus";
+    modi: "combi,window,drun,run,ssh";
+    combi-modi: "drun,ssh";
+    theme: "theme";
     monitor: "-1";
     terminal: "kitty";
 }
