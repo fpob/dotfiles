@@ -35,7 +35,7 @@ sort = yes
 bounce_freq = 0
 
 # The geometry of the window: [{width}]x{height}[+/-{x}+/-{y}]
-geometry = "250-8+8"
+geometry = "320-8+8"
 # Shrink window if it's smaller than the width.
 shrink = no
 # The transparency of the window.
