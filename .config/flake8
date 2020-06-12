@@ -10,6 +10,9 @@ ignore =
     E501
 exclude =
     .git,
+    .tox,
+    .venv,
+    site-packages,
     __pycache__,
     docs/source/conf.py,
     old,
