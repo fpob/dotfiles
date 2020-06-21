@@ -198,6 +198,9 @@ highlight B ctermbg=darkblue guibg=darkblue
 " Autoview -----------------------------------------------------------------{{{1
 
 function! MakeViewCheck()
+    if &filetype == 'gitcommit'
+        return 0
+    endif
     " Buffer is marked as not a file
     if has('quickfix') && &buftype =~ 'nofile'
         return 0
@@ -222,7 +225,7 @@ augroup vimrc_autoview
     autocmd!
     " Autosave & Load views
     autocmd BufWritePost,BufLeave,WinLeave ?* if MakeViewCheck() | mkview | endif
-    autocmd BufWinEnter ?* if MakeViewCheck() | silent loadview | endif
+    autocmd BufWinEnter ?* if MakeViewCheck() | silent! loadview | endif
 augroup END
 
 " Mappings -----------------------------------------------------------------{{{1
