@@ -195,8 +195,8 @@ for_window [class="(?i)mpv" tiling] border pixel 2
 for_window [class="(?i)firefox" title="(?i)picture-in-picture" floating] sticky enable, border pixel 2
 for_window [class="mpv" instance="floating"] floating enable, sticky enable, border pixel 2
 
-# Start Wine desktop on primary monitor.
 for_window [class="^Wine$" title="desktop$"] move window to output primary
+for_window [title="^EVE$"] fullscreen enable, border pixel 2
 
 # Autostart ----------------------------------------------------------------{{{1
 
