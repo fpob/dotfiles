@@ -29,12 +29,7 @@ def _load(name, module_name=[]):
 
 
 _load('sh')
-_load('requests')
-_load('yaml', ['ruamel.yaml', 'yaml'])
-_load('np', ['numpy'])
-_load('plt', ['matplotlib.pyplot'])
-_load('pd', ['pandas'])
-_load('sym', ['sympy'])
+_load('yaml')
 
 
 # Disable tab-completion messages in ipython/ipdb
