@@ -53,7 +53,13 @@
   # === style =============================================================={{{1
 
   # Font mode.
-  typeset -g POWERLEVEL9K_MODE=awesome-fontconfig
+  case $TERM in
+    *-kitty)
+      typeset -g POWERLEVEL9K_MODE=awesome-fontconfig ;;
+    *)
+      typeset -g POWERLEVEL9K_MODE=ascii ;;
+  esac
+
   # When set to `moderate`, some icons will have an extra space after them. This is meant to avoid
   # icon overlap when using non-monospace fonts. When set to `none`, spaces are not added.
   typeset -g POWERLEVEL9K_ICON_PADDING=moderate
@@ -612,3 +618,5 @@
 
 (( ${#p10k_config_opts} )) && setopt ${p10k_config_opts[@]}
 'builtin' 'unset' 'p10k_config_opts'
+
+# vim:ts=2:sw=2
