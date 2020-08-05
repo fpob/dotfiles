@@ -224,8 +224,10 @@ endfunction
 augroup vimrc_autoview
     autocmd!
     " Autosave & Load views
-    autocmd BufWritePost,BufLeave,WinLeave ?* if MakeViewCheck() | mkview | endif
-    autocmd BufWinEnter ?* if MakeViewCheck() | silent! loadview | endif
+    autocmd BufWritePost,BufLeave,WinLeave ?*
+        \ if MakeViewCheck() | silent! mkview | endif
+    autocmd BufWinEnter ?*
+        \ if MakeViewCheck() | silent! loadview | endif
 augroup END
 
 " Mappings -----------------------------------------------------------------{{{1

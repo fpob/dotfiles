@@ -217,4 +217,3 @@ let g:templates_user_variables = [
 function! GetParentDirName()
     return expand('%:p:h:t')
 endfunction
-
