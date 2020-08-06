@@ -95,3 +95,6 @@
 [submodule ".vim/pack/dev/start/yaml"]
 	path = .vim/pack/dev/start/yaml
 	url = https://github.com/stephpy/vim-yaml.git
+[submodule ".config/cheat/cheatsheets/community"]
+	path = .config/cheat/cheatsheets/community
+	url = https://github.com/cheat/cheatsheets.git
