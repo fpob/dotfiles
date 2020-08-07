@@ -172,5 +172,8 @@ let g:ycm_collect_identifiers_from_tags_files = 0
 " Disable syntax errors signs
 let g:ycm_enable_diagnostic_signs = 0
 
+" Disable documentation pop-up
+let g:ycm_auto_hover = ''
+
 nmap <Leader>K :YcmCompleter GetDoc<Cr>
 nmap <Leader>G :YcmCompleter GoTo<Cr>
