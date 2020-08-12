@@ -27,9 +27,13 @@ class TaggedFilter(BaseFilter):
         return '<Filter: tagged>'
 
 
+old_hook_init = ranger.api.hook_init
+
+
 def init(fm):
     fm.execute_console('map .t<any> filter_stack add tag %any')
     fm.execute_console('map .T filter_stack add tagged')
+    return old_hook_init(fm)
 
 
 ranger.api.hook_init = init
