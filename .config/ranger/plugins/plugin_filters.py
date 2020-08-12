@@ -1,3 +1,4 @@
+import ranger.api
 from ranger.core.filter_stack import stack_filter, BaseFilter
 
 
@@ -24,3 +25,11 @@ class TaggedFilter(BaseFilter):
 
     def __str__(self):
         return '<Filter: tagged>'
+
+
+def init(fm):
+    fm.execute_console('map .t<any> filter_stack add tag %any')
+    fm.execute_console('map .T filter_stack add tagged')
+
+
+ranger.api.hook_init = init
