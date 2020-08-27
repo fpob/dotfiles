@@ -1,7 +1,6 @@
 # deps: flake8 flake8-bugbear flake8-import-order
 [flake8]
 max-line-length = 80
-max-complexity = 10
 select = C,E,F,W,B,B950,I
 ignore =
     # Line break before binary operator, using B950
