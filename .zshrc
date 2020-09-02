@@ -297,6 +297,12 @@ function gpg-run {
     $shell =(gpg-cat "$script") $@
 }
 
+# Wrapper for yt to convert output back to YAML with preserved styles and add
+# syntax highlighting.
+function yq {
+    command yq -Y $@ | bat -pl yaml
+}
+
 # Kitty (completion, aliasses, ...) ----------------------------------------{{{1
 
 # Kitty is installed and currently using it.
