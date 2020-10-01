@@ -16,10 +16,6 @@ def _metadata_read(directory):
     return None
 
 
-def _anidb_link(aid):
-    return f'https://anidb.net/a{aid}'
-
-
 @register_linemode
 class AnimeLinemode(LinemodeBase):
     name = 'anime'
@@ -31,15 +27,12 @@ class AnimeLinemode(LinemodeBase):
         return fobj.relative_path
 
     def infostring(self, fobj, metadata):
-        meta = _metadata_read(fobj.path)
-        if meta:
-            return _anidb_link(meta['aid'])
         raise NotImplementedError
 
 
 class anidb_open(Command):
     def _open(self, aid):
-        self.fm.execute_command(f'xdg-open "{_anidb_link(aid)}"')
+        self.fm.execute_command(f'xdg-open "https://anidb.net/a{aid}"')
 
     def execute(self):
         if self.arg(1):
