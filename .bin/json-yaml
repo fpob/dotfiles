@@ -12,11 +12,30 @@ class PrettyDumper(yaml.SafeDumper):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         # Disable keys sorting under Python >=3.7, keep dict order.
         # https://stackoverflow.com/a/55171433
         # https://mail.python.org/pipermail/python-dev/2017-December/151283.html
         if sys.version_info >= (3, 7):
             self.sort_keys = False
+
+        # Allow unicode, don't escape as \u####.
+        self.allow_unicode = True
+
+        # Must register unbound methods there, otherwise 'self' is passed twice.
+        self.add_representer(str, type(self).represent_str)
+        # Represent pathlib objects as a string.
+        for o in (pathlib.Path, pathlib.PosixPath, pathlib.WindowsPath):
+            self.add_representer(o, type(self).represent_path)
+
+    def represent_path(self, data):
+        return self.represent_str(str(data))
+
+    def represent_str(self, data):
+        # Dump multiline strings as '|' blocks.
+        if '\n' in data:
+            return self.represent_scalar('tag:yaml.org,2002:str', data, style='|')
+        return self.represent_scalar('tag:yaml.org,2002:str', data)
 
     def increase_indent(self, flow=False, indentless=False):
         # Indent block collection entries (intems starting with `-`, `?` or `:`.
@@ -24,21 +43,10 @@ class PrettyDumper(yaml.SafeDumper):
         return super().increase_indent(flow=flow, indentless=False)
 
     def write_plain(self, *args, **kwargs):
-        # Don't put document end marker when dumping plain scalars.
+        # Don't put document ent marker when dumping plain scalars.
         # See: https://stackoverflow.com/q/56950391
         super().write_plain(*args, **kwargs)
         self.open_ended = False
-
-    def represent_scalar(self, tag, value, style=None):
-        if tag.endswith(':str'):
-            # Dump multiline strings as '|' blocks.
-            if '\n' in value:
-                style = '|'
-            # Use double-quotes if string contains single-quote. Single-quote escape
-            # (`''`) is less redable than backlash escape in double-quoted strings.
-            elif "'" in value:
-                style = '"'
-        return super().represent_scalar(tag, value, style=style)
 
 
 @click.command()
