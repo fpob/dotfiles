@@ -73,8 +73,8 @@
     au = add -u
     ap = add --patch
     # undo add
-    ua = reset HEAD
-    uap = reset --patch HEAD
+    ua = restore --staged HEAD
+    uap = restore --staged --patch HEAD
 
     d = diff
     dc = diff --cached
