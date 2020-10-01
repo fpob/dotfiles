@@ -13,3 +13,7 @@ gsettings set org.mate.interface gtk-decoration-layout 'menu'
 
 # Dont't manage background
 gsettings set org.mate.background draw-background false
+
+# Configure GTK and icon theme
+gsettings set org.mate.interface gtk-theme 'Abrus'
+gsettings set org.mate.interface icon-theme 'Numix'
