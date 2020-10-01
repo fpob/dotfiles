@@ -201,3 +201,10 @@ for_window [title="^EVE$"] fullscreen enable, border pixel 2
 
 # Execute autostart script if exists.
 exec --no-startup-id test -x ~/.config/i3/autostart && ~/.config/i3/autostart
+
+# Yeelight =----------------------------------------------------------------{{{1
+
+bindsym $mod+F1 exec yeelightctl toggle
+bindsym $mod+F2 exec yeelightctl bright --diff -- -14
+bindsym $mod+F3 exec yeelightctl bright --diff -- +14
+bindsym $mod+F4 exec yeelightctl ct 4700 30
