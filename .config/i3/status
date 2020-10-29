@@ -2,8 +2,6 @@
 
 DIR=$(dirname "$0")
 
-# https://github.com/brndnmtthws/conky/issues/20
-export LANG=en_US.UTF-8
 # Send the header so that i3bar knows we want to use JSON:
 echo '{"version":1, "click_events": true}'
 # Begin the endless array.
