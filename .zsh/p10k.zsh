@@ -599,7 +599,16 @@
 
   function prompt_parent() {
     PARENT=$(ps -p $PPID -o comm=)
-    if (($POWERLEVEL9K_PARENT_SHOW[(Ie)$PARENT])) ; then
+    if ((!$POWERLEVEL9K_PARENT_SHOW[(Ie)$PARENT])) ; then
+      if [[ $RANGER_LEVEL -eq 1 ]] ; then
+        PARENT=ranger
+      elif [[ $RANGER_LEVEL -gt 1 ]] ; then
+        PARENT="ranger^$RANGER_LEVEL"
+      else
+        PARENT=
+      fi
+    fi
+    if [[ -n $PARENT ]] ; then
       p10k segment -f 208 -t "$PARENT" -i ''
     fi
   }
@@ -608,6 +617,7 @@
     ranger
     vim
     nvim
+    gvim
   )
 
   # }}}
