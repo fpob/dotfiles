@@ -2,6 +2,7 @@ import os
 
 import yaml
 
+import ranger.api
 from ranger.api import register_linemode
 from ranger.core.linemode import LinemodeBase
 from ranger.api.commands import Command
@@ -46,3 +47,14 @@ class anidb_open(Command):
                 meta = _metadata_read(f)
                 if meta:
                     self._open(meta['aid'])
+
+
+old_hook_init = ranger.api.hook_init
+
+
+def init(fm):
+    fm.execute_console('map Ma linemode anime')
+    return old_hook_init(fm)
+
+
+ranger.api.hook_init = init
