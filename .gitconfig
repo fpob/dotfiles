@@ -73,8 +73,8 @@
     au = add -u
     ap = add --patch
     # undo add
-    ua = restore --staged HEAD
-    uap = restore --staged --patch HEAD
+    ua = restore --staged
+    uap = restore --staged --patch
 
     d = diff
     dc = diff --cached
@@ -87,10 +87,10 @@
     uc = reset --soft HEAD~
 
     b = branch
-    bm = branch -m
+    bm = branch --move
     bd = branch --delete
     # delete merged branch except current, master and develop
-    bdm = !git branch --merged | grep -vE '^(\\* |  (master|develop)$)' | xargs -r git branch --delete
+    bdm = !git branch --merged | grep -vE '^(\\* |  (master|main|develop|devel)$)' | xargs -r git branch --delete
 
     ch = checkout
     chm = checkout --merge
@@ -129,6 +129,8 @@
     st = stash
     stl = stash list --stat
     sts = stash show --patch
+    stp = stash pop
+    std = stash drop
 
     bi = bisect
 
