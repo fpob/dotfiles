@@ -151,6 +151,8 @@ let g:UltiSnipsSnippetDirectories = ["ultisnips"]
 
 let g:vimtex_quickfix_mode = 0
 
+let g:tex_flavor = 'latex'
+
 " youcompleteme ------------------------------------------------------------{{{1
 
 " <Tab> is used by UltiStip
