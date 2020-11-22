@@ -597,28 +597,27 @@
 
   # Type `p10k help segment` for documentation.
 
-  function prompt_parent() {
-    PARENT=$(ps -p $PPID -o comm=)
-    if ((!$POWERLEVEL9K_PARENT_SHOW[(Ie)$PARENT])) ; then
-      if [[ $RANGER_LEVEL -eq 1 ]] ; then
-        PARENT=ranger
-      elif [[ $RANGER_LEVEL -gt 1 ]] ; then
-        PARENT="ranger^$RANGER_LEVEL"
-      else
-        PARENT=
-      fi
-    fi
-    if [[ -n $PARENT ]] ; then
-      p10k segment -f 208 -t "$PARENT" -i ''
+  function proc_name() {
+    if [[ $1 -gt 0 ]] ; then
+      cut -f 1 -d $'\0' /proc/$1/cmdline
     fi
   }
 
-  typeset -ga POWERLEVEL9K_PARENT_SHOW=(
-    ranger
-    vim
-    nvim
-    gvim
-  )
+  function prompt_parent() {
+    local parent=
+
+    if [[ $RANGER_LEVEL -eq 1 ]] ; then
+      parent='ranger'
+    elif [[ $RANGER_LEVEL -gt 1 ]] ; then
+      parent="ranger^$RANGER_LEVEL"
+    elif [[ -n $VIM ]] ; then
+      parent='vim'
+    fi
+
+    if [[ -n $parent ]] ; then
+      p10k segment -f 208 -t "$parent" -i ''
+    fi
+  }
 
   # }}}
 }
