@@ -192,11 +192,10 @@ for_window [class="(?i)vim" tiling] border pixel 2
 for_window [class="(?i)mpv" tiling] border pixel 2
 
 for_window [class="(?i)firefox" title="(?i)picture-in-picture" floating] sticky enable, border pixel 2
-for_window [class="(?i)firefox" title="^Lepší\.TV$"] floating enable, sticky enable, border pixel 2, resize set 800 450, move position 5 720
 for_window [class="mpv" instance="floating"] floating enable, sticky enable, border pixel 2
 
 for_window [class="^Wine$" title="desktop$"] move window to output primary
-for_window [title="^EVE$"] fullscreen enable, border pixel 2
+for_window [title="^EVE" instance="^exefile\.exe$"] fullscreen enable, border pixel 2
 
 # Autostart ----------------------------------------------------------------{{{1
 
