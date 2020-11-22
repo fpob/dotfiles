@@ -89,6 +89,7 @@
 [submodule ".vim/pack/base/start/gnupg"]
 	path = .vim/pack/base/start/gnupg
 	url = https://github.com/jamessan/vim-gnupg.git
+	branch = main
 [submodule ".zsh/oh-my-zsh-custom/plugins/zsh-autosuggestions"]
 	path = .zsh/oh-my-zsh-custom/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
