@@ -39,7 +39,11 @@ path=(~/.bin ~/.local/bin $GOPATH/bin $path)
 typeset -gU path
 
 # Man path
-MANPATH=$(env MANPATH= manpath)
+if command -V manpath &>/dev/null ; then
+    MANPATH=$(env MANPATH= manpath)
+else
+    MANPATH=/usr/local/man:/usr/local/share/man:/usr/share/man
+fi
 manpath=(~/.local/man $manpath)
 typeset -gU manpath
 
@@ -193,7 +197,7 @@ alias lla='ll -A'
 # COW copy if available
 alias cp='cp --reflink=auto'
 
-alias rs='rsync -hhh --progress'
+alias rcp='rsync -hhh --info=progress2'
 
 # Human readable sizes
 alias du=$_GRC'du -khc'
