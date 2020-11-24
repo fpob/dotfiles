@@ -242,6 +242,8 @@ alias octave='octave -qW'
 # Cat GPG encrypted file.
 alias gpg-cat='gpg -qd -o-'
 
+alias pa='pueue add --'
+
 alias a='ansible'
 alias ap='ansible-playbook'
 alias av='ansible-vault'
