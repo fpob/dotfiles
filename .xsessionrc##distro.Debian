@@ -1,0 +1,9 @@
+#
+# ".profile" script for X sessions. See /etc/X11/Xsession.
+#
+
+if [ -f "$HOME/.profile" ] ; then
+    . "$HOME/.profile"
+fi
+
+# vim: ft=sh
