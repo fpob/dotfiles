@@ -7,8 +7,3 @@ function cheat-widget {
 }
 zle -N cheat-widget
 bindkey "\eh" cheat-widget
-
-function _cheat {
-    reply=($(cheat -l | cut -d' ' -f1))
-}
-compctl -K _cheat cheat

@@ -80,15 +80,15 @@ plugins=(
     fzf
     golang
     history-substring-search
+    kitty
     kubectl
     oc
     pip
+    pueue
     python
     ranger
     redis-cli
     sudo
-    taskwarrior
-    transfer
     vault
     zsh-autosuggestions
     zsh_reload
@@ -100,8 +100,6 @@ source $ZSH/oh-my-zsh.sh
 # Remove all aliases from OMZ plugins
 unalias -m '*'
 
-# Add a function path
-fpath=($ZSH_D/functions $ZSH_D/completions $fpath)
 # reload completion functions
 autoload -Uz compinit && compinit
 
@@ -215,6 +213,7 @@ alias py='python3'
 alias pydoc='pydoc3'
 alias pyvenv='python3 -m venv'
 alias ipy='ipython3 --pdb --'   # start debugger on uncaught exception
+alias pip='noglob pip'          # allows square brackets for pip command
 
 # force 256 colors
 alias tmux='tmux -2'
@@ -308,8 +307,6 @@ function yq {
 
 # Kitty is installed and currently using it.
 if command -v kitty &>/dev/null && [[ $TERM = xterm-kitty ]] ; then
-
-    source =(kitty + complete setup zsh)
 
     # Show image in terminal.
     alias icat='kitty +kitten icat'
