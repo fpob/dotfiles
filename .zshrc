@@ -84,7 +84,6 @@ plugins=(
     oc
     pip
     python
-    pyvenv
     ranger
     redis-cli
     sudo

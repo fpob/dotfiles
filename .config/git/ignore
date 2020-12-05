@@ -4,10 +4,9 @@
 /.ropeproject
 .vim-template:*
 
-# direnv file
+# direnv file/dir
 .envrc
-# python venv
-.venv
+.direnv/
 
 # Env files
 .env*
