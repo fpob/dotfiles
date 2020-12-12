@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-if command -v pypy3 &>/dev/null ; then
-    PYTHON=pypy3
-else
-    PYTHON=python3
-fi
-
-exec $PYTHON -O -c "import sys, ranger; sys.argv[0] = '''$0'''; sys.exit(ranger.main())" "$@"
