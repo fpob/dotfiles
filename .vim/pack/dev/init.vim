@@ -39,6 +39,10 @@ augroup vimrc_delimitmate
         \   let b:delimitMate_nesting_quotes = ['`']
 augroup END
 
+" direnv -------------------------------------------------------------------{{{1
+
+let g:direnv_auto = 0
+
 " editorconfig -------------------------------------------------------------{{{1
 
 " Don't change formations (adds 't' when max_line_length is set).

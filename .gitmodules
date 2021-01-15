@@ -99,3 +99,6 @@
 [submodule ".config/cheat/cheatsheets/community"]
 	path = .config/cheat/cheatsheets/community
 	url = https://github.com/cheat/cheatsheets.git
+[submodule ".vim/pack/dev/start/direnv"]
+	path = .vim/pack/dev/start/direnv
+	url = https://github.com/direnv/direnv.vim.git
