@@ -102,3 +102,6 @@
 [submodule ".vim/pack/dev/start/direnv"]
 	path = .vim/pack/dev/start/direnv
 	url = https://github.com/direnv/direnv.vim.git
+[submodule "/home/fpob/.zsh/oh-my-zsh-custom/plugins/zsh-completions"]
+	path = /home/fpob/.zsh/oh-my-zsh-custom/plugins/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions

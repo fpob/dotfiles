@@ -71,26 +71,21 @@ ZLE_REMOVE_SUFFIX_CHARS=""
 DISABLE_MAGIC_FUNCTIONS="true"
 
 plugins=(
-    autojump
-    cheat
     colored-man-pages
     direnv
-    docker
     fd
     fzf
     golang
-    history-substring-search
     kitty
     kubectl
-    oc
     pip
     pueue
     python
     ranger
-    redis-cli
     sudo
     vault
     zsh-autosuggestions
+    zsh-completions
     zsh_reload
     zsh-syntax-highlighting
 )
