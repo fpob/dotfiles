@@ -1,63 +1,10 @@
-import os
-import re
-import math
-import logging
-import hashlib
-import json
-import importlib
-
 from pprint import pprint as pp
-from glob import glob
+from os import environ as env
 
-
-def _load(name, module_name=[]):
-    """Helper to load third-party modules."""
-    module = None
-    errors = []
-
-    for m in (module_name or [name]):
-        try:
-            module = importlib.import_module(m)
-            break
-        except ImportError as e:
-            errors.append(str(e))
-
-    if module:
-        globals()[name] = module
-    else:
-        print(f"Load '{name}' failed:", ' & '.join(errors))
-
-
-_load('sh')
-_load('yaml')
-
-
-# Disable tab-completion messages in ipython/ipdb
-logging.getLogger('parso').setLevel(logging.ERROR)
-
-
-def hash_str(algorithm, string):
-    return hashlib.new(algorithm, string.encode()).hexdigest()
-
-
-def json_loadf(path):
-    with open(path, 'r') as f:
-        return json.load(f)
-
-def json_dumpf(obj, path):
-    with open(path, 'w') as f:
-        json.dump(obj, f)
-
-
-if 'yaml' in globals():
-
-    def yaml_loadf(path):
-        with open(path, 'r') as f:
-            return yaml.load(f.read(), Loader=yaml.SafeLoader)
-
-    def yaml_dumpf(obj, path):
-        with open(path, 'w') as f:
-            f.write(yaml.dump(obj, Dumper=yaml.SafeDumper))
+try:
+    import sh
+except ImportError:
+    pass
 
 
 # IPython settings
@@ -65,6 +12,10 @@ if 'get_ipython' in globals():
     ipy = get_ipython()
     # Disable exit confirmation
     ipy.confirm_exit = False
+
+    # Disable tab-completion messages in ipython/ipdb
+    import logging
+    logging.getLogger('parso').setLevel(logging.ERROR)
 
 
 # vim:ft=python
