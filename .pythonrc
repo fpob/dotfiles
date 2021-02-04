@@ -1,5 +1,12 @@
-from pprint import pprint as pp
 from os import environ as env
+
+try:
+    from rich import print as pp
+    from rich import pretty
+    pretty.install()
+    del pretty
+except ImportError:
+    from pprint import pprint as pp
 
 try:
     import sh
