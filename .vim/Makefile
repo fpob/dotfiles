@@ -1,13 +1,22 @@
-PWD = $(shell pwd)
-
+.PHONY: clean
 clean:
 	$(RM) tmp/* view/* undo/*
 
-spell:
-	test -d spell || mkdir spell
-	{ cd /usr/share/hunspell || cd /usr/share/myspell ;} 2>/dev/null \
-	    && env LANG=cs_CZ.utf-8 vim -u NONE -e -c "mkspell! $(PWD)/spell/cs cs_CZ" -c q
-	{ cd /usr/share/hunspell || cd /usr/share/myspell ;} 2>/dev/null \
-	    && env LANG=en_US.utf-8 vim -u NONE -e -c "mkspell! $(PWD)/spell/en en_US" -c q
+.PHONY: spell
+spell: spell/cs.utf-8.spl spell/en.utf-8.spl
 
-.PHONY: helptags youcompleteme spell clean
+spell/cs.utf-8.spl: /usr/share/hunspell/cs_CZ.aff /usr/share/hunspell/cs_CZ.dic
+	mkdir -p spell
+	env LANG=cs_CZ.UTF-8 vim -u NONE -e \
+		-c 'set encoding=utf-8' \
+		-c "mkspell! $@ $(sort $(basename $^))" \
+		-c q
+
+spell/en.utf-8.spl: /usr/share/hunspell/en_US.aff /usr/share/hunspell/en_US.dic
+	mkdir -p spell
+	env LANG=en_US.UTF-8 vim -u NONE -e \
+		-c 'set encoding=utf-8' \
+		-c "mkspell! $@ $(sort $(basename $^))" \
+		-c q
+
+.PHONY: spell clean

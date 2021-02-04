@@ -17,5 +17,8 @@ python3 .vim/pack/dev/start/youcompleteme/install.py --go-completer
 echo '>>> Generate Vim helptags'
 find .vim/pack -maxdepth 4 -name doc -type d -exec vim -e -c 'helptags {}' -c q \; &>/dev/null
 
+echo '>>> Generate Vim spell dicts'
+make -C .vim spell
+
 echo '>>> Configure mate/i3 desktop'
-"$HOME/.config/i3/mate-setup.sh" || echo "Retry with running X-session-manager"
+.config/i3/mate-setup.sh || echo "Retry with running X-session-manager"
