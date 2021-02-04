@@ -209,6 +209,7 @@ alias pydoc='pydoc3'
 alias pyvenv='python3 -m venv'
 alias ipy='ipython3 --pdb --'   # start debugger on uncaught exception
 alias pip='noglob pip'          # allows square brackets for pip command
+alias pip3='noglob pip3'
 
 # force 256 colors
 alias tmux='tmux -2'
