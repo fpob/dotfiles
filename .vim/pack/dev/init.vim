@@ -3,17 +3,12 @@
 let g:better_whitespace_filetypes_blacklist = ['mail', 'diff', 'gitcommit', 'help']
 let g:show_spaces_that_precede_tabs = 1
 
-" Don't strip whitespaces on save because it replaces @/
+" Don't strip whitespaces on save
 let g:strip_whitespace_on_save = 0
 " Don't ask for confirmation
 let g:strip_whitespace_confirm = 0
 " Strip empty lines at the end of file
 let g:strip_whitelines_at_eof = 1
-
-augroup vimrc_whitespace
-    autocmd!
-    autocmd BufWritePre * StripWhitespace
-augroup END
 
 " delimitmate --------------------------------------------------------------{{{1
 
