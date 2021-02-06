@@ -29,10 +29,6 @@
 [difftool "kitty.gui"]
     cmd = kitty kitty +kitten diff $LOCAL $REMOTE
 
-[fetch]
-    prune = true
-    pruneTags = true
-
 [grep]
     lineNumber = true
     patternType = perl
