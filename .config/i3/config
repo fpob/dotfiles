@@ -159,10 +159,6 @@ client.unfocused        #363738 #1A1B1C #636465
 client.focused_inactive #363738 #1A1B1C #F5F6F7
 client.urgent           #C72E2E #1A1B1C #C72E2E
 
-# Bar ----------------------------------------------------------------------{{{1
-
-exec --no-startup-id ~/.config/polybar/launch
-
 # Window settings ----------------------------------------------------------{{{1
 
 for_window [class="(?i)firefox" title="(?i)picture-in-picture" floating] sticky enable
@@ -171,12 +167,18 @@ for_window [class="mpv" instance="floating"] floating enable, sticky enable
 for_window [class="^Wine$" title="desktop$"] move window to output primary
 for_window [title="^EVE" instance="^exefile\.exe$"] fullscreen enable
 
-# Autostart ----------------------------------------------------------------{{{1
+# Startup ------------------------------------------------------------------{{{1
+
+exec --no-startup-id picom
+exec --no-startup-id ~/.config/polybar/launch
+
+# Change workspace if fehbg script exist.
+exec --no-startup-id test -x ~/.fehbg && ~/.fehbg
 
 # Execute autostart script if exists.
 exec --no-startup-id test -x ~/.config/i3/autostart && ~/.config/i3/autostart
 
-# Yeelight =----------------------------------------------------------------{{{1
+# Yeelight -----------------------------------------------------------------{{{1
 
 bindsym $mod+F1 exec yeelightctl toggle
 bindsym $mod+F2 exec yeelightctl bright --diff -- -14
