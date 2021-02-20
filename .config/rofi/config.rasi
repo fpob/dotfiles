@@ -1,7 +1,62 @@
 configuration {
-    modi: "combi,window,drun,run,ssh";
-    combi-modi: "drun,ssh";
-    theme: "theme";
+    modi: "combi,drun,run,window";
+    combi-modi: "drun,window";
     monitor: "-1";
     terminal: "kitty";
+    show-icons: true;
+    icon-theme: "Numix";
+}
+
+
+* {
+    spacing: 0;
+    font: "Hack 9";
+    width: 600;
+}
+
+#window {
+    background-color: #FFFFFF;
+    text-color: #000000;
+    border: 1px;
+    border-color: #D9DDE0;
+}
+
+#inputbar {
+    padding: 5px;
+    background-color: #F5F6F7;
+    border: 0 0 1px 0;
+    border-color: #D9DDE0;
+}
+
+#prompt {
+    padding: 0 5px 0 0;
+    background-color: inherit;
+}
+
+#entry {
+    background-color: inherit;
+    width: 5em;
+}
+
+#case-indicator {
+    padding: 0 0 0 5px;
+    background-color: inherit;
+}
+
+#listview {
+    padding: 2px 0;
+}
+
+#element {
+    padding: 3px 5px;
+    spacing: 1px;
+}
+
+#element.selected {
+    text-color: #FFFFFF;
+    background-color: #C72E2E;
+}
+
+#element-icon {
+    width: 50px;
 }

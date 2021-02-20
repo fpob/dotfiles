@@ -35,11 +35,11 @@ sort = yes
 bounce_freq = 0
 
 # The geometry of the window: [{width}]x{height}[+/-{x}+/-{y}]
-geometry = "320-8+8"
+geometry = "320-5+30"
 # Shrink window if it's smaller than the width.
 shrink = no
 # The transparency of the window.
-transparency = 15
+transparency = 10
 # Draw a line between two # notifications.
 separator_height = 1
 # Define a color for the separator.
@@ -85,18 +85,18 @@ history = mod1+grave
 context = mod1+shift+period
 
 [urgency_low]
-background = "#222222"
-foreground = "#ffffff"
-timeout = 10
+background = "#1A1B1C"
+foreground = "#838485"
+timeout = 5
 
 [urgency_normal]
-background = "#285577"
-foreground = "#ffffff"
+background = "#363738"
+foreground = "#F5F6F7"
 timeout = 10
 
 [urgency_critical]
-background = "#900000"
-foreground = "#ffffff"
+background = "#C72E2E"
+foreground = "#FFFFFF"
 timeout = 0
 
 # vim: ft=dosini
