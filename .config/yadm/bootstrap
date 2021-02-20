@@ -22,3 +22,7 @@ make -C .vim spell
 
 echo '>>> Configure mate/i3 desktop'
 .config/i3/mate-setup.sh || echo "Retry with running X-session-manager"
+
+echo '>>> Enable systemd user units'
+systemctl --user enable --now \
+    dunst.service ssh-agent.service cron@daily.timer
