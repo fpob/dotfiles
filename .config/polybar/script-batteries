@@ -1,0 +1,44 @@
+#!/bin/bash
+
+shopt -s nullglob
+
+for ps in /sys/class/power_supply/* ; do
+    ps_type=$(cat "$ps/type")
+
+    if [[ $ps_type == Battery ]] ; then
+        if grep -q Mouse "$ps/model_name" ; then
+            ps_capacity_level=$(cat "$ps/capacity_level")
+            if [[ $ps_capacity_level == Low ]] ; then
+                printf '%%{F#C72E2E}\uf245  %%{F}'  # empty
+            fi
+        elif [[ -f "$ps/capacity" ]] ; then
+            ps_capacity=$(cat "$ps/capacity")
+            if [[ $ps_capacity -gt 90 ]] ; then
+                printf '\uf240  '  # full
+            elif [[ $ps_capacity -gt 65 ]] ; then
+                printf '\uf241  '  # 3/4
+            elif [[ $ps_capacity -gt 35 ]] ; then
+                printf '\uf242  '  # 1/2
+            elif [[ $ps_capacity -gt 10 ]] ; then
+                printf '\uf243  '  # 1/4
+            else
+                printf '%%{F#C72E2E}\uf244  %%{F}'  # empty
+            fi
+        elif [[ -f "$ps/capacity_level" ]] ; then
+            ps_capacity_level=$(cat "$ps/capacity_level")
+            if [[ $ps_capacity_level == Low ]] ; then
+                printf '%%{F#C72E2E}\uf244  %%{F}'  # empty
+            elif [[ $ps_capacity_level == Normal ]] ; then
+                printf '\uf240  '  # full
+            fi
+        fi
+    elif [[ $ps_type == Mains ]] ; then
+        ps_online=$(cat "$ps/online")
+        if [[ $ps_online -eq 1 ]] ; then
+            printf '\uf1e6  '
+        fi
+    fi
+done
+
+# To make module disappear if there is no output.
+echo

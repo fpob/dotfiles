@@ -1,0 +1,20 @@
+#!/bin/bash
+
+export YADM_CLASS=$(yadm config --get local.class)
+
+if [[ $YADM_CLASS == desktop ]] ; then
+    export TEMPERATURE_PATH=/sys/devices/platform/nct6775.2592/hwmon/hwmon2/temp1_input
+    export PULSEAUDIO_SINK=alsa_output.pci-0000_28_00.3.analog-stereo
+fi
+
+export WLAN_INTERFACE=$(ip -br link show | awk '/^wl/ { print $1 ; nextfile }')
+
+# Terminate already running bar instances.
+killall -q polybar
+
+# Start polybar on all monitors.
+polybar --list-monitors | while read line ; do
+    export MONITOR=$(echo $line | cut -d":" -f1)
+    export BAR=$(echo $line | grep -q primary && echo primary || echo secondary)
+    polybar --reload $BAR &
+done &>> ~/.polybar.log

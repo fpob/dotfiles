@@ -159,28 +159,7 @@ client.urgent           #C72E2E #1E1E1E #C72E2E
 
 # Bar ----------------------------------------------------------------------{{{1
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
-    position bottom
-    font pango:Noto Sans,ForkAwesome 10
-    tray_output primary
-
-    status_command ~/.config/i3/status
-    separator_symbol " "
-
-    colors {
-        background #0E0F12
-        statusline #EEEEEE
-        separator  #1E1E1E
-
-        # <border> <background> <text>
-        focused_workspace  #B82525 #B82525 #FFFFFF
-        active_workspace   #B82525 #B82525 #FFFFFF
-        inactive_workspace #0E0F12 #0E0F12 #EEEEEE
-        urgent_workspace   #B82525 #0E0F12 #B82525
-    }
-}
+exec --no-startup-id ~/.config/polybar/launch
 
 # Window settings ----------------------------------------------------------{{{1
 

@@ -1,0 +1,251 @@
+; vim:ft=dosini
+; colors -------------------------------------------------------------------{{{1
+[colors]
+background = #1A1B1C
+background-alt = #363738
+
+foreground = #F5F6F7
+foreground-alt = #636465
+
+selected-bg = #C72E2E
+selected-fg = $FFFFFF
+
+; bar/primary --------------------------------------------------------------{{{1
+[bar/primary]
+monitor = ${env:MONITOR:}
+
+enable-ipc = true
+
+; Put the bar at the bottom of the screen.
+bottom = false
+
+; Prefer fixed center position for the `modules-center` block.
+; When false, the center block is centered in the space between the left and
+; right block.
+fixed-center = true
+
+width = 100%
+height = 25
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+; Under-/overline pixel size and argb color.
+line-size = 3
+line-color = #f00
+
+; Number of spaces to add at the beginning/end of the bar.
+padding-left = 0
+padding-right = 2
+
+; module-margin-{left,right}
+module-margin = 2
+
+; Font names are specified using a fontconfig pattern.
+font-0 = "Noto Sans:size=10;2"
+font-1 = ForkAwesome:size=10;2
+font-2 = "Noto Sans Mono CJK TC:size=10;2"
+
+modules-left = i3
+modules-center = date
+modules-right = wlan pulseaudio xkeyboard filesystem temperature cpu memory battery
+
+#separator = %{F#363636}|%{F}
+
+tray-position = right
+tray-padding = 2
+tray-maxsize = 17
+
+; Restack the bar window and put it above the
+; selected window manager's root
+;
+; Fixes the issue where the bar is being drawn
+; on top of fullscreen window's
+;
+; Currently supported WM's:
+;   bspwm
+;   i3 (requires: `override-redirect = true`)
+; wm-restack =
+;wm-restack = i3
+
+scroll-up = i3wm-wsprev
+scroll-down = i3wm-wsnext
+
+; bar/secondary ------------------------------------------------------------{{{1
+[bar/secondary]
+inherit = bar/primary
+tray-position = none
+
+; module/i3 ----------------------------------------------------------------{{{1
+[module/i3]
+type = internal/i3
+
+format = <label-state> <label-mode>
+
+index-sort = true
+wrapping-scroll = false
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.selected-bg}
+label-focused-padding = 3
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = ${self.label-focused-padding}
+
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+#label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+label-urgent = %index%
+label-urgent-foreground = ${colors.selected-fg}
+label-urgent-background = ${colors.selected-bg}
+label-urgent-padding = ${self.label-focused-padding}
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.selected-bg}
+
+; module/xwindow -----------------------------------------------------------{{{1
+[module/xwindow]
+type = internal/xwindow
+
+format-padding = 4
+
+label = %title%
+label-maxlen = 64
+
+; module/date --------------------------------------------------------------{{{1
+[module/date]
+type = internal/date
+interval = 1
+
+date = %Y-%m-%d
+time = %H:%M:%S
+
+date-alt = %A %Y-%m-%d
+time-alt = %H:%M:%S %z
+
+label = %date% %time%
+
+; module/xkeyboard ---------------------------------------------------------{{{1
+[module/xkeyboard]
+type = internal/xkeyboard
+
+blacklist-0 = num lock
+
+format-prefix = "  "
+
+label-indicator-on = %icon%
+
+indicator-icon-default =
+indicator-icon-0 = num lock;;+NL
+indicator-icon-1 = caps lock;;+CL
+indicator-icon-2 = scroll lock;;+SL
+
+; module/filesystem --------------------------------------------------------{{{1
+[module/filesystem]
+type = internal/fs
+interval = 30
+
+mount-0 = /home
+
+label-mounted =  %percentage_used%%
+
+; module/temperature -------------------------------------------------------{{{1
+[module/temperature]
+type = internal/temperature
+interval = 2
+
+hwmon-path = ${env:TEMPERATURE_PATH}
+
+base-temperature = 20
+warn-temperature = 80
+
+format = <ramp> <label>
+format-warn = <ramp> <label-warn>
+#format-warn-underline = ${colors.selected-bg}
+
+label = %temperature-c%
+label-warn = %temperature-c%
+label-warn-foreground = ${colors.selected-bg}
+
+ramp-0 = " "
+ramp-1 = " "
+ramp-2 = " "
+ramp-3 = "%{F#C72E2E} %{F}"
+
+; module/cpu ---------------------------------------------------------------{{{1
+[module/cpu]
+type = internal/cpu
+interval = 2
+
+format-prefix = " "
+
+label = %percentage:2%%
+
+; module/memory ------------------------------------------------------------{{{1
+[module/memory]
+type = internal/memory
+interval = 2
+
+format-prefix = " "
+
+label = %percentage_used:2%%
+
+; module/wlan --------------------------------------------------------------{{{1
+[module/wlan]
+type = internal/network
+interval = 5
+
+interface = ${env:WLAN_INTERFACE}
+
+format-connected-prefix = "  "
+
+label-connected = %essid%
+label-disconnected =
+
+; module/pulseaudio --------------------------------------------------------{{{1
+[module/pulseaudio]
+type = internal/pulseaudio
+
+; Sink to be used, if it exists (`pacmd list-sinks`). If not, uses default sink.
+sink = ${env:PULSEAUDIO_SINK}
+
+; Volume max ~153% if true, or 100% if false
+use-ui-max = false
+
+format-volume = <ramp-volume> <label-volume>
+
+label-volume = %percentage%%
+
+label-muted = "  muted"
+label-muted-foreground = ${colors.foreground-alt}
+
+ramp-volume-0 = " "
+ramp-volume-1 = " "
+
+click-right = pavucontrol
+
+; module/battery -----------------------------------------------------------{{{1
+[module/battery]
+type = custom/script
+interval = 60
+
+exec = ~/.config/polybar/script-batteries
+
+click-right = mate-power-statistics
+
+; settings -----------------------------------------------------------------{{{1
+[settings]
+screenchange-reload = true
+
+; global/wm ----------------------------------------------------------------{{{1
+[global/wm]
+margin-top = 0
+margin-bottom = 0

@@ -17,3 +17,6 @@ gsettings set org.mate.background draw-background false
 # Configure GTK and icon theme
 gsettings set org.mate.interface gtk-theme 'Abrus'
 gsettings set org.mate.interface icon-theme 'Numix'
+
+# Hide keyboard indicator (en/cs/...)
+gsettings set org.mate.peripherals-keyboard-xkb.general disable-indicator true
