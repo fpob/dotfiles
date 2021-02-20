@@ -1,0 +1,9 @@
+[Unit]
+Description=Run scheduled user jobs
+ConditionPathExists=%h/.config/cron.%i
+
+[Service]
+ExecStart=/usr/bin/run-parts --verbose %h/.config/cron.%i
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=Trigger scheduled user jobs
+
+[Timer]
+OnCalendar=%i
+RandomizedDelaySec=5m
+Persistent=true
+
+[Install]
+WantedBy=timers.target
