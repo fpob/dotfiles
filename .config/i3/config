@@ -21,8 +21,8 @@ bindsym $mod+space exec rofi -show combi
 bindsym $mod+slash exec rofi -show window
 
 # Screenshot
-bindsym Print exec xfce4-screenshooter
-bindsym Ctrl+Print exec xfce4-screenshooter --window
+bindsym Print exec mate-screenshot --interactive
+bindsym Ctrl+Print exec mate-screenshot --window
 
 exec --no-startup-id kitti3 -p top -s 1.0 1.0 -- --config ~/.config/kitty/kitty-transparent.conf
 bindsym F12 nop kitti3
@@ -31,8 +31,8 @@ bindsym F12 nop kitti3
 
 # Kill focused window
 bindsym $mod+q kill
-bindsym --release button2 kill
-bindsym --release Mod2+button2 kill
+bindsym --release button3 kill
+bindsym --whole-window $mod+button3 kill
 
 # Change focus
 bindsym $mod+h focus left
@@ -60,8 +60,6 @@ bindsym $mod+e layout toggle split
 
 # Toggle tiling/floating
 bindsym $mod+Shift+space floating toggle
-bindsym button3 floating toggle
-bindsym Mod2+button3 floating toggle
 
 # Change focus between tiling/floating windows
 bindsym $mod+o focus mode_toggle
