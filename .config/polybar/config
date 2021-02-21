@@ -56,17 +56,9 @@ tray-position = right
 tray-padding = 2
 tray-maxsize = 17
 
-; Restack the bar window and put it above the
-; selected window manager's root
-;
-; Fixes the issue where the bar is being drawn
-; on top of fullscreen window's
-;
-; Currently supported WM's:
-;   bspwm
-;   i3 (requires: `override-redirect = true`)
-; wm-restack =
-;wm-restack = i3
+; Restack the bar window and put it above the selected window manager's root.
+; Fixes the issue where the bar is being drawn on top of fullscreen window's.
+wm-restack = i3
 
 scroll-up = i3wm-wsprev
 scroll-down = i3wm-wsnext
