@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Rename file but keep it in the same directory.
+mv -T "${@: 1:$(($#-2))}" "$1" "$(dirname "$1")/$2"
