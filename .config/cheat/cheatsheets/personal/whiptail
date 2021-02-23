@@ -1,0 +1,4 @@
+# Save response to variable.
+#   `2>&1` redirects response to stdout
+#   `>/dev/tty` (or `>$(tty)`) redirects TUI directly to the console output
+REPLY=$(whiptail --inputbox 'Example input' 10 50 2>&1 >/dev/tty)
