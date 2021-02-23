@@ -106,6 +106,10 @@ bindsym $mod+p workspace prev
 bindsym $mod+Shift+bracketright move workspace to output right
 bindsym $mod+Shift+bracketleft move workspace to output left
 
+# Switch/move to any workspace
+bindsym $mod+quoteleft exec --no-startup-id i3-input -F 'workspace "%s"' -P 'Switch to workspace: '
+bindsym $mod+Shift+quoteleft exec --no-startup-id i3-input -F 'move container to workspace "%s"' -P 'Move to workspace: '
+
 # System and i3 bindings ---------------------------------------------------{{{1
 
 # Take command and send it to i3
