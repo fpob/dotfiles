@@ -69,8 +69,8 @@ bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
 # Mark/Goto
-bindsym $mod+m exec i3-input -F 'mark --toggle "%s"' -l 1 -P 'Mark: '
-bindsym $mod+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+bindsym $mod+m exec --no-startup-id i3-input -F 'mark --toggle "%s"' -l 1 -P 'Mark: '
+bindsym $mod+apostrophe exec --no-startup-id i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
 
 # Workspace bindings -------------------------------------------------------{{{1
 
@@ -109,7 +109,7 @@ bindsym $mod+Shift+bracketleft move workspace to output left
 # System and i3 bindings ---------------------------------------------------{{{1
 
 # Take command and send it to i3
-bindsym $mod+Shift+semicolon exec i3-input
+bindsym $mod+Shift+semicolon exec --no-startup-id i3-input
 
 # Reload the configuration file
 bindsym $mod+Shift+c reload
