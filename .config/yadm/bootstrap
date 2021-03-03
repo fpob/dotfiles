@@ -25,4 +25,4 @@ echo '>>> Configure mate/i3 desktop'
 
 echo '>>> Enable systemd user units'
 systemctl --user enable --now \
-    dunst.service ssh-agent.service cron@daily.timer
+    dunst.service cron@daily.timer

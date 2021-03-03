@@ -1,5 +1,4 @@
-# SSH agent (started by systemd)
-export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent.socket"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 
 if [ -d "$HOME/.bin" ] ; then
