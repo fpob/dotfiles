@@ -29,6 +29,9 @@
 [difftool "kitty.gui"]
     cmd = kitty kitty +kitten diff $LOCAL $REMOTE
 
+[gpg]
+    program = gpg-pinentry-loopback
+
 [grep]
     lineNumber = true
     patternType = perl

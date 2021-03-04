@@ -230,11 +230,9 @@ alias gdb='gdb -q'
 alias bc='bc -ql'
 alias octave='octave -qW'
 
-# When using GPG in terminal ask for password in the terminal, don't create GUI
-# windows.
-alias gpg='gpg --pinentry-mode loopback'
+alias gpg='gpg-pinentry-loopback'
 # Cat GPG encrypted file.
-alias gpg-cat='gpg -qd -o-'
+alias gpg-cat='gpg-pinentry-loopback -qd -o-'
 
 alias pa='pueue add --'
 
