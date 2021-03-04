@@ -56,6 +56,12 @@
     showStash = true
     ignoreSubmodules = untracked
 
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
 [alias]
     s = status
 
@@ -103,6 +109,8 @@
     rbc = rebase --continue
     rba = rebase --abort
     rbs = rebase --skip
+
+    cp = cherry-pick
 
     f = fetch
     fa = fetch --all --tags
