@@ -1,11 +1,8 @@
 # Tmux ---------------------------------------------------------------------{{{1
 
-if [[ $(id -u) -ge 1000 ]] ; then
-    # If not in tmux and not in mc subshell and connected via SSH
-    if [[ -z $TMUX && -z $MC_SID && -n $SSH_CONNECTION ]] ; then
-        # If session "main" exists then attach otherwise create
-        tmux -2 new -A -s main
-    fi
+if [[ $- == *i* && -n $SSH_CONNECTION && -z $TMUX && -z $MC_SID ]] ; then
+    # If session "main" exists then attach otherwise create
+    tmux -2 new -A -s main
 fi
 
 # Variables ----------------------------------------------------------------{{{1
