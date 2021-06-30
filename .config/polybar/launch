@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export YADM_CLASS=$(yadm config --get local.class)
 
