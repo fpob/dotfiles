@@ -172,7 +172,7 @@ augroup END
 let NERDTreeIgnore = [
     \   '^__pycache__$[[dir]]',
     \   '^\.git$',
-    \   '^\.\(ropeproject\|tox\|pytest_cache\|cache\|venv\)$[[dir]]',
+    \   '^\.\(ropeproject\|tox\|pytest_cache\|cache\|venv\|direnv\)$[[dir]]',
     \   '^\.\(coverage\(\..*\)\?\)$[[file]]',
     \   '^tags\(\.temp\|\.lock\)\?$[[file]]'
     \]
