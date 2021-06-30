@@ -19,6 +19,7 @@ export TS_ENV="pwd"
 
 # golang
 export GOPATH=$HOME/.go
+export GO111MODULE=on
 
 # rust
 export CARGO_HOME=$HOME/.cargo
