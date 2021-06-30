@@ -10,15 +10,8 @@ yadm submodule update --recursive --init
 echo '>>> Change Git push URL'
 yadm remote set-url --push origin 'git@gitlab.com:fpob/dotfiles.git'
 
-echo '>>> Build YouCompleteMe'
-# Force building under python3 (#! is env python) + enable Go completer.
-python3 .vim/pack/dev/start/youcompleteme/install.py --go-completer
-
-echo '>>> Generate Vim helptags'
-find .vim/pack -maxdepth 4 -name doc -type d -exec vim -e -c 'helptags {}' -c q \; &>/dev/null
-
-echo '>>> Generate Vim spell dicts'
-make -C .vim spell
+echo '>>> Init Vim'
+make -C .vim init
 
 echo '>>> Configure mate/i3 desktop'
 .config/i3/mate-setup.sh || echo "Retry with running X-session-manager"

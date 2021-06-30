@@ -1,6 +1,18 @@
-.PHONY: clean
-clean:
-	$(RM) tmp/* view/* undo/*
+init: dirs ycm helptags spell
+
+.PHONY: dirs
+dirs:
+	mkdir -p tmp view undo
+
+.PHONY: ycm
+ycm:
+	@# Force building under python3 (#! is env python) + enable Go completer.
+	python3 pack/dev/start/youcompleteme/install.py --go-completer
+
+.PHONY: helptags
+helptags:
+	find pack -maxdepth 4 -name doc -type d \
+		-exec vim -e -c 'helptags {}' -c q \; &>/dev/null
 
 .PHONY: spell
 spell: spell/cs.utf-8.spl spell/en.utf-8.spl
@@ -19,4 +31,6 @@ spell/en.utf-8.spl: /usr/share/hunspell/en_US.aff /usr/share/hunspell/en_US.dic
 		-c "mkspell! $@ $(sort $(basename $^))" \
 		-c q
 
-.PHONY: spell clean
+.PHONY: clean
+clean:
+	find tmp view undo -mindepth 1 -delete
