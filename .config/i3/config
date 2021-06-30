@@ -105,6 +105,10 @@ bindsym $mod+p workspace prev
 # Move workspace to different monitor
 bindsym $mod+Shift+bracketright move workspace to output right
 bindsym $mod+Shift+bracketleft move workspace to output left
+bindsym $mod+Shift+Left move workspace to output left
+bindsym $mod+Shift+Right move workspace to output right
+bindsym $mod+Shift+Up move workspace to output up
+bindsym $mod+Shift+Down move workspace to output down
 
 # Switch/move to any workspace
 bindsym $mod+quoteleft exec --no-startup-id i3-input -F 'workspace "%s"' -P 'Switch to workspace: '
