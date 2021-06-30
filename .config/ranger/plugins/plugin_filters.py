@@ -23,6 +23,10 @@ class TagFilter(BaseFilter, FileManagerAware):
 @stack_filter('selected')
 class SelectedFilter(BaseFilter, FileManagerAware):
     def __init__(self, _):
+        self.fm.signal_bind('loader.before', self.refresh)
+        self.refresh()
+
+    def refresh(self):
         self.selection = set(self.fm.thistab.get_selection())
 
     def __call__(self, fobj):
