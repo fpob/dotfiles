@@ -14,20 +14,14 @@
     verbose = true
 
 [diff]
-    tool = kitty
-    guitool = kitty.gui
+    tool = vimdiff
+    guitool = gvimdiff
     algorithm = patience
     ignoreSubmodules = untracked
 
 [difftool]
+    # Be able to abort all diffs with `:cq` or `:cquit`
     trustExitCode = true
-    prompt = false
-
-[difftool "kitty"]
-    cmd = kitty +kitten diff $LOCAL $REMOTE
-
-[difftool "kitty.gui"]
-    cmd = kitty kitty +kitten diff $LOCAL $REMOTE
 
 [gpg]
     program = gpg-pinentry-loopback
@@ -152,6 +146,6 @@
     suba = submodule add
     subu = submodule update
 
-    dt = difftool --dir-diff
-    dtc = difftool --dir-diff --cached
-    mt = mergetool
+    dt = difftool --gui
+    dtc = difftool --cached --gui
+    mt = mergetool --gui
