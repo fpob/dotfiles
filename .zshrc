@@ -20,6 +20,9 @@ export TS_ENV="pwd"
 # golang
 export GOPATH=$HOME/.go
 
+# rust
+export CARGO_HOME=$HOME/.cargo
+
 # Default less options
 export LESS=-RK
 
@@ -32,7 +35,7 @@ export JQ_COLORS='1;31:1;35:1;35:0;39:0;32:1;39:1;39'
 # Paths --------------------------------------------------------------------{{{1
 
 # Bin path
-path=(~/.bin ~/.local/bin $GOPATH/bin $path)
+path=(~/.bin ~/.local/bin $CARGO_HOME/bin $GOPATH/bin $path)
 typeset -gU path
 
 # Man path
