@@ -201,6 +201,10 @@ function! MakeViewCheck()
     if &filetype == 'gitcommit'
         return 0
     endif
+    " Diff mode
+    if &diff
+        return 0
+    endif
     " Buffer is marked as not a file
     if has('quickfix') && &buftype =~ 'nofile'
         return 0
