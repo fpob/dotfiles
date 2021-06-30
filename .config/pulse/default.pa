@@ -1,0 +1,17 @@
+#!/usr/bin/pulseaudio -nF
+# vim: ft=conf
+#
+# https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/
+#
+
+# Include system config.
+.include /etc/pulse/default.pa
+
+# Enable "Null output"
+load-module module-null-sink
+
+# Enable Line-In (https://askubuntu.com/a/267347)
+load-module module-loopback latency_msec=5
+
+# Enable "Simultaneous output ..." sink
+#load-module module-combine-sink
