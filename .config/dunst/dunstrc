@@ -84,6 +84,10 @@ close_all = mod1+shift+space
 history = mod1+grave
 context = mod1+period
 
+# Don't show notification over focused fullscreen windows.
+[fullscreen_pushback_all]
+fullscreen = pushback
+
 [urgency_low]
 background = "#1A1B1C"
 foreground = "#838485"
