@@ -24,7 +24,7 @@ bindsym $mod+slash exec rofi -show window
 bindsym Print exec mate-screenshot --interactive
 bindsym Ctrl+Print exec mate-screenshot --window
 
-exec --no-startup-id kitti3 -p top -s 1.0 1.0 -- --config ~/.config/kitty/kitty-transparent.conf
+exec_always --no-startup-id kitti3 -p top -s 1.0 1.0 -- --config ~/.config/kitty/kitty-transparent.conf
 bindsym F12 nop kitti3
 
 # Window/layout bindings ---------------------------------------------------{{{1
@@ -173,8 +173,8 @@ for_window [title="^EVE" instance="^exefile\.exe$"] fullscreen enable
 
 # Startup ------------------------------------------------------------------{{{1
 
-exec --no-startup-id picom
-exec --no-startup-id ~/.config/polybar/launch
+exec_always --no-startup-id ~/.config/i3/compositor
+exec_always --no-startup-id ~/.config/polybar/launch
 
 # Change workspace if fehbg script exist.
 exec --no-startup-id test -x ~/.fehbg && ~/.fehbg

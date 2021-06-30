@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+export LD_PRELOAD="/lib/mumble/libmumble.so $LD_PRELOAD"
+
+killall -q picom
+
+exec picom "$@"
