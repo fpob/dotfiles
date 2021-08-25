@@ -181,14 +181,14 @@ exec_always --no-startup-id ~/.config/i3/compositor
 exec_always --no-startup-id ~/.config/polybar/launch
 
 # Change workspace if fehbg script exist.
-exec --no-startup-id test -x ~/.fehbg && ~/.fehbg
+exec_always --no-startup-id test -x ~/.fehbg && ~/.fehbg
 
 # Execute autostart script if exists.
 exec --no-startup-id test -x ~/.config/i3/autostart && ~/.config/i3/autostart
 
 # Yeelight -----------------------------------------------------------------{{{1
 
-bindsym $mod+F1 exec yeelightctl toggle
-bindsym $mod+F2 exec yeelightctl bright --diff -- -14
-bindsym $mod+F3 exec yeelightctl bright --diff -- +14
-bindsym $mod+F4 exec yeelightctl ct 4700 30
+bindsym $mod+F1 exec --no-startup-id yeelightctl toggle
+bindsym $mod+F2 exec --no-startup-id yeelightctl bright --diff -- -14
+bindsym $mod+F3 exec --no-startup-id yeelightctl bright --diff -- +14
+bindsym $mod+F4 exec --no-startup-id yeelightctl ct 4700 30
