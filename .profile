@@ -1,4 +1,4 @@
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent.socket"
 
 
 if [ -d "$HOME/.bin" ] ; then
