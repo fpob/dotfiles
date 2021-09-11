@@ -56,11 +56,15 @@ def bright(diff, value):
 
 @cli.command()
 @click.argument('temperature', type=click.IntRange(1700, 6500))
-@click.argument('brightness', type=click.IntRange(1, 100))
+@click.argument('brightness', type=click.IntRange(1, 100), required=False)
 def ct(temperature, brightness):
     """Change the color temperature. Temperature range is 1700 - 6500 K."""
-    return lambda bulb: bulb.set_scene(yeelight.SceneClass.CT,
-                                       temperature, brightness)
+    def action(bulb):
+        bright = brightness  # because of reference before assignment
+        if not brightness:
+            bright = int(bulb.get_properties(['bright'])['bright'])
+        bulb.set_scene(yeelight.SceneClass.CT, temperature, bright)
+    return action
 
 
 @cli.command()
