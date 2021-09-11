@@ -7,19 +7,6 @@ from ranger.api.commands import Command
 from ranger.core.loader import CommandLoader
 
 
-def _trim_long(string, length=200):
-    if len(string) > length:
-        return string[:length] + "…"
-    return string
-
-
-def _find_command(commands):
-    for c in commands:
-        if os.system(f'which {c} >/dev/null 2>&1') == 0:
-            return c
-    return None
-
-
 class unar(Command):
     """
     :unar OPTIONS
@@ -28,10 +15,9 @@ class unar(Command):
     """
 
     def execute(self):
-        command = ['unar', '-q', '-o', self.fm.thisdir.path] + self.args[1:] + ['--']
+        command = ['unar', '-q', '-o', self.fm.thisdir.path] + self.args[1:]
         for file in self.fm.thistab.get_selection():
-            obj = CommandLoader(args=command + [file.path],
-                                descr=_trim_long('unar ' + file.path))
+            obj = CommandLoader(args=command + [file.path], descr=f'unar {file.path}')
             obj.signal_bind('after', lambda _: self.fm.thisdir.load_content())
             self.fm.loader.add(obj)
 
@@ -45,35 +31,14 @@ class tmux(Command):
         self.fm.execute_command(self.line)
 
 
-class take(Command):
-    """
-    :take DIR_NAME
-
-    mkdir & cd
-    """
-
-    def execute(self):
-        self.fm.execute_console("mkdir " + self.rest(1))
-        self.fm.execute_console("cd " + self.rest(1))
-
-
 class trash(Command):
-    """
-    :trash
-
-    Move selection or files passed in arguments to trash.
-    """
-
-    THRASH_CMD = _find_command(['trash', 'gvfs-trash'])
-
     allow_abbrev = False
     escape_macros_for_shell = True
 
     def execute(self):
         files = [file.path for file in self.fm.thistab.get_selection()]
         if files:
-            obj = CommandLoader(args=[self.THRASH_CMD, '--'] + files,
-                                descr='Trash')
+            obj = CommandLoader(args=['trash'] + files, descr='Trash')
             obj.signal_bind('after', lambda _: self.fm.thisdir.load_content())
             self.fm.loader.add(obj)
 
