@@ -206,9 +206,6 @@ label-disconnected =
 [module/pulseaudio]
 type = internal/pulseaudio
 
-; Sink to be used, if it exists (`pacmd list-sinks`). If not, uses default sink.
-sink = ${env:PULSEAUDIO_SINK}
-
 ; Volume max ~153% if true, or 100% if false
 use-ui-max = false
 
