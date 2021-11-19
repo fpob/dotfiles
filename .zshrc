@@ -245,6 +245,7 @@ alias ap='ansible-playbook'
 alias av='ansible-vault'
 alias ad='ansible-doc'
 alias adl='ansible-doc -t lookup'
+alias ag='ansible-galaxy'
 
 # "Rename" back commands that are renamed in Debian packages because of
 # conflicts with some other commands.
