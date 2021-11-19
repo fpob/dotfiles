@@ -105,3 +105,6 @@
 [submodule ".zsh/oh-my-zsh-custom/plugins/zsh-completions"]
 	path = .zsh/oh-my-zsh-custom/plugins/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions
+[submodule ".vim/pack/dev/start/toml"]
+	path = .vim/pack/dev/start/toml
+	url = https://github.com/cespare/vim-toml.git
