@@ -207,7 +207,7 @@ label-disconnected =
 type = internal/pulseaudio
 
 ; Volume max ~153% if true, or 100% if false
-use-ui-max = false
+use-ui-max = true
 
 format-volume = <ramp-volume> <label-volume>
 
