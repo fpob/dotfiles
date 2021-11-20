@@ -16,4 +16,4 @@ polybar --list-monitors | while read line ; do
     export MONITOR=$(echo $line | cut -d":" -f1)
     export BAR=$(echo $line | grep -q primary && echo primary || echo secondary)
     polybar --reload $BAR &
-done &>> ~/.polybar.log
+done &> ~/.polybar.log
