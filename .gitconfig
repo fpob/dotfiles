@@ -89,7 +89,7 @@
     bm = branch --move
     bd = branch --delete
     # delete merged branch except current, master and develop
-    bdm = !git branch --merged | grep -vE '^(\\* |  (master|main|develop|devel)$)' | xargs -r git branch --delete
+    bdm = !git branch --merged | grep -vE '^(\\* |  (master|main|develop|devel)$)' | xargs -r git branch --delete && :
 
     ch = checkout
     chm = checkout --merge
@@ -111,6 +111,7 @@
 
     f = fetch
     fa = fetch --all --tags
+    fch = !git fetch $@ && git checkout FETCH_HEAD && :
 
     pl = pull
     plo = pull origin
