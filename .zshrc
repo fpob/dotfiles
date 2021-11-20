@@ -11,8 +11,6 @@ export EDITOR=${EDITOR:-vim}
 
 # Python startup script
 export PYTHONSTARTUP=$HOME/.pythonrc
-# Use ipdb with Python 3.7 breakpoint
-export PYTHONBREAKPOINT=ipdb.set_trace
 
 # `ts` environment
 export TS_ENV="pwd"
