@@ -3,6 +3,7 @@
 /.project
 /.ropeproject
 .vim-template:*
+.vimrc.local
 
 # direnv file/dir
 .envrc

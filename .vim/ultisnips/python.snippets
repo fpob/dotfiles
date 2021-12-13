@@ -1,15 +1,9 @@
-snippet #! "Hashbang" b
-#!/usr/bin/env python3
-
-$0
-endsnippet
-
 snippet imp "import ..." b
 import ${1:module}
 $0
 endsnippet
 
-snippet fimp "from ... import ..." b
+snippet from "from ... import ..." b
 from ${1:module} import ${2:symbol}
 $0
 endsnippet
@@ -47,12 +41,7 @@ while ${1:condition}:
 endsnippet
 
 snippet for "for ... in ..." b
-for ${1:needle} in ${2:haystack}:
-	${VISUAL}$0
-endsnippet
-
-snippet fori "for i in ..." b
-for i in ${2:items}:
+for ${1:i} in ${2:items}:
 	${VISUAL}$0
 endsnippet
 
@@ -61,14 +50,31 @@ with ${1:with_item}:
 	${VISUAL}$0
 endsnippet
 
-snippet withf "With ... as f" b
+snippet withf "with ... as f" b
 with ${1:with_item} as f:
 	${VISUAL}$0
 endsnippet
 
-snippet def "def ...(...)" b
-def ${1:fname}(${2:`indent('.') ? 'self' : ''`}):
+snippet match "pattern matching" b
+match ${1:expr}:
+	case ${2:_}:
+		$0
+endsnippet
+
+snippet case "pattern matching case" b
+case ${1:_}:
 	$0
+endsnippet
+
+snippet def "def ...(...)" b
+def ${1:fname}(${2}):
+	$0
+endsnippet
+
+snippet inner "inner decorator function" b
+def ${1:inner}(${2}):
+	$0
+return $1
 endsnippet
 
 snippet la "lambda ...: ..." b
@@ -79,11 +85,16 @@ snippet try "try: ... except: ..." b
 try:
 	${VISUAL}${1}
 except ${2:Exception} as ${3:e}:
-	${4:pass}
+	${4:...}
 endsnippet
 
 snippet fin "finally" b
 finally:
+	${VISUAL}$0
+endsnippet
+
+snippet sup "contextlib.suppress" b
+with contextlib.suppress(${1:Exception}):
 	${VISUAL}$0
 endsnippet
 
@@ -108,7 +119,13 @@ def ${1:foo}(self, value):
 	${2:self._$1 = value}$0
 endsnippet
 
-snippet __ "magic" i
+snippet propd "property.deleter" b
+@$1.deleter
+def ${1:foo}(self):
+	${2:del self._x}$0
+endsnippet
+
+snippet _ "magic" i
 __${1:init}__$0
 endsnippet
 

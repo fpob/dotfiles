@@ -82,7 +82,7 @@ endif
 set wildchar=<Tab>
 set wildmenu
 set wildmode=longest:full,full
-set wildignore+=*.o,*~,*.pyc,__pycache__/,.git/,.tox/,.venv/
+set wildignore+=*.o,*~,*.pyc,__pycache__,.git,.tox,.direnv
 
 " No sound or visual bell
 if v:version >= 800
@@ -162,24 +162,6 @@ syntax on
 " Enable filetype detection, plugins and indentation
 filetype plugin indent on
 
-" Varables -----------------------------------------------------------------{{{1
-
-function! Chomp(string)
-    return substitute(a:string, '\n\+$', '', '')
-endfunction
-
-let g:user = Chomp(system('id -un'))
-let g:user_name = Chomp(system('git config --includes --get user.name 2>/dev/null'))
-let g:user_email = Chomp(system('git config --includes --get user.email 2>/dev/null'))
-
-if $GIT_AUTHOR_NAME != ""
-    let g:user_name = $GIT_AUTHOR_NAME
-endif
-
-if $GIT_AUTHOR_EMAIL != ""
-    let g:user_email = $GIT_AUTHOR_EMAIL
-endif
-
 " Colors -------------------------------------------------------------------{{{1
 
 " Tweak colors
@@ -194,45 +176,6 @@ silent! colorscheme molokai     " Barevné schéma
 highlight R ctermbg=darkred guibg=darkred
 highlight G ctermbg=darkgreen guibg=darkgreen
 highlight B ctermbg=darkblue guibg=darkblue
-
-" Autoview -----------------------------------------------------------------{{{1
-
-function! MakeViewCheck()
-    if &filetype == 'gitcommit'
-        return 0
-    endif
-    " Diff mode
-    if &diff
-        return 0
-    endif
-    " Buffer is marked as not a file
-    if has('quickfix') && &buftype =~ 'nofile'
-        return 0
-    endif
-    " File does not exist on disk
-    if empty(glob(expand('%:p')))
-        return 0
-    endif
-    " We're in a temp dir
-    if len($TEMP) && expand('%:p:h') == $TEMP
-        return 0
-    endif
-    " Also in temp dir
-    if len($TMP) && expand('%:p:h') == $TMP
-        return 0
-    endif
-
-    return 1
-endfunction
-
-augroup vimrc_autoview
-    autocmd!
-    " Autosave & Load views
-    autocmd BufWritePost,BufLeave,WinLeave ?*
-        \ if MakeViewCheck() | silent! mkview | endif
-    autocmd BufWinEnter ?*
-        \ if MakeViewCheck() | silent! loadview | endif
-augroup END
 
 " Mappings -----------------------------------------------------------------{{{1
 
@@ -299,9 +242,7 @@ nnoremap <S-F3> :xa<Cr>
 nnoremap <S-F4> :qa<Cr>
 
 nnoremap <F5> :nohlsearch<Cr>
-" <F7>, <F8> mapped by plugins
-nnoremap <F9> :make<Cr>
-nnoremap <F10> :make run<Cr>
+set pastetoggle=<F6>
 
 " Insert the word/WORD under the cursor
 cnoremap <Leader>w <C-r><C-w>
@@ -318,6 +259,26 @@ inoremap <C-u> <esc>viwUea
 " Close preview window
 nnoremap <Leader>z <C-W>z
 
-" Load packages configuration ----------------------------------------------{{{1
+" Varables -----------------------------------------------------------------{{{1
+
+function! Chomp(string)
+    return substitute(a:string, '\n\+$', '', '')
+endfunction
+
+let g:user = Chomp(system('id -un'))
+let g:user_name = Chomp(system('git config --includes --get user.name 2>/dev/null'))
+let g:user_email = Chomp(system('git config --includes --get user.email 2>/dev/null'))
+
+if $GIT_AUTHOR_NAME != ""
+    let g:user_name = $GIT_AUTHOR_NAME
+endif
+
+if $GIT_AUTHOR_EMAIL != ""
+    let g:user_email = $GIT_AUTHOR_EMAIL
+endif
+
+" Packages -----------------------------------------------------------------{{{1
+
+packadd! matchit
 
 runtime! pack/*/init.vim

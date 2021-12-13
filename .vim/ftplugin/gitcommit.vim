@@ -7,4 +7,4 @@ augroup END
 setlocal foldmethod=syntax
 
 " Enable spell checking in commits
-set spell
+setlocal spell
