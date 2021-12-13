@@ -85,7 +85,7 @@
     # undo commit
     uc = reset --soft HEAD~
 
-    b = branch
+    b = branch -vv
     bm = branch --move
     bd = branch --delete
     # delete merged branch except current, master and develop
