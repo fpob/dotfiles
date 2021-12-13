@@ -7,7 +7,7 @@ dirs:
 .PHONY: ycm
 ycm:
 	@# Force building under python3 (#! is env python) + enable Go completer.
-	python3 pack/dev/start/youcompleteme/install.py --go-completer
+	python3 pack/plugins/start/youcompleteme/install.py --go-completer
 
 .PHONY: helptags
 helptags:
