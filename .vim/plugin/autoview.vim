@@ -11,7 +11,7 @@ function! s:MakeViewCheck()
         return 0
     endif
     " File does not exist on disk
-    if empty(glob(expand('%:p')))
+    if empty(glob(fnameescape(expand('%:p'))))
         return 0
     endif
     " We're in a temp dir
