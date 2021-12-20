@@ -7,56 +7,51 @@ configuration {
     icon-theme: "Numix";
 }
 
-
 * {
-    spacing: 0;
     font: "Hack 9";
-    width: 600;
+
+    background: #ffffff;
+    foreground: #111111;
+
+    normal-background: var(background);
+    normal-foreground: var(foreground);
+    alternate-normal-background: var(background);
+    alternate-normal-foreground: var(foreground);
+    selected-normal-background: #cccccc;
+    selected-normal-foreground: #000000;
+
+    active-background: #eeeeee;
+    active-foreground: #c72e2e;
+    alternate-active-background: var(active-background);
+    alternate-active-foreground: var(active-foreground);
+    selected-active-background: var(selected-normal-background);
+    selected-active-foreground: #c72e2e;
+
+    urgent-background: var(active-background);
+    urgent-foreground: var(active-foreground);
+    alternate-urgent-background: var(alternate-active-background);
+    alternate-urgent-foreground: var(alternate-active-foreground);
+    selected-urgent-background: var(selected-active-background);
+    selected-urgent-foreground: var(selected-active-foreground);
 }
 
-#window {
-    background-color: #FFFFFF;
-    text-color: #000000;
-    border: 1px;
-    border-color: #D9DDE0;
+window {
+    width: 640px;
 }
 
-#inputbar {
-    padding: 5px;
-    background-color: #F5F6F7;
+inputbar {
+    padding: 4px;
     border: 0 0 1px 0;
-    border-color: #D9DDE0;
 }
 
-#prompt {
-    padding: 0 5px 0 0;
-    background-color: inherit;
+listview {
+    border: 0;
 }
 
-#entry {
-    background-color: inherit;
-    width: 5em;
+element {
+    padding: 2px 4px;
 }
 
-#case-indicator {
-    padding: 0 0 0 5px;
-    background-color: inherit;
-}
-
-#listview {
-    padding: 2px 0;
-}
-
-#element {
-    padding: 3px 5px;
-    spacing: 1px;
-}
-
-#element.selected {
-    text-color: #FFFFFF;
-    background-color: #C72E2E;
-}
-
-#element-icon {
-    width: 50px;
+scrollbar {
+    handle-width: 2px;
 }
