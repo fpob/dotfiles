@@ -28,9 +28,6 @@
 [submodule ".vim/bundle/surround"]
 	path = .vim/pack/plugins/start/surround
 	url = https://github.com/tpope/vim-surround.git
-[submodule ".vim/bundle/gutentags"]
-	path = .vim/pack/plugins/start/gutentags
-	url = https://github.com/ludovicchabant/vim-gutentags.git
 [submodule ".vim/bundle/youcompleteme"]
 	path = .vim/pack/plugins/start/youcompleteme
 	url = https://github.com/valloric/youcompleteme.git

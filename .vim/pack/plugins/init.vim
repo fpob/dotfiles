@@ -191,16 +191,6 @@ let g:grepper.dir = 'repo,cwd'
 
 command! Todo :Grepper -noprompt -query '(TODO|FIXME)'
 
-" gutentags ----------------------------------------------------------------{{{1
-
-let g:gutentags_ctags_exclude = ['tests', 'build', 'dist', 'target']
-" + &wildignore
-
-let g:gutentags_ctags_extra_args = ['--fields=+l']
-if filereadable('.gitignore')
-    let g:gutentags_ctags_extra_args += ['--exclude=@.gitignore']
-endif
-
 " indent-guides ------------------------------------------------------------{{{1
 
 let g:indent_guides_enable_on_vim_startup = 1
