@@ -89,3 +89,6 @@
 [submodule ".vim/pack/plugins/start/argtextobj"]
 	path = .vim/pack/plugins/start/argtextobj
 	url = https://github.com/xeruf/argtextobj.vim.git
+[submodule ".vim/pack/plugins/start/requirements.txt"]
+	path = .vim/pack/plugins/start/requirements.txt
+	url = https://github.com/raimon49/requirements.txt.vim
