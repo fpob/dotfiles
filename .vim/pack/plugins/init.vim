@@ -71,6 +71,8 @@ let g:airline#extensions#whitespace#enabled = 0
 let g:better_whitespace_filetypes_blacklist = ['mail', 'diff', 'gitcommit', 'help']
 let g:show_spaces_that_precede_tabs = 1
 
+let g:better_whitespace_operator='<Leader>t'
+
 " Don't strip whitespaces on save
 let g:strip_whitespace_on_save = 0
 " Don't ask for confirmation
