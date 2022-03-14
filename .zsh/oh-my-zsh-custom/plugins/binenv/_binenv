@@ -1,0 +1,9 @@
+#compdef binenv
+
+local file="$ZSH_CACHE_DIR/binenv_completion"
+
+if [[ ! -f "$file" ]] ; then
+    binenv completion zsh >! "$file"
+fi
+
+source "$file"

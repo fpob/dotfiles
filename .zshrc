@@ -5,54 +5,11 @@ if [[ $- == *i* && -n $SSH_CONNECTION && -z $TMUX && -z $MC_SID ]] ; then
     tmux -2 new -A -s main
 fi
 
-# Variables ----------------------------------------------------------------{{{1
-
-export EDITOR=${EDITOR:-vim}
-
-# Python startup script
-export PYTHONSTARTUP=$HOME/.pythonrc
-
-# `ts` environment
-export TS_ENV="pwd"
-
-# golang
-export GOPATH=$HOME/.go
-export GO111MODULE=on
-
-# rust
-export CARGO_HOME=$HOME/.cargo
-
-# Default less options
-export LESS=-RK
-
-# https://stackoverflow.com/questions/51504367
-export GPG_TTY=$(tty)
-
-# Change jq colors, see `man jq`
-export JQ_COLORS='1;31:1;35:1;35:0;39:0;32:1;39:1;39'
-
-# Paths --------------------------------------------------------------------{{{1
-
-# Bin path
-path=(~/.bin ~/.local/bin $CARGO_HOME/bin $GOPATH/bin $path)
-typeset -gU path
-
-# Man path
-if command -V manpath &>/dev/null ; then
-    MANPATH=$(env MANPATH= manpath)
-else
-    MANPATH=/usr/local/man:/usr/local/share/man:/usr/share/man
-fi
-manpath=(~/.local/man $manpath)
-typeset -gU manpath
-
-# Oh My Zsh / load .zsh ----------------------------------------------------{{{1
-
-export ZSH_D=$HOME/.zsh
+# Oh My Zsh ----------------------------------------------------------------{{{1
 
 # OMZ paths
-export ZSH=$ZSH_D/oh-my-zsh
-export ZSH_CUSTOM=$ZSH_D/oh-my-zsh-custom
+export ZSH=$HOME/.zsh/oh-my-zsh
+export ZSH_CUSTOM=$HOME/.zsh/oh-my-zsh-custom
 
 if [[ -n $MC_SID || $TERM = 'linux' ]] ; then
     ZSH_THEME="simple"
@@ -65,28 +22,42 @@ fi
 DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="false"
 COMPLETION_WAITING_DOTS="true"
-DISABLE_AUTO_UPDATE="true"
 ZLE_REMOVE_SUFFIX_CHARS=""
 DISABLE_MAGIC_FUNCTIONS="true"
 
+zstyle ':omz:update' mode disabled
+
+# https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]='none'
+ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=245'
+ZSH_HIGHLIGHT_STYLES[redirection]='fg=245'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=42'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
+
+zstyle ':grc:ls' disable yes
+
 plugins=(
+    binenv
     colored-man-pages
     direnv
     fd
     fzf
     golang
+    grc
     kitty
     kubectl
     pip
     pueue
     python
     ranger
+    ripgrep
     sudo
     vault
     zsh-autosuggestions
     zsh-completions
-    zsh_reload
     zsh-syntax-highlighting
+    zsh_reload
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -96,14 +67,6 @@ unalias -m '*'
 
 # reload completion functions
 autoload -Uz compinit && compinit
-
-# Load all custom config files
-function {
-    local config_file
-    for config_file ($ZSH_D/*.zsh(N)) ; do
-        source $config_file
-    done
-}
 
 # Terminal title -----------------------------------------------------------{{{1
 
@@ -133,53 +96,53 @@ setopt HIST_IGNORE_ALL_DUPS
 # Don't write duplicate entries in the history file.
 setopt HIST_SAVE_NO_DUPS
 
-# Syntax highlight setup ---------------------------------------------------{{{1
-# https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
+# Variables ----------------------------------------------------------------{{{1
 
-typeset -A ZSH_HIGHLIGHT_STYLES
+export EDITOR=${EDITOR:-vim}
 
-ZSH_HIGHLIGHT_STYLES[path]='none'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=245'
-ZSH_HIGHLIGHT_STYLES[redirection]='fg=245'
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=42'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
+# Python startup script
+export PYTHONSTARTUP=$HOME/.pythonrc
+export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
-# GRC (autoapply for commands) ---------------------------------------------{{{1
+# golang
+export GOPATH=$HOME/.go
+export GO111MODULE=on
 
-[[ "$TERM" != dumb ]] && (( $+commands[grc] )) && function {
-    local blacklist conf name
+# rust
+export CARGO_HOME=$HOME/.cargo
 
-    # GRC prefix for other aliasses in. If GRC is not installed or cannot be
-    # used this var will be empty (default shell var value).
-    export _GRC='grc --colour=auto '
+# Default less options
+export LESS=-RK
 
-    blacklist=(ls)
+# https://stackoverflow.com/questions/51504367
+export GPG_TTY=$(tty)
 
-    # Set alias for available colorfiles and commands.
-    for conf in ~/.grc/conf.*(.N) /usr/local/share/grc/conf.*(.N) /usr/share/grc/conf.*(.N) ; do
-        name=${conf##*conf.}
+# Change jq colors, see `man jq`
+export JQ_COLORS='1;31:1;35:1;35:0;39:0;32:1;39:1;39'
 
-        # Don't use it for builtins
-        (( $+builtins[$name] )) && continue
-        # Blacklist some commands
-        (( $blacklist[(Ie)$name] )) && continue
+export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent.socket"
 
-        if (( $+commands[$name] )) ; then
-            alias $name="$_GRC$(whence $name)"
-        fi
-    done
+export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
 
-}
+# Aliases ------------------------------------------------------------------{{{1
 
-# Aliasses -----------------------------------------------------------------{{{1
+# "Rename" back commands that are renamed in Debian packages because of
+# conflicts with some other commands.
+if ( source /etc/os-release && [[ $ID == debian ]] ) ; then
+    alias bat=batcat
+    alias fd=fdfind
+fi
 
-alias e='$EDITOR'
+# https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
+alias sudo='sudo '
+
+alias e='${EDITOR:-vim}'
 alias f='ranger'
 alias g='git'
 
 alias xo='xdg-open'
 
-alias ls='ls -v --color=auto -CF'
+alias ls='ls -v --color=auto --hyperlink=auto -CF'
 alias l='ls'
 alias ll='l -hl --time-style="+%Y-%m-%d %H:%M"'
 alias la='l -A'
@@ -191,24 +154,12 @@ alias cp='cp --reflink=auto'
 alias rcp='rsync -hhh --info=progress2'
 
 # Human readable sizes
-alias du=$_GRC'du -khc'
-alias df=$_GRC'df -kTh'
-alias free=$_GRC'free -th'
+alias du='du -khc'
+alias df='df -kTh'
+alias free='free -th'
 
-alias grep='grep --color=auto'
-alias gr='grep --exclude-dir={.bzr,CVS,.git,.hg,.svn,.tox}'
-alias gri='gr -i'
-alias rgr='gr -r'
-alias rgri='gri -r'
-alias ggr='git ls-files --cached --others --exclude-standard -z | xargs -0 grep --color=auto -nT'
-alias ggri='ggr -i'
-
-alias py='python3'
-alias pydoc='pydoc3'
-alias pyvenv='python3 -m venv'
-alias ipy='ipython3 --pdb --'   # start debugger on uncaught exception
-alias pip='noglob pip'          # allows square brackets for pip command
-alias pip3='noglob pip3'
+alias rg='rg -S'
+alias rgl='rg -l'
 
 # force 256 colors
 alias tmux='tmux -2'
@@ -224,19 +175,24 @@ alias jcurl='curl -H "Accept: application/json" -H "Content-type: application/js
 
 # Cut long lines
 alias cll='cut -c -$COLUMNS'
+
 # Format CSV/TSV as table (aligned)
 alias csv="column -t -s,"
 alias tsv="column -t -s$'\t'"
 
-alias gdb='gdb -q'
 alias bc='bc -ql'
-alias octave='octave -qW'
 
-alias gpg='gpg-pinentry-loopback'
-# Cat GPG encrypted file.
-alias gpg-cat='gpg-pinentry-loopback -qd -o-'
+# GPG with CLI pinentry mode in a terminal
+alias gpg='gpg --pinentry-mode loopback'
 
 alias pa='pueue add --'
+
+alias py='python3'
+alias pydoc='pydoc3'
+alias pyvenv='python3 -m venv'
+alias ipy='ipython3 --pdb --'   # start debugger on uncaught exception
+alias pip='noglob pip'          # allows square brackets for pip command
+alias pip3='noglob pip3'
 
 alias a='ansible'
 alias ap='ansible-playbook'
@@ -245,44 +201,23 @@ alias ad='ansible-doc'
 alias adl='ansible-doc -t lookup'
 alias ag='ansible-galaxy'
 
-# "Rename" back commands that are renamed in Debian packages because of
-# conflicts with some other commands.
-if ( source /etc/os-release && [[ $ID == debian ]] ) ; then
-    alias bat=batcat
-    alias fd=fdfind
-fi
-
-# Global aliasses
-alias -g L='|less -FX'
-alias -g LL='2>&1|less -FX'
-alias -g G='|grep'
-alias -g T='|tail'
-alias -g H='|head'
-alias -g N='&>/dev/null'
-
-# Functions ----------------------------------------------------------------{{{1
-
-# Wrapper for yt to convert output back to YAML with preserved styles and add
-# syntax highlighting.
-function yq {
-    command yq -Y $@ | bat -pl yaml
-}
-
-# Kitty (completion, aliasses, ...) ----------------------------------------{{{1
-
-# Kitty is installed and currently using it.
-if command -v kitty &>/dev/null && [[ $TERM = xterm-kitty ]] ; then
-
+# Extra aliasses in Kitty terminal
+if [[ $TERM = xterm-kitty ]] ; then
     # Show image in terminal.
     alias icat='kitty +kitten icat'
-
     # SSH kitten is just wrapper around ssh command that fixes terminfo.
-    # *Required* because *#$%@! in ncurses database, see discussion on
+    # *Required* because kitty is not in ncurses database, see discussion on
     # https://github.com/kovidgoyal/kitty/issues/879
     #alias ssh='kitty +kitten ssh'
     alias ssh='TERM=xterm-256color ssh'
-
-    # Diff Styled -- diff with colors, syntax, ...
-    alias difs='kitty +kitten diff'
-
 fi
+
+# Load extra scripts -------------------------------------------------------{{{1
+
+# Load all custom config files
+function {
+    local config_file
+    for config_file ($HOME/.zsh/*.zsh(N)) ; do
+        source $config_file
+    done
+}
