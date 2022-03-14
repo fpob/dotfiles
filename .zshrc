@@ -39,6 +39,7 @@ zstyle ':grc:ls' disable yes
 
 plugins=(
     binenv
+    cheat
     colored-man-pages
     direnv
     fd
