@@ -2,9 +2,29 @@ import os
 import re
 import itertools
 import webbrowser
+import subprocess
 
 from ranger.api.commands import Command
 from ranger.core.loader import CommandLoader
+
+
+class fzf_cd(Command):
+    """
+    :fzf_cd
+
+    Use fzf to change current directory.
+    """
+    def execute(self):
+        cmd = 'fdfind --type d --strip-cwd-prefix --follow'
+        if self.fm.settings.show_hidden:
+            cmd += ' --hidden'
+        cmd += ' | fzf'
+
+        fzf = self.fm.execute_command(cmd, stdout=subprocess.PIPE)
+        stdout, stderr = fzf.communicate()
+        if fzf.returncode == 0:
+            fzf_file = os.path.abspath(stdout.decode('utf-8').rstrip('\n'))
+            self.fm.cd(fzf_file)
 
 
 class unar(Command):
