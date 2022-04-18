@@ -74,6 +74,7 @@
     aa = add -A
     au = add -u
     ap = add --patch
+    za = fzf add
     # undo add
     ua = restore --staged
     uap = restore --staged --patch
@@ -85,6 +86,7 @@
     ca = commit --amend
     can = commit --amend --no-edit
     cf = commit --fixup
+    zf = fzf fixup
     # undo commit
     uc = reset --soft HEAD~
 
@@ -95,10 +97,12 @@
     ch = checkout
     chm = checkout --merge
     chb = checkout -b
+    zch = fzf checkout
 
     m = merge
     mc = merge --continue
     ma = merge --abort
+    zm = fzf merge
 
     rb = rebase
     rbi = rebase --interactive
@@ -107,6 +111,7 @@
     rbs = rebase --skip
 
     cp = cherry-pick
+    zcp = fzf cherry-pick
 
     f = fetch
     fa = fetch --all --tags
