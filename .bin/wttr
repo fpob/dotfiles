@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-curl -s -H "Accept-Language: ${LANG%_*}" "http://wttr.in/${1}"

@@ -17,11 +17,10 @@ def datauri(input, output, mime=None):
     Převede zadaný vstupní soubor na DataURI. Ve výchozím stavu čte soubor
     ze standardního vstupu a vypisuje na standardní výstup.
     """
-
     if not mime:
         mime = mimetypes.guess_type(input.name)[0]
     data = base64.b64encode(input.read()).decode('ascii')
-    click.echo(data, output, nl=False)
+    output.write(f'data:{mime};base64,{data}\n')
 
 
 if __name__ == "__main__":

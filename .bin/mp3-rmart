@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-for f ; do
-    mid3v2 --delete-frames=APIC "$f"
-done

@@ -1,5 +1,0 @@
-#!/bin/sh
-case $1 in
-    4|6) curl https://v$1.ifconfig.co/ ;;
-    *)   curl https://ifconfig.co/ ;;
-esac
