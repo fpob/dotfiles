@@ -110,7 +110,7 @@
 
     f = fetch
     fa = fetch --all --tags
-    fch = !git fetch $@ && git checkout FETCH_HEAD && :
+    fch = "!f() { git fetch \"$@\" && git checkout FETCH_HEAD; }; f"
 
     pl = pull
     plo = pull origin
