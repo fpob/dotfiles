@@ -30,6 +30,9 @@
     lineNumber = true
     patternType = perl
 
+[init]
+    defaultBranch = main
+
 [log]
     date = iso
     decorate = true
@@ -88,8 +91,6 @@
     b = branch -vv
     bm = branch --move
     bd = branch --delete
-    # delete merged branch except current, master and develop
-    bdm = !git branch --merged | grep -vE '^(\\* |  (master|main|develop|devel)$)' | xargs -r git branch --delete && :
 
     ch = checkout
     chm = checkout --merge
@@ -100,9 +101,7 @@
     ma = merge --abort
 
     rb = rebase
-    rbm = rebase master
     rbi = rebase --interactive
-    rbim = rebase --interactive master
     rbc = rebase --continue
     rba = rebase --abort
     rbs = rebase --skip
