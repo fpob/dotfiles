@@ -121,8 +121,6 @@ export GPG_TTY=$(tty)
 # Change jq colors, see `man jq`
 export JQ_COLORS='1;31:1;35:1;35:0;39:0;32:1;39:1;39'
 
-export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent.socket"
-
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
 
 # Aliases ------------------------------------------------------------------{{{1
