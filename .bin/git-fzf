@@ -8,15 +8,15 @@ git-fzf-branch () {
 }
 
 git-fzf-checkout () {
-    local branch=$(git-fzf-branch)
-    [[ -z $branch ]] && return 1
+    local branch="$(git-fzf-branch)"
+    [[ -z "$branch" ]] && return 1
     git checkout "$branch"
 }
 
 git-fzf-merge () {
-    local branch=$(git-fzf-branch)
-    [[ -z $branch ]] && return 1
-    git merge $branch
+    local branch="$(git-fzf-branch)"
+    [[ -z "$branch" ]] && return 1
+    git merge "$@" "$branch"
 }
 
 git-fzf-log () {
@@ -26,21 +26,21 @@ git-fzf-log () {
 }
 
 git-fzf-fixup () {
-    local commit=$(git-fzf-log)
-    [[ -z $commit ]] && return 1
-    git commit --fixup "$commit"
+    local commit="$(git-fzf-log)"
+    [[ -z "$commit" ]] && return 1
+    git commit --fixup "$commit" "$@"
 }
 
 git-fzf-cherry-pick () {
-    local commit=$(git-fzf-log)
-    [[ -z $commit ]] && return 1
-    git cherry-pick "$commit"
+    local commit="$(git-fzf-log)"
+    [[ -z "$commit" ]] && return 1
+    git cherry-pick "$@" "$commit"
 }
 
 git-fzf-add () {
     git ls-files --deleted --modified --others --exclude-standard \
         | fzf --ansi --multi --exit-0 \
-        | xargs -r git add
+        | xargs -r git add "$@"
 }
 
 "git-fzf-$@"

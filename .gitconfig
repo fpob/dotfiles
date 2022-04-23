@@ -75,9 +75,11 @@
     au = add -u
     ap = add --patch
     za = fzf add
-    # undo add
-    ua = restore --staged
-    uap = restore --staged --patch
+
+    r = restore
+    rp = restore --patch
+    rs = restore --staged
+    rsp = restore --staged --patch
 
     d = diff
     dc = diff --cached
@@ -127,10 +129,6 @@
     pu = push upstream
     pua = push upstream --all --follow-tags
     put = push upstream --tags
-
-    rs = remote show
-    rso = remote show origin
-    rsu = remote show upstream
 
     st = stash
     stl = stash list --stat
