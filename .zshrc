@@ -99,11 +99,14 @@ setopt HIST_SAVE_NO_DUPS
 
 # Variables ----------------------------------------------------------------{{{1
 
-export EDITOR=${EDITOR:-vim}
+export EDITOR=${EDITOR:-sensible-editor}
+export BROWSER=${BROWSER:-sensible-browser}
+export PAGER=${PAGER:-sensible-pager}
 
-# Python startup script
+# Python and Python libraries and tools
 export PYTHONSTARTUP=$HOME/.pythonrc
 export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+export PIP_REQUIRE_VIRTUALENV=true
 
 # golang
 export GOPATH=$HOME/.go
