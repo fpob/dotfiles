@@ -18,7 +18,7 @@ def cli(ctx, bulb_list, duration):
     pass
 
 
-@cli.resultcallback()
+@cli.result_callback()
 def process_pipeline(action_list, bulb_list, duration):
     for addr in map(str.strip, bulb_list):
         bulb = yeelight.Bulb(addr, duration=duration)
