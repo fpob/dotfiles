@@ -92,3 +92,6 @@
 [submodule ".vim/pack/plugins/start/requirements.txt"]
 	path = .vim/pack/plugins/start/requirements.txt
 	url = https://github.com/raimon49/requirements.txt.vim
+[submodule "/home/fpob/.config/ranger/plugins/zoxide"]
+	path = /home/fpob/.config/ranger/plugins/zoxide
+	url = git@github.com:jchook/ranger-zoxide.git

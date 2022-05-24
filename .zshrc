@@ -38,7 +38,6 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
 zstyle ':grc:ls' disable yes
 
 plugins=(
-    autojump
     binenv
     cheat
     colored-man-pages
@@ -56,6 +55,7 @@ plugins=(
     ripgrep
     sudo
     vault
+    zoxide
     zsh-autosuggestions
     zsh-completions
     zsh-syntax-highlighting
