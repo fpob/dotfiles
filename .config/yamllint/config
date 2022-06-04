@@ -1,8 +1,0 @@
-extends: default
-
-rules:
-  document-start: disable
-  line-length:
-    max: 160  # rule from ansible-lint
-
-# vim: ft=yaml

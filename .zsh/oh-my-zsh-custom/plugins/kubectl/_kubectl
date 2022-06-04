@@ -1,9 +1,0 @@
-#compdef kubectl
-
-local file="$ZSH_CACHE_DIR/kubectl_completion"
-
-if [[ ! -f "$file" ]] ; then
-    kubectl completion zsh >! "$file"
-fi
-
-source "$file"

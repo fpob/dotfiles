@@ -38,23 +38,7 @@ trim () {
 # Highlight source code. If file is too large or highlighting timed out file is
 # printed as it is (without highlighting).
 highlight () {
-    local file_path="${1}"
-    local file_size=0
-    local syntax="${2:-}"
-
-    if [[ "${file_path}" == '-' ]] ; then
-        # Pass `-s` option to pygmentize instead of file path.
-        file_path=-s
-    else
-        file_size="$(stat --printf='%s' -- "${file_path}")"
-    fi
-
-    if [[ "${file_size}" -gt "${MAX_FILE_SIZE}" ]] ; then
-        return 1
-    fi
-
-    timeout 5 pygmentize -f 256 -O 'bg=dark,style=monokai' \
-        ${syntax:+-l${syntax}} "${file_path}"
+    batcat --color always --plain --theme base16 "$1"
 }
 
 
@@ -69,14 +53,6 @@ case "${FILE_PATH}" in
 
     *.crl.pem|*.crl)
         openssl crl -noout -text -in "${FILE_PATH}" && exit 5
-        ;;
-
-    *.html.j2)
-        highlight "${FILE_PATH}" html+jinja && exit 5
-        ;;
-
-    *.xml.j2)
-        highlight "${FILE_PATH}" xml+jinja && exit 5
         ;;
 esac
 
@@ -146,7 +122,7 @@ esac
 
 case "${FILE_MIME}" in
     text/*|*/xml)
-        highlight "${FILE_PATH}" | retab && exit 5
+        highlight "${FILE_PATH}" && exit 5
         exit 2
         ;;
 

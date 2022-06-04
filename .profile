@@ -1,10 +1,4 @@
-export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent.socket"
+# XDG_RUNTIME_DIR is set and created by systemd-logind
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
-
-if [ -d "$HOME/.bin" ] ; then
-    PATH="$HOME/.bin:$PATH"
-fi
-
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"

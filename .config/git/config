@@ -1,0 +1,154 @@
+[include]
+    path = ~/.config/git/config.local
+
+[color]
+    ui = auto
+
+[core]
+    editor = vim
+    autocrlf = input
+    pager = less -KRFX
+
+[commit]
+    # Show 'diff --cached' when writing commit message
+    verbose = true
+
+[diff]
+    tool = vimdiff
+    guitool = gvimdiff
+    algorithm = patience
+    ignoreSubmodules = untracked
+
+[difftool]
+    prompt = false
+    trustExitCode = true
+
+[gpg]
+    program = gpg-pinentry-loopback
+
+[grep]
+    lineNumber = true
+    patternType = perl
+
+[init]
+    defaultBranch = main
+
+[log]
+    date = iso
+    decorate = true
+
+[merge]
+    ff = false
+    tool = vimdiff
+    guitool = gvimdiff
+
+[pull]
+    rebase = true
+
+[push]
+    default = current
+
+[rebase]
+    autoSquash = true
+    missingCommitsCheck = error
+
+[status]
+    showStash = true
+    ignoreSubmodules = untracked
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+[alias]
+    s = status
+
+    l = log --graph --date-order --oneline
+    ll = log --graph --date-order --show-signature --stat
+    la = log --all --graph --date-order --oneline
+    lla = log --all --graph --date-order --show-signature --stat
+
+    a = add
+    aa = add -A
+    au = add -u
+    ap = add --patch
+    za = fzf add
+
+    r = restore
+    rp = restore --patch
+    rs = restore --staged
+    rsp = restore --staged --patch
+
+    d = diff
+    dc = diff --cached
+
+    c = commit
+    ca = commit --amend
+    can = commit --amend --no-edit
+    cf = commit --fixup
+    zf = fzf fixup
+    # undo commit
+    uc = reset --soft HEAD~
+
+    b = branch -vv
+    bm = branch --move
+    bd = branch --delete
+
+    ch = checkout
+    chm = checkout --merge
+    chb = checkout -b
+    zch = fzf checkout
+
+    m = merge
+    mc = merge --continue
+    ma = merge --abort
+    zm = fzf merge
+
+    rb = rebase
+    rbi = rebase --interactive
+    rbc = rebase --continue
+    rba = rebase --abort
+    rbs = rebase --skip
+
+    cp = cherry-pick
+    zcp = fzf cherry-pick
+
+    f = fetch
+    fa = fetch --all --tags
+    fch = "!f() { git fetch \"$@\" && git checkout FETCH_HEAD; }; f"
+
+    pl = pull
+    plo = pull origin
+    plu = pull upstream
+
+    po = push origin
+    poa = push origin --all --follow-tags
+    pot = push origin --tags
+    pu = push upstream
+    pua = push upstream --all --follow-tags
+    put = push upstream --tags
+
+    st = stash
+    stl = stash list --stat
+    sts = stash show --patch
+    stp = stash pop
+    std = stash drop
+
+    bi = bisect
+
+    cl = clean -d --interactive
+
+    w = worktree
+    wl = worktree list
+    wa = worktree add
+    wp = worktree prune
+
+    sub = submodule
+    suba = submodule add
+    subu = submodule update
+
+    dt = difftool --no-symlinks --dir-diff
+    dtc = difftool --no-symlinks --dir-diff --cached
+    mt = mergetool

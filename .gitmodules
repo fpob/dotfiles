@@ -1,97 +1,100 @@
 [submodule ".vim/bundle/airline"]
-	path = .vim/pack/plugins/start/airline
+	path = .config/vim/pack/plugins/start/airline
 	url = https://github.com/bling/vim-airline.git
 [submodule ".vim/bundle/ctrlp"]
-	path = .vim/pack/plugins/start/ctrlp
+	path = .config/vim/pack/plugins/start/ctrlp
 	url = https://github.com/kien/ctrlp.vim.git
 [submodule ".vim/bundle/delimitmate"]
-	path = .vim/pack/plugins/start/delimitmate
+	path = .config/vim/pack/plugins/start/delimitmate
 	url = https://github.com/raimondi/delimitmate.git
 [submodule ".vim/bundle/easymotion"]
-	path = .vim/pack/plugins/start/easymotion
+	path = .config/vim/pack/plugins/start/easymotion
 	url = https://github.com/easymotion/vim-easymotion.git
 [submodule ".vim/bundle/indent-guides"]
-	path = .vim/pack/plugins/start/indent-guides
+	path = .config/vim/pack/plugins/start/indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides.git
 [submodule ".vim/bundle/molokai"]
-	path = .vim/pack/themes/start/molokai
+	path = .config/vim/pack/themes/start/molokai
 	url = https://github.com/tomasr/molokai.git
 [submodule ".vim/bundle/nerdtree"]
-	path = .vim/pack/plugins/start/nerdtree
+	path = .config/vim/pack/plugins/start/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
 [submodule ".vim/bundle/repeat"]
-	path = .vim/pack/plugins/start/repeat
+	path = .config/vim/pack/plugins/start/repeat
 	url = https://github.com/tpope/vim-repeat.git
 [submodule ".vim/bundle/signature"]
-	path = .vim/pack/plugins/start/signature
+	path = .config/vim/pack/plugins/start/signature
 	url = https://github.com/kshenoy/vim-signature.git
 [submodule ".vim/bundle/surround"]
-	path = .vim/pack/plugins/start/surround
+	path = .config/vim/pack/plugins/start/surround
 	url = https://github.com/tpope/vim-surround.git
 [submodule ".vim/bundle/youcompleteme"]
-	path = .vim/pack/plugins/start/youcompleteme
+	path = .config/vim/pack/plugins/start/youcompleteme
 	url = https://github.com/valloric/youcompleteme.git
 [submodule ".vim/bundle/gitgutter"]
-	path = .vim/pack/plugins/start/gitgutter
+	path = .config/vim/pack/plugins/start/gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
 [submodule ".vim/bundle/jinja"]
-	path = .vim/pack/plugins/start/jinja
+	path = .config/vim/pack/plugins/start/jinja
 	url = https://github.com/lepture/vim-jinja.git
 [submodule ".vim/bundle/ultisnips"]
-	path = .vim/pack/plugins/start/ultisnips
+	path = .config/vim/pack/plugins/start/ultisnips
 	url = https://github.com/sirver/ultisnips.git
 [submodule ".vim/bundle/vimtex"]
-	path = .vim/pack/plugins/opt/vimtex
+	path = .config/vim/pack/plugins/opt/vimtex
 	url = https://github.com/lervag/vimtex.git
 [submodule ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
-	path = .zsh/oh-my-zsh-custom/plugins/zsh-syntax-highlighting
+	path = .config/oh-my-zsh/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule ".vim/bundle/grepper"]
-	path = .vim/pack/plugins/start/grepper
+	path = .config/vim/pack/plugins/start/grepper
 	url = https://github.com/mhinz/vim-grepper.git
 [submodule ".vim/bundle/go"]
-	path = .vim/pack/plugins/opt/go
+	path = .config/vim/pack/plugins/opt/go
 	url = https://github.com/fatih/vim-go.git
 [submodule ".vim/pack/dev/start/python-mode"]
-	path = .vim/pack/plugins/start/python-mode
+	path = .config/vim/pack/plugins/start/python-mode
 	url = https://github.com/python-mode/python-mode.git
 	branch = develop
 [submodule ".vim/pack/dev/start/better-whitespace"]
-	path = .vim/pack/plugins/start/better-whitespace
+	path = .config/vim/pack/plugins/start/better-whitespace
 	url = https://github.com/ntpeters/vim-better-whitespace.git
 [submodule ".vim/pack/dev/start/template"]
 	path = .vim/pack/base/start/template
 	url = https://github.com/aperezdc/vim-template.git
 [submodule ".vim/pack/base/start/template"]
-	path = .vim/pack/plugins/start/template
+	path = .config/vim/pack/plugins/start/template
 	url = https://github.com/aperezdc/vim-template.git
 [submodule ".zshrc.d/oh-my-zsh"]
-	path = .zsh/oh-my-zsh
+	path = .local/share/oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
 [submodule ".zshrc.d/oh-my-zsh-custom/themes/powerlevel10k"]
-	path = .zsh/oh-my-zsh-custom/themes/powerlevel10k
+	path = .config/oh-my-zsh/themes/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
 [submodule ".zsh/oh-my-zsh-custom/plugins/zsh-autosuggestions"]
-	path = .zsh/oh-my-zsh-custom/plugins/zsh-autosuggestions
+	path = .config/oh-my-zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule ".config/cheat/cheatsheets/community"]
 	path = .config/cheat/cheatsheets/community
 	url = https://github.com/cheat/cheatsheets.git
 [submodule ".vim/pack/dev/start/direnv"]
-	path = .vim/pack/plugins/start/direnv
+	path = .config/vim/pack/plugins/start/direnv
 	url = https://github.com/direnv/direnv.vim.git
 [submodule ".zsh/oh-my-zsh-custom/plugins/zsh-completions"]
-	path = .zsh/oh-my-zsh-custom/plugins/zsh-completions
+	path = .config/oh-my-zsh/plugins/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions.git
 [submodule ".vim/pack/dev/start/toml"]
-	path = .vim/pack/plugins/start/toml
+	path = .config/vim/pack/plugins/start/toml
 	url = https://github.com/cespare/vim-toml.git
 [submodule ".vim/pack/plugins/start/argtextobj"]
-	path = .vim/pack/plugins/start/argtextobj
+	path = .config/vim/pack/plugins/start/argtextobj
 	url = https://github.com/xeruf/argtextobj.vim.git
 [submodule ".vim/pack/plugins/start/requirements.txt"]
-	path = .vim/pack/plugins/start/requirements.txt
-	url = https://github.com/raimon49/requirements.txt.vim
-[submodule "/home/fpob/.config/ranger/plugins/zoxide"]
-	path = /home/fpob/.config/ranger/plugins/zoxide
-	url = git@github.com:jchook/ranger-zoxide.git
+	path = .config/vim/pack/plugins/start/requirements.txt
+	url = https://github.com/raimon49/requirements.txt.vim.git
+[submodule ".config/ranger/plugins/zoxide"]
+	path = .config/ranger/plugins/zoxide
+	url = https://github.com/jchook/ranger-zoxide.git
+[submodule ".local/share/asdf"]
+	path = .local/share/asdf
+	url = https://github.com/asdf-vm/asdf.git

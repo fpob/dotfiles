@@ -11,7 +11,7 @@ echo '>>> Change Git push URL'
 yadm remote set-url --push origin 'git@gitlab.com:fpob/dotfiles.git'
 
 echo '>>> Init Vim'
-make -C .vim init
+make -C .config/vim init
 
 echo '>>> Configure mate/i3 desktop'
 .config/i3/mate-setup.sh || echo "Retry with running X-session-manager"
@@ -19,3 +19,9 @@ echo '>>> Configure mate/i3 desktop'
 echo '>>> Enable systemd user units'
 systemctl --user enable --now \
     dunst.service cron@daily.timer
+
+echo '>>> Create XDG data directories'
+# Some apps fall back to `~/.<app>` if XDG dirs does not exist.
+mkdir -p .local/share/tig
+mkdir -p .local/state/less
+mkdir -p .local/state/pspg

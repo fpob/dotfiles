@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-export YADM_CLASS=$(yadm config --get local.class)
+POLYBAR_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/polybar"
+mkdir -p "$POLYBAR_STATE_DIR"
+
+YADM_CLASS=$(yadm config --get local.class)
 
 if [[ $YADM_CLASS == desktop ]] ; then
     export TEMPERATURE_PATH=/sys/devices/platform/nct6775.2592/hwmon/hwmon2/temp1_input
@@ -16,4 +19,4 @@ polybar --list-monitors | while read line ; do
     export MONITOR=$(echo $line | cut -d":" -f1)
     export BAR=$(echo $line | grep -q primary && echo primary || echo secondary)
     polybar --reload $BAR &
-done &> ~/.polybar.log
+done &> "$POLYBAR_STATE_DIR/log"

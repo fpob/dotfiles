@@ -1,9 +1,0 @@
-#compdef kitty
-
-local file="${ZSH_CACHE_DIR}/kitty_completion"
-
-if [[ ! -f "$file" ]] ; then
-    kitty + complete setup zsh >! "$file"
-fi
-
-source "$file"
