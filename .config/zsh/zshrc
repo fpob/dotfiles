@@ -28,8 +28,10 @@ fi
 
 ZSH_COMPDUMP="$ZSH_CACHE_DIR/zcompdump-$ZSH_VERSION"
 
-# https://github.com/ohmyzsh/ohmyzsh/blob/master/templates/zshrc.zsh-template
-#CASE_SENSITIVE="true"
+# https://github.com/ohmyzsh/ohmyzsh/issues/10972
+# https://www.zsh.org/mla/workers/2022/msg00652.html
+CASE_SENSITIVE="true"
+
 DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="false"
 COMPLETION_WAITING_DOTS="true"
@@ -166,6 +168,8 @@ fi
 # https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
 alias sudo='sudo '
 
+alias :q='exit'
+
 alias e='$EDITOR'
 alias f='ranger'
 alias g='git'
@@ -210,7 +214,6 @@ alias pa='pueue add --'
 
 alias py='python3'
 alias pydoc='pydoc3'
-alias pyvenv='python3 -m venv'
 alias ipy='ipython3 --pdb --'   # start debugger on uncaught exception
 alias pip='noglob pip'          # allows square brackets for pip command
 alias pip3='noglob pip3'
@@ -229,6 +232,8 @@ if [[ $TERM = xterm-kitty ]] ; then
     # https://github.com/kovidgoyal/kitty/issues/879
     #alias ssh='kitty +kitten ssh'
     alias ssh='TERM=xterm-256color ssh'
+    # To fix 'vagrant ssh'
+    alias vagrant='TERM=xterm-256color vagrant'
 fi
 
 # Load extra scripts -------------------------------------------------------{{{1

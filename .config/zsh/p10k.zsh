@@ -29,7 +29,7 @@
     vcs                     # git status
     # =========================[ Line #2 ]=========================
     #newline                 # \n
-    #prompt_char             # prompt symbol
+    prompt_char             # prompt symbol
   )
 
   # The list of segments shown on the right. Fill it with less important segments.
@@ -38,7 +38,7 @@
   # last prompt line gets hidden if it would overlap with left prompt.
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
-    status                  # exit code of the last command
+    #status                  # exit code of the last command
     command_execution_time  # duration of the last command
     background_jobs         # presence of background jobs
     direnv                  # direnv status (https://direnv.net/)
@@ -68,11 +68,10 @@
   typeset -g POWERLEVEL9K_BACKGROUND=
   # Surrounding whitespace around separators.
   typeset -g POWERLEVEL9K_{LEFT,RIGHT}_{LEFT,RIGHT}_WHITESPACE=' '
-  typeset -g POWERLEVEL9K_{LEFT,RIGHT}_{LEFT,RIGHT}_WHITESPACE=' '
   # Separator between same-color segments on the left.
-  typeset -g POWERLEVEL9K_LEFT_{,SUB}SEGMENT_SEPARATOR='%240F\uE0B1'
+  typeset -g POWERLEVEL9K_LEFT_{,SUB}SEGMENT_SEPARATOR= #'%240F\uE0B1'
   # Separator between same-color segments on the right.
-  typeset -g POWERLEVEL9K_RIGHT_{,SUB}SEGMENT_SEPARATOR='%240F\uE0B3'
+  typeset -g POWERLEVEL9K_RIGHT_{,SUB}SEGMENT_SEPARATOR= #'%240F\uE0B3'
   # Separator between different-color segments on the left.
   #typeset -g POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR='\uE0B0'
   # Separator between different-color segments on the right.
@@ -610,7 +609,7 @@
       parent='ranger'
     elif [[ $RANGER_LEVEL -gt 1 ]] ; then
       parent="ranger^$RANGER_LEVEL"
-    elif [[ -n $VIM ]] ; then
+    elif [[ -n $VIM && -z $NVIM_LISTEN_ADDRESS ]] ; then
       parent='vim'
     fi
 
