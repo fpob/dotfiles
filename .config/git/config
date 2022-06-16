@@ -5,7 +5,7 @@
     ui = auto
 
 [core]
-    editor = vim
+    editor = nvim
     autocrlf = input
     pager = less -KRFX
 
@@ -14,14 +14,20 @@
     verbose = true
 
 [diff]
-    tool = vimdiff
-    guitool = gvimdiff
+    tool = nvim
+    guitool = nvim.gui
     algorithm = patience
     ignoreSubmodules = untracked
 
 [difftool]
     prompt = false
     trustExitCode = true
+
+[difftool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE
+
+[difftool "nvim.gui"]
+    cmd = kitty --detach nvim -d $LOCAL $REMOTE
 
 [gpg]
     program = gpg-pinentry-loopback
@@ -39,8 +45,14 @@
 
 [merge]
     ff = false
-    tool = vimdiff
-    guitool = gvimdiff
+    tool = nvim
+    guitool = nvim.gui
+
+[mergetool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE
+
+[mergetool "nvim.gui"]
+    cmd = kitty --detach nvim -d $LOCAL $REMOTE
 
 [pull]
     rebase = true

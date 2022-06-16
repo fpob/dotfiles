@@ -98,3 +98,45 @@
 [submodule ".local/share/asdf"]
 	path = .local/share/asdf
 	url = https://github.com/asdf-vm/asdf.git
+[submodule ".config/nvim/pack/plugins/start/nvim-lspconfig"]
+	path = .config/nvim/pack/plugins/start/nvim-lspconfig
+	url = https://github.com/neovim/nvim-lspconfig.git
+[submodule ".config/nvim/pack/plugins/start/mini"]
+	path = .config/nvim/pack/plugins/start/mini
+	url = https://github.com/echasnovski/mini.nvim.git
+[submodule ".config/nvim/pack/plugins/start/nvim-tree"]
+	path = .config/nvim/pack/plugins/start/nvim-tree
+	url = https://github.com/kyazdani42/nvim-tree.lua.git
+[submodule ".config/nvim/pack/plugins/start/nvim-treesitter"]
+	path = .config/nvim/pack/plugins/start/nvim-treesitter
+	url = https://github.com/nvim-treesitter/nvim-treesitter.git
+[submodule ".config/nvim/pack/plugins/start/plenary"]
+	path = .config/nvim/pack/plugins/start/plenary
+	url = https://github.com/nvim-lua/plenary.nvim.git
+[submodule ".config/nvim/pack/plugins/start/telescope"]
+	path = .config/nvim/pack/plugins/start/telescope
+	url = https://github.com/nvim-telescope/telescope.nvim.git
+[submodule ".config/nvim/pack/plugins/start/tidy"]
+	path = .config/nvim/pack/plugins/start/tidy
+	url = https://github.com/mcauley-penney/tidy.nvim.git
+[submodule ".config/nvim/pack/plugins/start/virt-column"]
+	path = .config/nvim/pack/plugins/start/virt-column
+	url = https://github.com/lukas-reineke/virt-column.nvim.git
+[submodule ".config/nvim/pack/themes/start/onedark"]
+	path = .config/nvim/pack/themes/start/onedark
+	url = https://github.com/navarasu/onedark.nvim.git
+[submodule ".config/nvim/pack/plugins/start/luatab"]
+	path = .config/nvim/pack/plugins/start/luatab
+	url = https://github.com/alvarosevilla95/luatab.nvim.git
+[submodule ".config/nvim/pack/plugins/start/nvim-yati"]
+	path = .config/nvim/pack/plugins/start/nvim-yati
+	url = https://github.com/yioneko/nvim-yati.git
+[submodule ".config/nvim/pack/plugins/start/pounce"]
+	path = .config/nvim/pack/plugins/start/pounce
+	url = https://github.com/rlane/pounce.nvim.git
+[submodule ".config/nvim/pack/plugins/start/nvim-snippy"]
+	path = .config/nvim/pack/plugins/start/nvim-snippy
+	url = https://github.com/dcampos/nvim-snippy.git
+[submodule ".config/nvim/pack/plugins/start/nvim-autopairs"]
+	path = .config/nvim/pack/plugins/start/nvim-autopairs
+	url = https://github.com/windwp/nvim-autopairs.git

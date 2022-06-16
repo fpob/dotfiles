@@ -109,7 +109,7 @@ setopt HIST_SAVE_NO_DUPS
 
 # Variables ----------------------------------------------------------------{{{1
 
-export EDITOR=${EDITOR:-vim}
+export EDITOR=${EDITOR:-nvim}
 export PAGER=${PAGER:-less}
 
 if [[ -n "$DISPLAY" ]] ; then
@@ -173,6 +173,7 @@ alias sudo='sudo '
 alias :q='exit'
 
 alias e='$EDITOR'
+alias ge='kitty --detach $EDITOR'
 alias f='ranger'
 alias g='git'
 

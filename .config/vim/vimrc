@@ -7,11 +7,14 @@ set runtimepath^=~/.config/vim,~/.local/share/vim
 set runtimepath+=~/.config/vim/after,~/.local/share/vim/after
 set packpath^=~/.config/vim,~/.local/share/vim
 set packpath+=~/.config/vim/after,~/.local/share/vim/after
-if !has('nvim') | set viminfo+=n~/.local/state/vim/viminfo | endif
-set backupdir=~/.local/state/vim/backup | call mkdir(&backupdir, 'p', 0700)
-set directory=~/.local/state/vim/swap | call mkdir(&directory, 'p', 0700)
-set undodir=~/.local/state/vim/undo | call mkdir(&undodir, 'p', 0700)
-set viewdir=~/.local/state/vim/view | call mkdir(&viewdir, 'p', 0700)
+
+if !has('nvim')
+    set viminfo+=n~/.local/share/vim/viminfo
+    set backupdir=~/.local/share/vim/backup// | call mkdir(&backupdir, 'p', 0700)
+    set directory=~/.local/share/vim/swap// | call mkdir(&directory, 'p', 0700)
+    set undodir=~/.local/share/vim/undo// | call mkdir(&undodir, 'p', 0700)
+    set viewdir=~/.local/share/vim/view// | call mkdir(&viewdir, 'p', 0700)
+endif
 
 " Backups
 set backup
@@ -216,12 +219,22 @@ nnoremap <M-h> <C-w>h
 nnoremap <M-l> <C-w>l
 nnoremap <M-k> <C-w>k
 nnoremap <M-j> <C-w>j
+" ... in terminal
+tnoremap <M-h> <C-\><C-n><C-w>h
+tnoremap <M-l> <C-\><C-n><C-w>l
+tnoremap <M-k> <C-\><C-n><C-w>k
+tnoremap <M-j> <C-\><C-n><C-w>j
 
 " Window moving (alt-shift)
 nnoremap <M-S-h> <C-w>H
 nnoremap <M-S-l> <C-w>L
 nnoremap <M-S-k> <C-w>K
 nnoremap <M-S-j> <C-w>J
+" ... in terminal
+tnoremap <M-S-h> <C-\><C-n><C-w>Hi
+tnoremap <M-S-l> <C-\><C-n><C-w>Li
+tnoremap <M-S-k> <C-\><C-n><C-w>Ki
+tnoremap <M-S-j> <C-\><C-n><C-w>Ji
 
 " Fold with spacebar
 nnoremap <Space> za
