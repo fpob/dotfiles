@@ -7,197 +7,102 @@ set runtimepath^=~/.config/vim,~/.local/share/vim
 set runtimepath+=~/.config/vim/after,~/.local/share/vim/after
 set packpath^=~/.config/vim,~/.local/share/vim
 set packpath+=~/.config/vim/after,~/.local/share/vim/after
+set viminfo+=n~/.local/share/vim/viminfo
+set backupdir=~/.local/share/vim/backup// | call mkdir(&backupdir, 'p', 0700)
+set directory=~/.local/share/vim/swap// | call mkdir(&directory, 'p', 0700)
+set undodir=~/.local/share/vim/undo// | call mkdir(&undodir, 'p', 0700)
+set viewdir=~/.local/share/vim/view// | call mkdir(&viewdir, 'p', 0700)
 
-if !has('nvim')
-    set viminfo+=n~/.local/share/vim/viminfo
-    set backupdir=~/.local/share/vim/backup// | call mkdir(&backupdir, 'p', 0700)
-    set directory=~/.local/share/vim/swap// | call mkdir(&directory, 'p', 0700)
-    set undodir=~/.local/share/vim/undo// | call mkdir(&undodir, 'p', 0700)
-    set viewdir=~/.local/share/vim/view// | call mkdir(&viewdir, 'p', 0700)
-endif
-
-" Backups
-set backup
-
-" History of ':' commands
-set history=500
-
-" Number of undo changes
-set undolevels=1000
-" Persist undo (can do undo after close and reopen)
-if has('persistent_undo')
-    set undofile
-endif
-
-" Allow backspacing over ...
-set backspace=indent,eol,start
-
-" Indentation
-set expandtab
-set copyindent
-set preserveindent
-set shiftwidth=4
-set tabstop=4
-set smarttab
-set smartindent
 set autoindent
-
-" Automatic formatting
-set formatoptions=cqlron
-
-" Folds
-set foldmethod=marker
-set foldcolumn=2
-set foldnestmax=3
-
-" UI
-set title
-set titlestring=%{v:progname}:\ %f\ %r%m
-set showcmd
-set showmatch
-set lazyredraw
-set number
-set ruler
-set cursorline
-set noshowmode      " handled by airline
-set laststatus=2
-set confirm
-
-" Display some whitespace character
-set list
-set listchars=tab:›\ ,nbsp:~
-
-" Minimal number of lines/columns to keep around cursor
-set scrolloff=5
-set sidescrolloff=5
-
-" Autoread file when changed on disk
 set autoread
-
-" In block cursor can be positioned where there is no actual character
-set virtualedit=block
-
-" What bases are considered when using <C-a> and <C-x>
+set background=dark
+set backspace=indent,eol,start
+set backup  " make backup before overwriting a file
+set breakindent
+set colorcolumn=+1,+9
+set complete=.,w,b,u,t
+set confirm  " don't fail, instead show a dialog
+set copyindent
+set cscopeverbose
+set cursorline  " highlight cursor line
+set display=lastline
+set expandtab  " expand tab to spaces
+set fileencoding=utf-8  " encoding for writing files
+set foldmethod=marker
+set formatoptions=tcqj
+set history=1000
+set hlsearch
+set ignorecase
+set incsearch
+set langnoremap
+set laststatus=2
+set lazyredraw
+set linebreak  " don't wrap words in the middle, see 'breakat'
+set listchars=tab:›\ ,nbsp:~
+set list  " display some whitespace chars, see 'listchars'
+set nojoinspaces
+set nolangremap
+set nostartofline
 set nrformats=bin,hex
-
-" Where to put splits
-set splitright
+set number
+set preserveindent
+set ruler
+set scrolloff=4
+set shiftwidth=4
+set showbreak=↳
+set showcmd
+set sidescrolloff=4
+set smartcase
+set smarttab
 set splitbelow
+set splitright
+set switchbuf=uselast
+set tabpagemax=50
+set tabstop=4
+set textwidth=80
+set title  " set terminal title
+set titlestring=vim:\ %f\ %r%m
+set ttyfast
+set virtualedit=block  " cursor can be positioned where there is no char
+set wildchar=<Tab>
+set wildmenu
+set wildmode=full
+set wildoptions=pum,tagfile
+set wrap
 
-" Characters "hiding"
+if v:version >= 800
+    set belloff=all  " no sound or visual bell
+endif
+
+if has('persistent_undo')
+    set undofile  " persistent undo
+endif
+
 if has('conceal')
     set conceallevel=0
     set concealcursor=n
 endif
 
-" Wild menu (completion)
-set wildchar=<Tab>
-set wildmenu
-set wildmode=longest:full,full
-set wildignore+=*.o,*~,*.pyc,__pycache__,.git,.tox,.direnv
-
-" No sound or visual bell
-if v:version >= 800
-    set belloff=all
-endif
-set noerrorbells
-set novisualbell
-
-" Enable mouse
 if has('mouse')
-    set mouse=a
+    set mouse=a  " enable mouse
 endif
 
-" Line width and highlight column
-set textwidth=80
-set colorcolumn=+1,+9
-" Update colorcolumn to +1,+10% on texwidth change (needed because of %)
-augroup vimrc_colorcolumn
-    autocmd!
-    autocmd BufReadPost,OptionSet textwidth
-        \ exec 'set colorcolumn=+1,+' . (float2nr(round(&textwidth * 0.1)) + 1)
-augroup END
-
-" Line wrapping
-set wrap
-set linebreak
-set breakindent
-set showbreak=↳
-
-" Don't insert two spaces after '.', '?' and '!' with <J>
-set nojoinspaces
-
-" Ignore case if all character are lowercase
-set ignorecase
-set smartcase
-" Show where pattern matches while typing search
-set incsearch
-" Highlight search + clear on start
-set hlsearch
-nohlsearch
-
-" Diff
-set diffopt=filler,vertical
-
-" Newline formats and encoding that will be tried when starting to edit existing
-" file. For new files first item will be used.
-set fileformats=unix,dos,mac
-set fileencodings=utf-8,iso-8859-2
-
-" Enable 256 colors on dark terminal.
-set t_Co=256
-set background=dark
-
-" Spell + disable on start
-set spelllang=cs,en
-
-" Use "+" register for all y/d/c operations
 if has('unnamedplus')
-    set clipboard=unnamedplus
+    set clipboard=unnamedplus  " use '+' register for all y/d/c operations
 endif
 
 if has('gui_running')
-    " Hide buttons, scroll, ...
-    set guioptions=acgit
-    " Font
+    set guioptions=acgit  " hide buttons, scroll, ...
     set guifont=Hack\ 9
 endif
 
-" Generate help tags, don't fail if directory does't exist
-silent! helptags ~/.vim/doc
-
 " Enable syntax
 syntax enable
-syntax on
-" Enable filetype detection, plugins and indentation
 filetype plugin indent on
-
-" Colors -------------------------------------------------------------------{{{1
-
-" Tweak colors
-augroup vimrc_colors
-    autocmd!
-    autocmd ColorScheme * runtime after/colors.vim
-augroup END
-
-silent! colorscheme molokai     " Barevné schéma
-
-" Highlight groups for use in `:match`
-highlight R ctermbg=darkred guibg=darkred
-highlight G ctermbg=darkgreen guibg=darkgreen
-highlight B ctermbg=darkblue guibg=darkblue
 
 " Mappings -----------------------------------------------------------------{{{1
 
 let mapleader = ","
-let maplocalleader=","
-
-" Begin new line but do not wrap it
-inoremap <C-j> <C-o>o
-
-" Move by visual lines not by file lines
-nnoremap <silent> k gk
-nnoremap <silent> j gj
 
 " Keep selection when indenting/outdenting
 vnoremap < <gv
@@ -210,82 +115,27 @@ nnoremap Y y$
 nnoremap <C-h> gT
 nnoremap <C-l> gt
 
-" Buffer switching
-nnoremap <C-k> :bp<Cr>
-nnoremap <C-j> :bn<Cr>
-
 " Window switching (alt)
 nnoremap <M-h> <C-w>h
 nnoremap <M-l> <C-w>l
 nnoremap <M-k> <C-w>k
 nnoremap <M-j> <C-w>j
-" ... in terminal
-tnoremap <M-h> <C-\><C-n><C-w>h
-tnoremap <M-l> <C-\><C-n><C-w>l
-tnoremap <M-k> <C-\><C-n><C-w>k
-tnoremap <M-j> <C-\><C-n><C-w>j
-
-" Window moving (alt-shift)
-nnoremap <M-S-h> <C-w>H
-nnoremap <M-S-l> <C-w>L
-nnoremap <M-S-k> <C-w>K
-nnoremap <M-S-j> <C-w>J
-" ... in terminal
-tnoremap <M-S-h> <C-\><C-n><C-w>Hi
-tnoremap <M-S-l> <C-\><C-n><C-w>Li
-tnoremap <M-S-k> <C-\><C-n><C-w>Ki
-tnoremap <M-S-j> <C-\><C-n><C-w>Ji
-
-" Fold with spacebar
-nnoremap <Space> za
-vnoremap <Space> zf
-
-" Disable help
-nnoremap <F1> <nop>
-
-" Faster saving and closing
-nnoremap <F2> :w<Cr>
-nnoremap <F3> :x<Cr>
-nnoremap <F4> :q<Cr>
-
-nnoremap <F5> :nohlsearch<Bar>diffupdate<Cr>
-set pastetoggle=<F6>
-
-" Insert the word/WORD under the cursor
-cnoremap <Leader>w <C-r><C-w>
-cnoremap <Leader>W <C-r><C-a>
-" Insert the line under the cursor
-cnoremap <Leader>l <C-r><C-l>
-
-" Insert word regex (/\<word\>/) for the word under the cursor
-cnoremap <Leader>rw \<<C-r><C-w>\>
 
 " Word to uppercase
 inoremap <C-u> <esc>viwUea
 
-" Close preview window
-nnoremap <Leader>z <C-W>z
+" Faster saving and closing
+nnoremap <F2> <Cmd>w<Cr>
+nnoremap <F3> <Cmd>x<Cr>
+nnoremap <F4> <Cmd>q<Cr>
 
-" Varables -----------------------------------------------------------------{{{1
+" Un-highlight search, update diff and refresh screen
+nnoremap <F5> <Cmd>nohlsearch<Bar>diffupdate<Cr>
 
-function! Chomp(string)
-    return substitute(a:string, '\n\+$', '', '')
-endfunction
+" Autocommands -------------------------------------------------------------{{{1
 
-let g:user = Chomp(system('id -un'))
-let g:user_name = Chomp(system('git config --includes user.name 2>/dev/null'))
-let g:user_email = Chomp(system('git config --includes user.email 2>/dev/null'))
-
-if $GIT_AUTHOR_NAME != ""
-    let g:user_name = $GIT_AUTHOR_NAME
-endif
-
-if $GIT_AUTHOR_EMAIL != ""
-    let g:user_email = $GIT_AUTHOR_EMAIL
-endif
-
-" Packages -----------------------------------------------------------------{{{1
-
-packadd! matchit
-
-runtime! pack/*/init.vim
+augroup ftplugins
+    autocmd!
+    autocmd FileType go,make setlocal noexpandtab
+    autocmd FileType yaml,toml setlocal tabstop=2 shiftwidth=2
+augroup END

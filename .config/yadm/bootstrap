@@ -10,9 +10,6 @@ yadm submodule update --recursive --init
 echo '>>> Change Git push URL'
 yadm remote set-url --push origin 'git@gitlab.com:fpob/dotfiles.git'
 
-echo '>>> Init Vim'
-make -C .config/vim init
-
 echo '>>> Configure mate/i3 desktop'
 .config/i3/mate-setup.sh || echo "Retry with running X-session-manager"
 
