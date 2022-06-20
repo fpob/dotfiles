@@ -1,9 +1,2 @@
-#
-# ".profile" script for X sessions. See /etc/X11/Xsession.
-#
-
-if [ -f "$HOME/.profile" ] ; then
-    . "$HOME/.profile"
-fi
-
-# vim: ft=sh
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
