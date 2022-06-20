@@ -3,8 +3,9 @@
 set -o pipefail
 
 git-fzf-branch () {
-    git branch --all --format '%(refname:short)' \
-        | fzf --exit-0
+    git branch --format '%(refname:short)' --list "$@" \
+        | grep -v '(HEAD detached at' \
+        | fzf --ansi --exit-0
 }
 
 git-fzf-checkout () {
@@ -20,8 +21,9 @@ git-fzf-merge () {
 }
 
 git-fzf-log () {
-    git log --color=always --reverse --pretty=format:'%C(auto)%h%Creset  %s' \
-        | fzf --ansi --tac \
+    local format='%C(auto)%h%Creset  %s  %C(black)(%ai)%Creset'
+    git log --color=always --reverse --pretty=format:"$format" \
+        | fzf --ansi --tac --preview 'git show --color=always {1}' \
         | cut -f1 -d' '
 }
 
@@ -37,10 +39,32 @@ git-fzf-cherry-pick () {
     git cherry-pick "$@" "$commit"
 }
 
+git-fzf-ls-files () {
+    git ls-files "$@" \
+        | fzf --ansi --multi --exit-0 --preview 'batcat --color=always --plain {}'
+}
+
 git-fzf-add () {
-    git ls-files --deleted --modified --others --exclude-standard \
-        | fzf --ansi --multi --exit-0 \
-        | xargs -r git add "$@"
+    git-fzf-ls-files --deleted --modified --others --exclude-standard "$@" \
+        | xargs -r git add
+}
+
+git-fzf-show () {
+    local commit="$(git-fzf-log)"
+    [[ -z "$commit" ]] && return 1
+    git show "$commit"
+}
+
+git-fzf-ls-remote () {
+    git ls-remote "$@" \
+        | cut -f2 -d$'\t' \
+        | fzf --exit-0
+}
+
+git-fzf-fetch-checkout () {
+    local remote_ref=$(git-fzf-ls-remote "$1")
+    [[ -z "$remote_ref" ]] && return 1
+    git fetch "$1" "$remote_ref" && git checkout FETCH_HEAD
 }
 
 "git-fzf-$@"

@@ -82,6 +82,8 @@
     la = log --all --graph --date-order --oneline
     lla = log --all --graph --date-order --show-signature --stat
 
+    zs = fzf show
+
     a = add
     aa = add -A
     au = add -u
@@ -130,6 +132,7 @@
     f = fetch
     fa = fetch --all --tags
     fch = "!f() { git fetch \"$@\" && git checkout FETCH_HEAD; }; f"
+    zfch = fzf fetch-checkout
 
     pl = pull
     plo = pull origin
