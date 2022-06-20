@@ -16,3 +16,7 @@ echo '>>> Configure mate/i3 desktop'
 echo '>>> Enable systemd user units'
 systemctl --user enable --now \
     dunst.service cron@daily.timer
+
+echo '>>> Generate nvim helptags'
+find .config/nvim/pack -maxdepth 4 -name doc -type d \
+    -exec nvim -e -c 'helptags {}' -c q \; &>/dev/null
