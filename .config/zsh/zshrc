@@ -1,152 +1,280 @@
 # XDG dirs -----------------------------------------------------------------{{{1
 
-ZSH_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
-ZSH_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh"
-ZSH_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
-ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-
-mkdir -p "$ZSH_DATA_DIR" "$ZSH_STATE_DIR" "$ZSH_CACHE_DIR"
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
 
 # Tmux ---------------------------------------------------------------------{{{1
 
-if [[ $- == *i* && -n $SSH_CONNECTION && -z $TMUX && -z $MC_SID ]] ; then
+if [[ $- == *i* && $SSH_CONNECTION && ! $TMUX && ! $MC_SID ]] ; then
     # If session "main" exists then attach otherwise create
     tmux -2 new -A -s main
 fi
 
-# Oh My Zsh ----------------------------------------------------------------{{{1
+# $PATH --------------------------------------------------------------------{{{1
 
-# OMZ paths
-export ZSH="${XDG_DATA_HOME:-$HOME/.local/share}/oh-my-zsh"
-export ZSH_CUSTOM="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
+path=("$HOME/bin" "$HOME/.local/bin" $path)
+typeset -U path
+export PATH
 
-if [[ -n $MC_SID || $TERM = 'linux' ]] ; then
-    ZSH_THEME="simple"
-else
-    ZSH_THEME="powerlevel10k/powerlevel10k"
-fi
+# Bindkey ------------------------------------------------------------------{{{1
 
-ZSH_COMPDUMP="$ZSH_CACHE_DIR/zcompdump-$ZSH_VERSION"
+bindkey -e
 
-# https://github.com/ohmyzsh/ohmyzsh/issues/10972
-# https://www.zsh.org/mla/workers/2022/msg00652.html
-CASE_SENSITIVE="true"
+# Edit the command line in $EDITOR.
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-x\C-e' edit-command-line
 
-DISABLE_AUTO_TITLE="true"
-ENABLE_CORRECTION="false"
-COMPLETION_WAITING_DOTS="true"
-ZLE_REMOVE_SUFFIX_CHARS=""
-DISABLE_MAGIC_FUNCTIONS="true"
+# Copy previous word.
+bindkey '^[m' copy-prev-shell-word
 
-zstyle ':omz:update' mode disabled
+# Completion ---------------------------------------------------------------{{{1
 
-# https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
-typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[path]='none'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=245'
-ZSH_HIGHLIGHT_STYLES[redirection]='fg=245'
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=42'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=42'
+mkdir -p "$XDG_CACHE_HOME/zsh/completions"
 
-zstyle ':grc:ls' disable yes
-
-plugins=(
-    asdf
-    colored-man-pages
-    direnv
-    fd
-    fzf
-    golang
-    grc
-    kitty
-    kubectl
-    pip
-    python
-    ranger
-    ripgrep
-    sudo
-    zoxide
-    zsh-autosuggestions
-    zsh-completions
-    zsh-syntax-highlighting
+fpath=(
+    "$XDG_CONFIG_HOME/zsh/completions"
+    "$XDG_CACHE_HOME/zsh/completions"
+    $fpath
 )
 
-source $ZSH/oh-my-zsh.sh
+function {
+    local -A completions=(
+        [kubectl]='kubectl completion zsh'
+        [kitty]='kitty + complete setup zsh'
+    )
+    local name cmd file
+    for name cmd (${(kv)completions}) ; do
+        file="$XDG_CACHE_HOME/zsh/completions/_$name"
+        if (( $+commands[$name] )) && [[ ! -f $file ]] ; then
+            eval "$cmd" > "$file"
+        fi
+    done
+}
 
-# Remove all aliases from OMZ plugins
-unalias -m '*'
+# Initialize completion.
+autoload -U compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 
-# reload completion functions
-autoload -Uz compinit && compinit -d "$ZSH_COMPDUMP"
+# Automatically load bash completion functions.
+autoload -U +X bashcompinit && bashcompinit
+
+# Load completion extensions.
+zmodload zsh/complist
+
+unsetopt MENU_COMPLETE      # Don't autoselect the first completion entry.
+unsetopt FLOWCONTROL
+setopt AUTO_MENU            # Show completion menu on tab press.
+setopt COMPLETE_IN_WORD
+setopt ALWAYS_TO_END
+
+# Case insensitive completion.
+zstyle ':completion:*' matcher-list \
+    '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+
+# Use caching so that commands like apt and dpkg complete are useable
+zstyle ':completion:*' use-cache yes
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh"
+
+# Enable menu for completion.
+zstyle ':completion:*:*:*:*:*' menu select
+
+# Enable colors in completion menu.
+eval "$(dircolors -b)"
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# More info in 'kill' completion.
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+# Shift-tab to cycle in reverse order.
+bindkey -M emacs "${terminfo[kcbt]}" reverse-menu-complete
+
+# History ------------------------------------------------------------------{{{1
+
+mkdir -p "$XDG_STATE_HOME/zsh"
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
+export HISTSIZE=25000
+export SAVEHIST=$HISTSIZE
+
+setopt EXTENDED_HISTORY     # Record timestamp of command in HISTFILE.
+setopt HIST_IGNORE_SPACE    # Ignore commands starting with a space.
+setopt HIST_IGNORE_ALL_DUPS # Ignore duplicates
+setopt HIST_SAVE_NO_DUPS    # Don't write duplicates.
+setopt SHARE_HISTORY        # Share command history data.
+
+# Cycle through history based on characters already typed.
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+bindkey '^p' up-line-or-beginning-search  # Alt+P
+bindkey '^P' up-line-or-beginning-search  # Ctrl+P
+bindkey "$key[Up]" up-line-or-beginning-search
+
+bindkey '^n' down-line-or-beginning-search  # Alt+N
+bindkey '^N' down-line-or-beginning-search  # Ctrl+N
+bindkey "$key[Down]" down-line-or-beginning-search
 
 # Terminal title -----------------------------------------------------------{{{1
 
-# Inspired by oh-my-zsh/lib/termsupport.zsh
 function term_title_precmd {
-    # %3~ = 3 trailing components of path
-    local tab_title="zsh:%15<..<%3~%<<"     # 15 char left truncated PWD
-    local win_title="zsh:%3~"               # 3 elements of path
-    title $tab_title $win_title
+    # https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html
+    print -Pn "\e]1;zsh: %.\a"
+    print -Pn "\e]2;zsh: %.\a"
 }
 
 # Run before showing the prompt
 autoload -U add-zsh-hook
 add-zsh-hook precmd term_title_precmd
 
-# History setup ------------------------------------------------------------{{{1
-# Has to be done after OMZ setup
+# Plugins ------------------------------------------------------------------{{{1
 
-export HISTFILE="$ZSH_STATE_DIR/history"
-export HISTSIZE=25000
-export SAVEHIST=$HISTSIZE
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]='none'
+ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=magenta'
 
-# Don't record an entry starting with a space.
-setopt HIST_IGNORE_SPACE
-# Delete old recorded entry if new entry is a duplicate.
-setopt HIST_IGNORE_ALL_DUPS
-# Don't write duplicate entries in the history file.
-setopt HIST_SAVE_NO_DUPS
+function {
+    local plugin
+    for plugin ("$XDG_CONFIG_HOME"/zsh/plugins/*(/N)) ; do
+        source "$plugin/${plugin:t}.zsh"
+    done
+}
+
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+
+source /etc/grc.zsh
+unset 'functions[ls]'
+
+eval "$(direnv hook zsh)"
+
+eval "$(zoxide init zsh)"
+
+# Prompt -------------------------------------------------------------------{{{1
+
+if (( $+commands[starship] )) && [[ $TERM != linux ]] ; then
+    eval "$(starship init zsh)"
+else
+    autoload -U colors && colors
+    PROMPT='%B%F{blue}%~%f %F{white}%(#.#.$)%f%b '
+    PROMPT2='> '
+    RPROMPT=''
+fi
+
+# Kitty --------------------------------------------------------------------{{{1
+
+# Extra aliasses in Kitty terminal
+if [[ $TERM = xterm-kitty ]] ; then
+    # SSH kitten is just wrapper around ssh command that fixes terminfo.
+    # *Required* because kitty is not in ncurses database, see discussion on
+    # https://github.com/kovidgoyal/kitty/issues/879
+    #alias ssh='kitty +kitten ssh'
+    alias ssh='TERM=xterm-256color ssh'
+    # To fix 'vagrant ssh'
+    alias vagrant='TERM=xterm-256color vagrant'
+    # cat image
+    alias icat='kitty +kitten icat'
+fi
+
+# Ranger -------------------------------------------------------------------{{{1
+
+function ranger_cd {
+    source "$commands[ranger]" </dev/tty >/dev/tty
+
+    local fn
+    for fn (chpwd $chpwd_functions precmd $precmd_functions); do
+        (( $+functions[$fn] )) && $fn
+    done
+    zle && zle reset-prompt
+}
+
+zle -N ranger_cd
+
+# ranger-cd will fire for Ctrl+O
+bindkey '^O' ranger_cd
+
+# Sudo ---------------------------------------------------------------------{{{1
+
+# https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
+alias sudo='sudo '
+
+function toggle_sudo {
+    if [[ $BUFFER =~ '^sudo ' ]]; then
+        BUFFER="${BUFFER#sudo }"
+        CURSOR=$(($CURSOR - 5))
+    else
+        BUFFER="sudo $BUFFER"
+        CURSOR=$(($CURSOR + 5))
+    fi
+}
+
+zle -N toggle_sudo
+
+# Toggle sudo with Esc+Esc.
+bindkey '\e\e' toggle_sudo
 
 # Variables ----------------------------------------------------------------{{{1
 
 export EDITOR=${EDITOR:-nvim}
 export PAGER=${PAGER:-less}
 
-if [[ -n "$DISPLAY" ]] ; then
+if [[ $DISPLAY ]] ; then
     export BROWSER=${BROWSER:-firefox}
 else
     export BROWSER=${BROWSER:-lynx}
 fi
 
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
 # Python REPL init script
-export PYTHONSTARTUP="${XDG_CONFIG_HOME:-$HOME/.config}/python/startup.py"
-[[ ! -f "$PYTHONSTARTUP" ]] && unset PYTHONSTARTUP
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/startup.py"
 
 # Python libraries and tools
 export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 export PIP_REQUIRE_VIRTUALENV=true
-export PIPX_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pipx"
+export PIPX_HOME="$XDG_DATA_HOME/pipx"
+# ipython XDG dirs (fallbacks to ~/.ipython)
+mkdir -p "$XDG_CONFIG_HOME/ipython"
 
 # golang
-export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
+export GOPATH="$XDG_DATA_HOME/go"
+export GOBIN="$HOME/.local/bin"
 export GO111MODULE=on
 
 # rust
-export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 # docker XDG dirs
-export DOCKER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/docker"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
 # pspg XDG dirs
-export PSPG_CONF="${XDG_CONFIG_HOME:-$HOME/.config}/pspg/config"
-export PSPG_HISTORY="${XDG_STATE_HOME:-$HOME/.local/state}/pspg/history"
+export PSPG_CONF="$XDG_CONFIG_HOME/pspg/config"
+export PSPG_HISTORY="$XDG_STATE_HOME/pspg/history"
+mkdir -p "$XDG_STATE_HOME/pspg"
 
 # Default less options
 export LESS=-RK
-export LESSHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/less/history"
+export LESSHISTFILE="$XDG_STATE_HOME/less/history"
+mkdir -p "$XDG_STATE_HOME/less"
+# Colors in man pages, git help etc.
+export LESS_TERMCAP_md=$'\e[1;31m'  # bold
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[32m'  # underline
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[30;43m'  # stand-out/reverse
+export LESS_TERMCAP_se=$'\e[0m'
 
 # wget XDG dirs
-export WGETRC="${XDG_CONFIG_HOME:-$HOME/.config}/wget/wgetrc"
+export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
+
+# Vagrant XDG dirs
+export VAGRANT_HOME="$XDG_DATA_HOME/vagrant"
+export VAGRANT_ALIAS_FILE="$VAGRANT_HOME/aliases"
+
+# tig XDG dirs (defaults to ~/.tig_history if XDG data dir doesn't exist)
+mkdir -p "$XDG_DATA_HOME/tig"
 
 # https://stackoverflow.com/questions/51504367
 export GPG_TTY=$(tty)
@@ -158,7 +286,7 @@ export BAT_THEME=base16
 
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
 
-# Aliases ------------------------------------------------------------------{{{1
+# Aliases / Functions ------------------------------------------------------{{{1
 
 # "Rename" back commands that are renamed in Debian packages because of
 # conflicts with some other commands.
@@ -167,13 +295,10 @@ if ( source /etc/os-release && [[ $ID == debian ]] ) ; then
     alias fd=fdfind
 fi
 
-# https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
-alias sudo='sudo '
-
-alias :q='exit'
+alias :q='exit 0'
+alias :new='kitty --detach '
 
 alias e='$EDITOR'
-alias ge='kitty --detach $EDITOR'
 alias f='ranger'
 alias g='git'
 
@@ -203,8 +328,9 @@ alias rgl='rg -l'
 # force 256 colors
 alias tmux='tmux -2'
 
-alias ci='clipcopy'
-alias co='clippaste'
+# Copy & Paste clipboard
+alias ci='xsel -ib'
+alias co='xsel -ob'
 
 alias bc='bc -ql'
 
@@ -213,13 +339,18 @@ alias gpg='gpg --pinentry-mode loopback'
 
 alias t='todo-txt'
 
-alias pa='pueue add --'
+alias pa='pueue add -- '
 
 alias py='python3'
 alias pydoc='pydoc3'
 alias ipy='ipython3 --pdb --'   # start debugger on uncaught exception
 alias pip='noglob pip'          # allows square brackets for pip command
 alias pip3='noglob pip3'
+
+function pyclean {
+    find "${@:-.}" -type f -name "*.py[co]" -delete
+    find "${@:-.}" -type d -name "__pycache__" -delete
+}
 
 alias a='ansible'
 alias ap='ansible-playbook'
@@ -228,22 +359,11 @@ alias ad='ansible-doc'
 alias adl='ansible-doc -t lookup'
 alias ag='ansible-galaxy'
 
-# Extra aliasses in Kitty terminal
-if [[ $TERM = xterm-kitty ]] ; then
-    # SSH kitten is just wrapper around ssh command that fixes terminfo.
-    # *Required* because kitty is not in ncurses database, see discussion on
-    # https://github.com/kovidgoyal/kitty/issues/879
-    #alias ssh='kitty +kitten ssh'
-    alias ssh='TERM=xterm-256color ssh'
-    # To fix 'vagrant ssh'
-    alias vagrant='TERM=xterm-256color vagrant'
-fi
-
 # Load extra scripts -------------------------------------------------------{{{1
 
 function {
     local config_file
-    for config_file ("$ZSH_CONFIG_DIR"/*.zsh(N)) ; do
+    for config_file ("$XDG_CONFIG_HOME"/zsh/*.zsh(N)) ; do
         source $config_file
     done
 }

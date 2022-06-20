@@ -16,9 +16,3 @@ echo '>>> Configure mate/i3 desktop'
 echo '>>> Enable systemd user units'
 systemctl --user enable --now \
     dunst.service cron@daily.timer
-
-echo '>>> Create XDG data directories'
-# Some apps fall back to `~/.<app>` if XDG dirs does not exist.
-mkdir -p .local/share/tig
-mkdir -p .local/state/less
-mkdir -p .local/state/pspg

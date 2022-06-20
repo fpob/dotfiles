@@ -1,0 +1,50 @@
+# Inserts a blank line between shell prompts
+add_newline = false
+format = """
+$directory\
+$character\
+"""
+right_format = """
+$cmd_duration\
+$jobs\
+$git_branch\
+$git_status\
+$git_state\
+$python\
+$custom\
+$env_var\
+"""
+
+[directory]
+truncation_symbol = "…/"
+read_only = " "
+style = "bold blue"
+
+[git_branch]
+format = "[ $branch(:$remote_branch)]($style) "
+style = "green"
+
+[git_status]
+deleted = "✗"
+style = "red"
+
+[git_state]
+style = "yellow"
+
+[cmd_duration]
+min_time = 1_000
+format = "[ $duration]($style) "
+style = "black"
+
+[jobs]
+format = "[ $number]($style) "
+style = "blue"
+
+[python]
+format = "[ $version]($style) "
+version_format = "$major.$minor"
+style = "cyan"
+
+[env_var.DIRENV_DIR]
+format = "[ ]($style)"
+style = "yellow"

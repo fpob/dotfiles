@@ -1,21 +1,6 @@
-[submodule ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
-	path = .config/oh-my-zsh/plugins/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule ".zshrc.d/oh-my-zsh"]
-	path = .local/share/oh-my-zsh
-	url = https://github.com/robbyrussell/oh-my-zsh.git
-[submodule ".zshrc.d/oh-my-zsh-custom/themes/powerlevel10k"]
-	path = .config/oh-my-zsh/themes/powerlevel10k
-	url = https://github.com/romkatv/powerlevel10k.git
-[submodule ".zsh/oh-my-zsh-custom/plugins/zsh-autosuggestions"]
-	path = .config/oh-my-zsh/plugins/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule ".config/cheat/cheatsheets/community"]
 	path = .config/cheat/cheatsheets/community
 	url = https://github.com/cheat/cheatsheets.git
-[submodule ".zsh/oh-my-zsh-custom/plugins/zsh-completions"]
-	path = .config/oh-my-zsh/plugins/zsh-completions
-	url = https://github.com/zsh-users/zsh-completions.git
 [submodule ".config/ranger/plugins/zoxide"]
 	path = .config/ranger/plugins/zoxide
 	url = https://github.com/jchook/ranger-zoxide.git
@@ -64,3 +49,9 @@
 [submodule ".config/nvim/pack/plugins/start/nvim-autopairs"]
 	path = .config/nvim/pack/plugins/start/nvim-autopairs
 	url = https://github.com/windwp/nvim-autopairs.git
+[submodule ".config/zsh/plugins/zsh-syntax-highlighting"]
+	path = .config/zsh/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule ".config/zsh/plugins/zsh-autosuggestions"]
+	path = .config/zsh/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
