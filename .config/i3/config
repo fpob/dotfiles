@@ -26,8 +26,8 @@ bindsym F12 nop kitti3
 
 # Kill focused window
 bindsym $mod+q kill
-bindsym --release button3 kill
-bindsym --whole-window $mod+button3 kill
+bindsym --release button2 kill
+bindsym --whole-window $mod+button2 kill
 
 # Change focus
 bindsym $mod+h focus left
