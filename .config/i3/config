@@ -191,6 +191,7 @@ for_window [title="^EVE" instance="^steam_app"] fullscreen enable
 
 exec_always --no-startup-id ~/.config/i3/compositor
 exec_always --no-startup-id ~/.config/polybar/launch
+exec_always --no-startup-id xsetroot -solid '#363738'
 exec_always --no-startup-id kitti3 -p top -s 1.0 1.0 -- --config ~/.config/kitty/kitty-transparent.conf
 
 # Execute autostart script if exists.
