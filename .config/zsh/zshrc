@@ -201,7 +201,13 @@ bindkey '^O' ranger_cd
 alias sudo='sudo '
 
 function toggle_sudo {
-    if [[ $BUFFER =~ '^sudo ' ]]; then
+    if [[ $BUFFER = '' ]] ; then
+        BUFFER='sudo !!'
+        CURSOR=$#BUFFER
+    elif [[ $BUFFER = 'sudo !!' ]] ; then
+        BUFFER=''
+        CURSOR=0
+    elif [[ $BUFFER =~ '^sudo ' ]]; then
         BUFFER="${BUFFER#sudo }"
         CURSOR=$(($CURSOR - 5))
     else
