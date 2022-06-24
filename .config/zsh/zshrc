@@ -40,20 +40,6 @@ fpath=(
     $fpath
 )
 
-function {
-    local -A completions=(
-        [kubectl]='kubectl completion zsh'
-        [kitty]='kitty + complete setup zsh'
-    )
-    local name cmd file
-    for name cmd (${(kv)completions}) ; do
-        file="$XDG_CACHE_HOME/zsh/completions/_$name"
-        if (( $+commands[$name] )) && [[ ! -f $file ]] ; then
-            eval "$cmd" > "$file"
-        fi
-    done
-}
-
 # Initialize completion.
 autoload -U compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 
@@ -63,29 +49,39 @@ autoload -U +X bashcompinit && bashcompinit
 # Load completion extensions.
 zmodload zsh/complist
 
-unsetopt MENU_COMPLETE      # Don't autoselect the first completion entry.
+unsetopt MENU_COMPLETE  # Don't autoselect the first completion entry.
 unsetopt FLOWCONTROL
-setopt AUTO_MENU            # Show completion menu on tab press.
+setopt AUTO_MENU        # Show completion menu on tab press.
 setopt COMPLETE_IN_WORD
 setopt ALWAYS_TO_END
+
+# Load colors support ('%F{red}' etc)
+autoload -U colors && colors
+
+# _extensions -- complete the glob '*.' with the extensions.
+# _complete -- main completer.
+zstyle ':completion:*' completer _extensions _complete
 
 # Case insensitive completion.
 zstyle ':completion:*' matcher-list \
     '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
 
-# Use caching so that commands like apt and dpkg complete are useable
+# Use caching so that commands like apt and dpkg complete are useable.
 zstyle ':completion:*' use-cache yes
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh"
 
 # Enable menu for completion.
-zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*' menu select
 
 # Enable colors in completion menu.
 eval "$(dircolors -b)"
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
+# Expand '//' to '/'.
+zstyle ':completion:*' squeeze-slashes true
+
 # More info in 'kill' completion.
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 # Shift-tab to cycle in reverse order.
