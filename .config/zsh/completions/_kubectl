@@ -1,0 +1,5 @@
+#compdef kubectl
+
+eval "$(kubectl completion zsh)"
+
+_kubectl

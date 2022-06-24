@@ -1,0 +1,5 @@
+#compdef vault
+
+complete -C vault vault
+
+_bash_complete

@@ -1,0 +1,16 @@
+#compdef tox
+
+(( $+functions[_tox_envs_list] )) ||
+_tox_envs_list() {
+  local envs; envs=($(_call_program envs $service --listenvs-all))
+  if [ ${#envs} -gt 0 ]; then
+    _values -s , 'tox environments' "${envs[@]}"
+  else
+    _message 'tox environments (none found)'
+  fi
+}
+
+_arguments \
+  '-c[config file name or directory with "tox.ini" file]:config path:_files -g "*.ini"' \
+  '-e[work against specified environments]: :_tox_envs_list' \
+  '*: :_guard "^-*" command positional substitution arguments'

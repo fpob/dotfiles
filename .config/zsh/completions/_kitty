@@ -1,0 +1,3 @@
+#compdef kitty
+
+eval "$(printf "%s\n" "${(@)words[1,$CURRENT]}" | kitty +complete zsh)"

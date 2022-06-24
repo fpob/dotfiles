@@ -1,0 +1,70 @@
+#compdef flask
+
+function __flask {
+    local -a subcommands=(
+        'db:Perform database migrations.'
+        'routes:Show the routes for the app.'
+        'run:Run a development server.'
+        'shell:Run a shell in the app context.'
+    )
+
+    _arguments -C ':command:->command' '*::options:->options'
+
+    case $state in
+        (command)
+            _describe -t main 'flask' subcommands
+            ;;
+
+        (options)
+            case $line[1] in
+                (run)
+                    __flask_run
+                    ;;
+
+                (db)
+                    __flask_db
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+function __flask_run {
+    _arguments \
+        '(--reload --no-reload)'{--reload,--no-reload}'[Enable or disable the reloader.]' \
+        '(--debugger --no-debugger)'{--debugger,--no-debugger}'[Enable or disable the debugger.]' \
+        {-h,--host}'[The interface to bind to.]' \
+        {-p,--port}'[The port to bind to.]'
+}
+
+function __flask_db {
+    local -a subcommands=(
+        'branches:Show current branch points'
+        'current:Display the current revision for each database.'
+        'downgrade:Revert to a previous version'
+        'edit:Edit a revision file'
+        'heads:Show current available heads in the script directory'
+        'history:List changeset scripts in chronological order.'
+        'init:Creates a new migration repository.'
+        'list-templates:List available templates.'
+        'merge:Merge two revisions together, creating a new revision file'
+        'migrate:Autogenerate a new revision file'
+        'revision:Create a new revision file.'
+        'show:Show the revision denoted by the given symbol.'
+        "stamp:'stamp' the revision table with the given revision; don't..."
+        'upgrade:Upgrade to a later version'
+    )
+
+    _arguments -C ':command:->command' '*::options:->options'
+
+    case $state in
+        (command)
+            _describe -t db 'flask db' subcommands
+            ;;
+
+        (options)
+            ;;
+    esac
+}
+
+__flask

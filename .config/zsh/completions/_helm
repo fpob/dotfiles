@@ -1,0 +1,5 @@
+#compdef helm
+
+eval "$(helm completion zsh)"
+
+_helm
