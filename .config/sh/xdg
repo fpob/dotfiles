@@ -1,0 +1,41 @@
+#!/bin/sh
+
+[ "$XDG_CONFIG_HOME" ] || export XDG_CONFIG_HOME="$HOME/.config"
+[ "$XDG_CACHE_HOME" ] || export XDG_CACHE_HOME="$HOME/.cache"
+[ "$XDG_DATA_HOME" ] || export XDG_DATA_HOME="$HOME/.local/share"
+[ "$XDG_STATE_HOME" ] || export XDG_STATE_HOME="$HOME/.local/state"
+
+# cargo (rust)
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+
+# docker
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+
+# go
+export GOPATH="$XDG_DATA_HOME/go"
+export GOBIN="$HOME/.local/bin"
+
+# ipython (fallbacks to ~/.ipython)
+mkdir -p "$XDG_CONFIG_HOME/ipython"
+
+# less
+export LESSHISTFILE="$XDG_STATE_HOME/less/history"
+mkdir -p "$XDG_STATE_HOME/less"
+
+# pipx (default is ~/.local/pipx)
+export PIPX_HOME="$XDG_DATA_HOME/pipx"
+
+# pspg
+export PSPG_CONF="$XDG_CONFIG_HOME/pspg/config"
+export PSPG_HISTORY="$XDG_STATE_HOME/pspg/history"
+mkdir -p "$XDG_STATE_HOME/pspg"
+
+# tig (defaults to ~/.tig_history if XDG data dir doesn't exist)
+mkdir -p "$XDG_DATA_HOME/tig"
+
+# vagrant
+export VAGRANT_HOME="$XDG_DATA_HOME/vagrant"
+export VAGRANT_ALIAS_FILE="$VAGRANT_HOME/aliases"
+
+# wget
+export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"

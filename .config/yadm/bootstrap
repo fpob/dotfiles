@@ -1,7 +1,4 @@
-#!/usr/bin/env zsh
-
-umask g-w,o-w
-cd "$HOME"
+#!/usr/bin/env bash
 
 echo '>>> Update Git submodules'
 yadm submodule sync --recursive  # needed to sync URLs from .gitmodules
@@ -11,12 +8,12 @@ echo '>>> Change Git push URL'
 yadm remote set-url --push origin 'git@gitlab.com:fpob/dotfiles.git'
 
 echo '>>> Configure mate/i3 desktop'
-.config/i3/mate-setup.sh || echo "Retry with running X-session-manager"
+~/.config/i3/mate-setup.sh || echo "Retry with running X-session-manager"
 
 echo '>>> Enable systemd user units'
 systemctl --user enable --now \
     dunst.service cron@daily.timer
 
 echo '>>> Generate nvim helptags'
-find .config/nvim/pack -maxdepth 4 -name doc -type d \
+find ~/.config/nvim/pack -maxdepth 4 -name doc -type d \
     -exec nvim -e -c 'helptags {}' -c q \; &>/dev/null

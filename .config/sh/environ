@@ -1,0 +1,46 @@
+#!/bin/sh
+
+. ~/.config/sh/xdg
+
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+export EDITOR=nvim
+export PAGER=less
+
+if [ "$DISPLAY" ] ; then
+    export BROWSER=firefox
+else
+    export BROWSER=lynx
+fi
+
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+# Python REPL init script
+if [ -f "$XDG_CONFIG_HOME/python/startup.py" ] ; then
+    export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/startup.py"
+fi
+
+# Python libraries and tools
+export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+export PIP_REQUIRE_VIRTUALENV='true'
+
+# Change jq colors, see `man jq`
+export JQ_COLORS='1;31:1;35:1;35:0;39:0;32:1;39:1;39'
+
+# 16 colors theme.
+export BAT_THEME=base16
+
+# https://stackoverflow.com/questions/51504367
+export GPG_TTY="$(tty)"
+
+# Default less options
+export LESS=-RK
+# Colors in man pages, git help etc.
+export LESS_TERMCAP_md='[1;31m'  # bold
+export LESS_TERMCAP_me='[0m'
+export LESS_TERMCAP_us='[32m'  # underline
+export LESS_TERMCAP_ue='[0m'
+export LESS_TERMCAP_so='[30;43m'  # stand-out/reverse
+export LESS_TERMCAP_se='[0m'
+
+export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'

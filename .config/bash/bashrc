@@ -1,0 +1,22 @@
+. ~/.config/sh/environ
+. ~/.config/sh/aliases
+
+# History setup ------------------------------------------------------------{{{1
+
+mkdir -p "$XDG_STATE_HOME/bash"
+export HISTFILE="$XDG_STATE_HOME/bash/history"
+export HISTSIZE=10000
+export SAVEHIST=$HISTSIZE
+
+# Prompt -------------------------------------------------------------------{{{1
+
+PS1='\[\e[01;34m\]\w\[\e[00m\] \[\e[01;37m\]\$\[\e[00m\] '
+PS2='\[\e[01;37m\]>\[\e[00m\] '
+
+unset PROMPT_COMMAND
+
+# Local bashrc -------------------------------------------------------------{{{1
+
+if [[ -f "$XDG_CONFIG_HOME/bash/bashrc.local" ]] ; then
+    . "$XDG_CONFIG_HOME/bash/bashrc.local"
+fi

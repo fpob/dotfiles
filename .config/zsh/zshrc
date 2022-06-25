@@ -1,22 +1,5 @@
-# XDG dirs -----------------------------------------------------------------{{{1
-
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
-export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
-export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
-export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
-
-# Tmux ---------------------------------------------------------------------{{{1
-
-if [[ $- == *i* && $SSH_CONNECTION && ! $TMUX && ! $MC_SID ]] ; then
-    # If session "main" exists then attach otherwise create
-    tmux -2 new -A -s main
-fi
-
-# $PATH --------------------------------------------------------------------{{{1
-
-path=("$HOME/bin" "$HOME/.local/bin" $path)
-typeset -U path
-export PATH
+emulate sh -c '. ~/.config/sh/environ'
+emulate sh -c '. ~/.config/sh/aliases'
 
 # Bindkey ------------------------------------------------------------------{{{1
 
@@ -155,23 +138,8 @@ if (( $+commands[starship] )) && [[ $TERM != linux ]] ; then
 else
     autoload -U colors && colors
     PROMPT='%B%F{blue}%~%f %F{white}%(#.#.$)%f%b '
-    PROMPT2='> '
+    PROMPT2='%B%F{white}>%f%b '
     RPROMPT=''
-fi
-
-# Kitty --------------------------------------------------------------------{{{1
-
-# Extra aliasses in Kitty terminal
-if [[ $TERM = xterm-kitty ]] ; then
-    # SSH kitten is just wrapper around ssh command that fixes terminfo.
-    # *Required* because kitty is not in ncurses database, see discussion on
-    # https://github.com/kovidgoyal/kitty/issues/879
-    #alias ssh='kitty +kitten ssh'
-    alias ssh='TERM=xterm-256color ssh'
-    # To fix 'vagrant ssh'
-    alias vagrant='TERM=xterm-256color vagrant'
-    # cat image
-    alias icat='kitty +kitten icat'
 fi
 
 # Ranger -------------------------------------------------------------------{{{1
@@ -192,9 +160,6 @@ zle -N ranger_cd
 bindkey '^O' ranger_cd
 
 # Sudo ---------------------------------------------------------------------{{{1
-
-# https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
-alias sudo='sudo '
 
 function toggle_sudo {
     if [[ $BUFFER = '' ]] ; then
@@ -217,155 +182,8 @@ zle -N toggle_sudo
 # Toggle sudo with Esc+Esc.
 bindkey '\e\e' toggle_sudo
 
-# Variables ----------------------------------------------------------------{{{1
+# Local zshrc --------------------------------------------------------------{{{1
 
-export EDITOR=${EDITOR:-nvim}
-export PAGER=${PAGER:-less}
-
-if [[ $DISPLAY ]] ; then
-    export BROWSER=${BROWSER:-firefox}
-else
-    export BROWSER=${BROWSER:-lynx}
+if [[ -f "$XDG_CONFIG_HOME/zsh/zshrc.local" ]] ; then
+    source "$XDG_CONFIG_HOME/zsh/zshrc.local"
 fi
-
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-
-# Python REPL init script
-export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/startup.py"
-
-# Python libraries and tools
-export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-export PIP_REQUIRE_VIRTUALENV=true
-export PIPX_HOME="$XDG_DATA_HOME/pipx"
-# ipython XDG dirs (fallbacks to ~/.ipython)
-mkdir -p "$XDG_CONFIG_HOME/ipython"
-
-# golang
-export GOPATH="$XDG_DATA_HOME/go"
-export GOBIN="$HOME/.local/bin"
-export GO111MODULE=on
-
-# rust
-export CARGO_HOME="$XDG_DATA_HOME/cargo"
-
-# docker XDG dirs
-export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
-
-# pspg XDG dirs
-export PSPG_CONF="$XDG_CONFIG_HOME/pspg/config"
-export PSPG_HISTORY="$XDG_STATE_HOME/pspg/history"
-mkdir -p "$XDG_STATE_HOME/pspg"
-
-# Default less options
-export LESS=-RK
-export LESSHISTFILE="$XDG_STATE_HOME/less/history"
-mkdir -p "$XDG_STATE_HOME/less"
-# Colors in man pages, git help etc.
-export LESS_TERMCAP_md=$'\e[1;31m'  # bold
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[32m'  # underline
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[30;43m'  # stand-out/reverse
-export LESS_TERMCAP_se=$'\e[0m'
-
-# wget XDG dirs
-export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
-
-# Vagrant XDG dirs
-export VAGRANT_HOME="$XDG_DATA_HOME/vagrant"
-export VAGRANT_ALIAS_FILE="$VAGRANT_HOME/aliases"
-
-# tig XDG dirs (defaults to ~/.tig_history if XDG data dir doesn't exist)
-mkdir -p "$XDG_DATA_HOME/tig"
-
-# https://stackoverflow.com/questions/51504367
-export GPG_TTY=$(tty)
-
-# Change jq colors, see `man jq`
-export JQ_COLORS='1;31:1;35:1;35:0;39:0;32:1;39:1;39'
-
-export BAT_THEME=base16
-
-export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
-
-# Aliases / Functions ------------------------------------------------------{{{1
-
-# "Rename" back commands that are renamed in Debian packages because of
-# conflicts with some other commands.
-if ( source /etc/os-release && [[ $ID == debian ]] ) ; then
-    alias bat=batcat
-    alias fd=fdfind
-fi
-
-alias :q='exit 0'
-alias :new='kitty --detach '
-
-alias e='$EDITOR'
-alias f='ranger'
-alias g='git'
-
-alias xo='xdg-open'
-
-alias cat='bat -p'
-
-alias ls='ls -v --color=auto --hyperlink=auto -CF'
-alias l='ls'
-alias ll='l -hl --time-style="+%Y-%m-%d %H:%M"'
-alias la='l -A'
-alias lla='ll -A'
-
-# COW copy if available
-alias cp='cp --reflink=auto'
-
-alias rcp='rsync -hhh --info=progress2'
-
-# Human readable sizes
-alias du='du -khc'
-alias df='df -kTh'
-alias free='free -th'
-
-alias rg='rg -S'
-alias rgl='rg -l'
-
-# force 256 colors
-alias tmux='tmux -2'
-
-# Copy & Paste clipboard
-alias ci='xsel -ib'
-alias co='xsel -ob'
-
-alias bc='bc -ql'
-
-# GPG with CLI pinentry mode in a terminal
-alias gpg='gpg --pinentry-mode loopback'
-
-alias t='todo-txt'
-
-alias pa='pueue add -- '
-
-alias py='python3'
-alias pydoc='pydoc3'
-alias ipy='ipython3 --pdb --'   # start debugger on uncaught exception
-alias pip='noglob pip'          # allows square brackets for pip command
-alias pip3='noglob pip3'
-
-function pyclean {
-    find "${@:-.}" -type f -name "*.py[co]" -delete
-    find "${@:-.}" -type d -name "__pycache__" -delete
-}
-
-alias a='ansible'
-alias ap='ansible-playbook'
-alias av='ansible-vault'
-alias ad='ansible-doc'
-alias adl='ansible-doc -t lookup'
-alias ag='ansible-galaxy'
-
-# Load extra scripts -------------------------------------------------------{{{1
-
-function {
-    local config_file
-    for config_file ("$XDG_CONFIG_HOME"/zsh/*.zsh(N)) ; do
-        source $config_file
-    done
-}
