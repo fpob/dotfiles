@@ -122,6 +122,7 @@ function {
     done
 }
 
+source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 
 source /etc/grc.zsh
