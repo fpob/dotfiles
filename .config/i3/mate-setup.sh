@@ -14,5 +14,23 @@ gsettings set org.mate.interface gtk-decoration-layout 'menu'
 # Dont't manage background
 gsettings set org.mate.background draw-background false
 
+# GTK theme
+gsettings set org.mate.interface gtk-theme 'Abrus'
+# Icon theme
+gsettings set org.mate.interface icon-theme 'Numix'
+
+# Default font
+gsettings set org.mate.interface font-name 'Noto Sans 10'
+# Document font
+gsettings set org.mate.interface document-font-name 'Noto Sans 10'
+# Monospace font
+gsettings set org.mate.interface monospace-font-name 'Hack Nerd Font 9'
+
 # Hide keyboard indicator (en/cs/...)
 gsettings set org.mate.peripherals-keyboard-xkb.general disable-indicator true
+# Don't separate layout for each window
+gsettings set org.mate.peripherals-keyboard-xkb.general group-per-window false
+# Keyboard layouts
+gsettings set org.mate.peripherals-keyboard-xkb.kbd layouts "['us', 'cz\tqwerty']"
+# Keyboard options
+gsettings set org.mate.peripherals-keyboard-xkb.kbd options "['grp\tgrp:alt_caps_toggle']"
