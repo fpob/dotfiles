@@ -1,43 +1,16 @@
 [global]
-
 font = Noto Sans 10
-line_height = 0
-
 # Enable markup.
 # http://developer.gnome.org/pango/stable/PangoMarkupFormat.html
 markup = full
 # The format of the message.
 format = "<b>%s</b>\n%b\n%p"
-# Alignment of message text.
-alignment = left
-# Split notifications into multiple lines if they don't fit into geometry.
-word_wrap = yes
-# Ignore newlines '\n' in notifications.
-ignore_newline = no
-
-# Display indicators for URLs (U) and actions (A).
-show_indicators = yes
-# Show age of message if message is older than show_age_threshold seconds.
-show_age_threshold = 60
-# Show how many messages are currently hidden (because of geometry).
-indicate_hidden = yes
-
-# Align icons left/right/off
+# Disable icons.
 icon_position = off
-# Paths to default icons.
-icon_path = /usr/share/icons/Abrus/status/32/:/usr/share/icons/Abrus/devices/32/:/usr/share/icons/Abrus/apps/32/
-
-# Sort messages by urgency.
-sort = yes
-
-# The frequency with wich text that is longer than the notification window
-# allows bounces back and forth. This option conflicts with "word_wrap".
-bounce_freq = 0
-
 # The geometry of the window: [{width}]x{height}[+/-{x}+/-{y}]
-geometry = "320-5+30"
-# Shrink window if it's smaller than the width.
-shrink = no
+width = 320
+origin = top-right
+offset = 5x30
 # The transparency of the window.
 transparency = 10
 # Draw a line between two # notifications.
@@ -50,39 +23,13 @@ frame_color = "#000000"
 # Padding between text and separator.
 padding = 5
 horizontal_padding = 10
-
 # Which monitor should the notifications be displayed on.
 monitor = 0
 # Display notification on monitor with keyboard focus. Monitor option is
 # ignored.
 follow = keyboard
-
-# Don't remove messages, if the user is idle (no mouse or keyboard input)
-# for longer than idle_threshold seconds.
-idle_threshold = 120
-
-# Should a notification popped up from history be sticky or timeout as if
-# it would normally do.
-sticky_history = yes
-# Maximum amount of notifications kept in history
-history_length = 20
-
-# Print a notification on startup.
-# This is mainly for error detection, since dbus (re-)starts dunst
-# automatically after a crash.
-startup_notification = false
-
-# dmenu path.
+# dmenu commands.
 dmenu = /usr/bin/rofi -dmenu -p dunst:
-# Browser for opening urls in context menu.
-browser = /usr/bin/firefox
-
-[shortcuts]
-# mod1 = Alt
-close = mod1+space
-close_all = mod1+shift+space
-history = mod1+grave
-context = mod1+period
 
 # Don't show notification over focused fullscreen windows.
 [fullscreen_pushback_all]

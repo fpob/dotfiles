@@ -143,6 +143,12 @@ bindsym $mod+Shift+x exec --no-startup-id mate-session-save --logout-dialog
 # Lock screen
 bindsym $mod+x exec --no-startup-id mate-screensaver-command --lock
 
+# Close notifications.
+bindsym $mod+comma exec --no-startup-id dunstctl close
+bindsym $mod+Shift+comma exec --no-startup-id dunstctl close-all
+# Notification context menu.
+bindsym $mod+period exec --no-startup-id dunstctl context
+
 # Resize mode --------------------------------------------------------------{{{1
 
 # Resize window (you can also use the mouse for that)
