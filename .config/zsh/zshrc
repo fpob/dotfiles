@@ -38,6 +38,9 @@ setopt AUTO_MENU        # Show completion menu on tab press.
 setopt COMPLETE_IN_WORD
 setopt ALWAYS_TO_END
 
+# See 'man zshparam'
+ZLE_REMOVE_SUFFIX_CHARS=$' \t\n'
+
 # Load colors support ('%F{red}' etc)
 autoload -U colors && colors
 
