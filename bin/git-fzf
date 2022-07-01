@@ -22,7 +22,7 @@ git-fzf-merge () {
 
 git-fzf-log () {
     local format='%C(auto)%h%Creset  %s  %C(black)(%ai)%Creset'
-    git log --color=always --reverse --pretty=format:"$format" \
+    git log --color=always --reverse --pretty=format:"$format" "$@" \
         | fzf --ansi --tac --preview 'git show --color=always {1}' \
         | cut -f1 -d' '
 }
@@ -34,7 +34,7 @@ git-fzf-fixup () {
 }
 
 git-fzf-cherry-pick () {
-    local commit="$(git-fzf-log)"
+    local commit="$(git-fzf-log --all)"
     [[ -z "$commit" ]] && return 1
     git cherry-pick "$@" "$commit"
 }
@@ -50,7 +50,7 @@ git-fzf-add () {
 }
 
 git-fzf-show () {
-    local commit="$(git-fzf-log)"
+    local commit="$(git-fzf-log --all)"
     [[ -z "$commit" ]] && return 1
     git show "$commit"
 }
