@@ -38,6 +38,9 @@ setopt AUTO_MENU        # Show completion menu on tab press.
 setopt COMPLETE_IN_WORD
 setopt ALWAYS_TO_END
 
+# https://www.zsh.org/mla/workers/2022/msg00652.html
+setopt CASE_GLOB
+
 # See 'man zshparam'
 ZLE_REMOVE_SUFFIX_CHARS=$' \t\n'
 
