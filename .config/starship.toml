@@ -10,7 +10,6 @@ $jobs\
 $git_branch\
 $git_status\
 $git_state\
-$python\
 $custom\
 $env_var\
 """
@@ -40,11 +39,10 @@ style = "black"
 format = "[ $number]($style) "
 style = "blue"
 
-[python]
-format = "[ $version]($style) "
-version_format = "$major.$minor"
-style = "cyan"
-
 [env_var.DIRENV_DIR]
-format = "[ ]($style)"
+format = "[ ]($style) "
 style = "yellow"
+
+[env_var.RANGER_LEVEL]
+format = "[ ranger]($style) "
+style = "purple"
