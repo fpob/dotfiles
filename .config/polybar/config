@@ -44,11 +44,10 @@ module-margin = 2
 ; Font names are specified using a fontconfig pattern.
 font-0 = "Noto Sans:size=10;2"
 font-1 = ForkAwesome:size=10;2
-font-2 = "Noto Sans Mono CJK TC:size=10;2"
 
 modules-left = i3
 modules-center = date
-modules-right = wlan pulseaudio xkeyboard filesystem temperature cpu memory battery
+modules-right = wlan pulseaudio xkeyboard filesystem temperature cpu memory
 
 #separator = %{F#363636}|%{F}
 
@@ -220,15 +219,6 @@ ramp-volume-0 = " "
 ramp-volume-1 = " "
 
 click-right = pavucontrol
-
-; module/battery -----------------------------------------------------------{{{1
-[module/battery]
-type = custom/script
-interval = 60
-
-exec = ~/.config/polybar/script-batteries
-
-click-right = mate-power-statistics
 
 ; settings -----------------------------------------------------------------{{{1
 [settings]
