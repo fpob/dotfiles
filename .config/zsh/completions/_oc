@@ -1,0 +1,5 @@
+#compdef oc
+
+eval "$(oc completion zsh)"
+
+_oc
