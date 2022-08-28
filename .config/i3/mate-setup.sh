@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -x
+
+YADM_CLASS=$(yadm config --get local.class)
 
 # Configure session components
 gsettings set org.mate.session required-components-list '["windowmanager"]'
@@ -33,4 +34,9 @@ gsettings set org.mate.peripherals-keyboard-xkb.general group-per-window false
 # Keyboard layouts
 gsettings set org.mate.peripherals-keyboard-xkb.kbd layouts "['us', 'cz\tqwerty']"
 # Keyboard options
-gsettings set org.mate.peripherals-keyboard-xkb.kbd options "['grp\tgrp:alt_caps_toggle']"
+if [[ $YADM_CLASS == desktop ]] ; then
+    # On 'desktop', escape are capslock are swapped in the keyboard firmware.
+    gsettings set org.mate.peripherals-keyboard-xkb.kbd options "['grp\tgrp:alt_caps_toggle']"
+else
+    gsettings set org.mate.peripherals-keyboard-xkb.kbd options "['grp\tgrp:alt_caps_toggle', 'caps\tcaps:swapescape']"
+fi
