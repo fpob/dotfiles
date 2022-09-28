@@ -1,5 +1,5 @@
 layout_python() {
-    local python="${2:-python3}"
+    local python="${1:-python3}"
     shift
 
     # Resolve '$python' to its real path, in case it is symlink.

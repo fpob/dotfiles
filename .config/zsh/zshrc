@@ -133,6 +133,7 @@ source /usr/share/doc/fzf/examples/key-bindings.zsh
 
 source /etc/grc.zsh
 unset 'functions[ls]'
+unset 'functions[mtr]'
 
 eval "$(direnv hook zsh)"
 
