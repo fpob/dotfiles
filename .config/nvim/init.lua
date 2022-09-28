@@ -171,6 +171,10 @@ require("nvim-treesitter.configs").setup {
   yati = { enable = true }
 }
 
+-- tree-sitter-just
+
+require("tree-sitter-just").setup {}
+
 -- nvim-tree ---
 
 require("nvim-tree").setup {
