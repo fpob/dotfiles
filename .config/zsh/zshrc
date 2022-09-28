@@ -19,7 +19,9 @@ mkdir -p "$XDG_CACHE_HOME/zsh/completions"
 
 fpath=(
     "$XDG_CONFIG_HOME/zsh/completions"
+    "$XDG_CONFIG_HOME/zsh/completions"/*(/N)
     "$XDG_CACHE_HOME/zsh/completions"
+    "$XDG_CACHE_HOME/zsh/completions"/*(/N)
     $fpath
 )
 
