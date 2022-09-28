@@ -52,6 +52,10 @@ alias bc='bc -ql'
 # GPG with CLI pinentry mode in a terminal
 alias gpg='gpg --pinentry-mode loopback'
 
+# Enable colors and aliasses expansion.
+alias watch='watch --color '
+alias grcwatch='watch --color grc --colour=on '
+
 alias t='todo-txt'
 
 alias pa='pueue add -- '
