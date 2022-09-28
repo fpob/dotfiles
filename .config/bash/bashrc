@@ -14,9 +14,3 @@ PS1='\[\e[01;34m\]\w\[\e[00m\] \[\e[01;37m\]\$\[\e[00m\] '
 PS2='\[\e[01;37m\]>\[\e[00m\] '
 
 unset PROMPT_COMMAND
-
-# Local bashrc -------------------------------------------------------------{{{1
-
-if [[ -f "$XDG_CONFIG_HOME/bash/bashrc.local" ]] ; then
-    . "$XDG_CONFIG_HOME/bash/bashrc.local"
-fi

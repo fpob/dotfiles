@@ -189,9 +189,3 @@ zle -N toggle_sudo
 
 # Toggle sudo with Esc+Esc.
 bindkey '\e\e' toggle_sudo
-
-# Local zshrc --------------------------------------------------------------{{{1
-
-if [[ -f "$XDG_CONFIG_HOME/zsh/zshrc.local" ]] ; then
-    source "$XDG_CONFIG_HOME/zsh/zshrc.local"
-fi

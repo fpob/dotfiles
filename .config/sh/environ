@@ -44,3 +44,8 @@ export LESS_TERMCAP_so='[30;43m'  # stand-out/reverse
 export LESS_TERMCAP_se='[0m'
 
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
+
+# Local environ
+if [ -f "$XDG_CONFIG_HOME/sh/environ.local" ] ; then
+    . "$XDG_CONFIG_HOME/sh/environ.local"
+fi
