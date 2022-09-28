@@ -272,8 +272,8 @@ vim.cmd [[
   hi PounceAcceptBest gui=bold guifg=#5a5b5e guibg=#de5d68
 ]]
 
-map("n", "<Leader>s", "<Cmd>Pounce<CR>")
-map("n", "<Leader>S", "<Cmd>PounceRepeat<CR>")
+map("n", "-", "<Cmd>Pounce<CR>")
+map("n", "_", "<Cmd>PounceRepeat<CR>")
 
 -- snippy --
 
