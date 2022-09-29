@@ -146,7 +146,7 @@ interval = 30
 
 mount-0 = /home
 
-label-mounted =  %percentage_used%%
+label-mounted =  %free%
 
 ; module/temperature -------------------------------------------------------{{{1
 [module/temperature]
