@@ -237,6 +237,7 @@ map("n", "<Leader>f", "<Cmd>Telescope find_files<CR>")
 map("n", "<Leader>g", "<Cmd>Telescope live_grep<CR>")
 map("n", "<Leader>b", "<Cmd>Telescope buffers<CR>")
 map("n", "<Leader>h", "<Cmd>Telescope help_tags<CR>")
+map("n", "<Leader>s", "<Cmd>Telescope treesitter<CR>")
 
 -- luatab --
 
