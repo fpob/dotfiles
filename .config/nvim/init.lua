@@ -171,9 +171,23 @@ require("nvim-treesitter.configs").setup {
   yati = { enable = true }
 }
 
--- tree-sitter-just
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 
-require("tree-sitter-just").setup {}
+parser_config.just = {
+  install_info = {
+    url = "https://github.com/IndianBoy42/tree-sitter-just",
+    files = { "src/parser.c", "src/scanner.cc" },
+    branch = "main",
+  },
+}
+
+parser_config.nix = {
+  install_info = {
+    url = "https://github.com/cstrahan/tree-sitter-nix",
+    branch = "main",
+    files = { "src/parser.c", "src/scanner.c" },
+  },
+}
 
 -- nvim-tree ---
 
