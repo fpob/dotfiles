@@ -1,6 +1,7 @@
 # Inserts a blank line between shell prompts
 add_newline = false
 format = """
+$hostname\
 $directory\
 $character\
 """
@@ -13,6 +14,9 @@ $git_state\
 $custom\
 $env_var\
 """
+
+[hostname]
+format = "[$hostname]($style) "
 
 [directory]
 truncation_symbol = "…/"
