@@ -1,0 +1,12 @@
+/* Show tabs toolbar only when titlepreface is `|`. */
+#main-window #TabsToolbar {
+    overflow: hidden;
+}
+#main-window[titlepreface*="|"] #TabsToolbar {
+    visibility: collapse;
+}
+
+/* Hide sidebar header. */
+#sidebar-box #sidebar-header {
+    visibility: collapse;
+}
