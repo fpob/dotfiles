@@ -11,6 +11,7 @@ mouse_warping none
 
 # Start terminal
 bindsym $mod+t exec kitty
+bindsym $mod+Return exec kitty
 
 # Start dmenu
 bindsym $mod+space exec rofi -show combi
@@ -20,7 +21,8 @@ bindsym $mod+slash exec rofi -show window
 bindsym Print exec mate-screenshot --interactive
 bindsym Ctrl+Print exec mate-screenshot --window
 
-bindsym F12 nop kitti3
+# Dropdown terminal (-y # == # height of polybar)
+bindsym F12 exec --no-startup-id tdrop -m -y 25 -h 50% kitty --class dropdown --config ~/.config/kitty/kitty-transparent.conf
 
 # Window/layout bindings ---------------------------------------------------{{{1
 
@@ -110,6 +112,10 @@ bindsym $mod+Shift+Down move workspace to output down
 bindsym $mod+quoteleft exec --no-startup-id i3-input -F 'workspace "%s"' -P 'Switch to workspace: '
 bindsym $mod+Shift+quoteleft exec --no-startup-id i3-input -F 'move container to workspace "%s"' -P 'Move to workspace: '
 
+# Scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
 # F# key bindings ----------------------------------------------------------{{{1
 
 bindsym $mod+F1 exec --no-startup-id ~/.config/i3/fn-key F1
@@ -186,7 +192,7 @@ client.urgent           #C72E2E #1A1B1C #C72E2E
 
 # Window settings ----------------------------------------------------------{{{1
 
-for_window [instance="^kitti3$" floating] border none, sticky enable
+for_window [class="^dropdown$"] floating enable, border none, sticky enable
 
 for_window [class="(?i)firefox" title="(?i)picture-in-picture" floating] sticky enable
 for_window [class="mpv" instance="floating"] floating enable, sticky enable
@@ -198,7 +204,6 @@ for_window [title="^EVE" instance="^steam_app"] fullscreen enable
 exec_always --no-startup-id ~/.config/i3/compositor
 exec_always --no-startup-id ~/.config/polybar/launch
 exec_always --no-startup-id xsetroot -solid '#363738'
-exec_always --no-startup-id kitti3 -p top -s 1.0 1.0 -- --config ~/.config/kitty/kitty-transparent.conf
 
 # Execute autostart script if exists.
 exec --no-startup-id test -x ~/.config/i3/autostart && ~/.config/i3/autostart
