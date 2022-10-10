@@ -52,3 +52,6 @@
 [submodule ".config/nvim/pack/plugins/start/vim-helm"]
 	path = .config/nvim/pack/plugins/start/vim-helm
 	url = https://github.com/towolf/vim-helm.git
+[submodule ".config/nvim/pack/plugins/start/tree-sitter-just"]
+	path = .config/nvim/pack/plugins/start/tree-sitter-just
+	url = https://github.com/IndianBoy42/tree-sitter-just.git
