@@ -7,10 +7,6 @@ except ImportError:
     pass
 
 
-HOME = Path(env['HOME'])
-PWD = Path.cwd()
-
-
 def _setup_python():
     import atexit
     import logging

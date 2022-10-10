@@ -17,11 +17,7 @@ bindsym $mod+Return exec kitty
 bindsym $mod+space exec rofi -show combi
 bindsym $mod+slash exec rofi -show window
 
-# Screenshot
-bindsym Print exec mate-screenshot --interactive
-bindsym Ctrl+Print exec mate-screenshot --window
-
-# Dropdown terminal (-y # == # height of polybar)
+# Dropdown terminal
 bindsym F12 exec --no-startup-id tdrop -a -m -x 5% -y 5% -w 90% -h 90% kitty --class dropdown
 
 # Window/layout bindings ---------------------------------------------------{{{1
@@ -66,10 +62,6 @@ bindsym $mod+o focus mode_toggle
 bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
-# Mark/Goto
-bindsym $mod+m exec --no-startup-id i3-input -F 'mark --toggle "%s"' -l 1 -P 'Mark: '
-bindsym $mod+apostrophe exec --no-startup-id i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
-
 # Workspace bindings -------------------------------------------------------{{{1
 
 # Switch to workspace
@@ -103,14 +95,6 @@ bindsym $mod+p workspace prev
 # Move workspace to different monitor
 bindsym $mod+Shift+bracketleft move workspace to output left
 bindsym $mod+Shift+bracketright move workspace to output right
-bindsym $mod+Shift+Left move workspace to output left
-bindsym $mod+Shift+Right move workspace to output right
-bindsym $mod+Shift+Up move workspace to output up
-bindsym $mod+Shift+Down move workspace to output down
-
-# Switch/move to any workspace
-bindsym $mod+quoteleft exec --no-startup-id i3-input -F 'workspace "%s"' -P 'Switch to workspace: '
-bindsym $mod+Shift+quoteleft exec --no-startup-id i3-input -F 'move container to workspace "%s"' -P 'Move to workspace: '
 
 # Scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -127,18 +111,29 @@ bindsym $mod+Shift+c reload
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
+set $mode_system "(l) logout, (r) reboot, (s) shutdown"
+
+mode $mode_system {
+    bindsym l exit
+    bindsym r exec systemctl reboot
+    bindsym s exec systemctl poweroff
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
 # Shutdown and logout dialog
-bindsym $mod+Shift+q exec --no-startup-id mate-session-save --shutdown-dialog
-bindsym $mod+Shift+x exec --no-startup-id mate-session-save --logout-dialog
+bindsym $mod+Shift+q mode $mode_system
 
 # Lock screen
-bindsym $mod+x exec --no-startup-id mate-screensaver-command --lock
+bindsym $mod+x exec --no-startup-id i3lock -c '#000000'
+
+# System suspend
+bindsym $mod+Shift+x exec systemctl suspend
 
 # Close notifications.
 bindsym $mod+comma exec --no-startup-id dunstctl close
 bindsym $mod+Shift+comma exec --no-startup-id dunstctl close-all
-# Notification context menu.
-bindsym $mod+period exec --no-startup-id dunstctl context
 
 # Resize mode --------------------------------------------------------------{{{1
 
@@ -182,13 +177,6 @@ for_window [class="^dropdown$"] floating enable, sticky enable
 for_window [class="(?i)firefox" title="(?i)picture-in-picture" floating] sticky enable
 for_window [class="mpv" instance="floating"] floating enable, sticky enable
 
-for_window [title="^EVE" instance="^steam_app"] fullscreen enable
-
 # Startup ------------------------------------------------------------------{{{1
 
-exec_always --no-startup-id ~/.config/i3/compositor
-exec_always --no-startup-id ~/.config/polybar/launch
-exec_always --no-startup-id xsetroot -solid '#363738'
-
-# Execute autostart script if exists.
-exec --no-startup-id test -x ~/.config/i3/autostart && ~/.config/i3/autostart
+exec --no-startup-id ~/.config/i3/autostart

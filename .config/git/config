@@ -1,6 +1,9 @@
 [include]
     path = ~/.config/git/config.local
 
+[safe]
+    directory = /etc/nixos
+
 [color]
     ui = auto
 

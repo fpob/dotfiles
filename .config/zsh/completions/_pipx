@@ -1,0 +1,5 @@
+#compdef pipx
+
+eval "$(register-python-argcomplete pipx)"
+
+_bash_complete

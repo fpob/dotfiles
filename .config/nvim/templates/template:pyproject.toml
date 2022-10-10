@@ -7,7 +7,7 @@ authors = ["%USER% <%MAIL%>"]
 readme = "README.md"
 repository = "https://gitlab.com/fpob-dev/%PARENT%"
 classifiers = []
-include = ["docs"]
+include = ["tests", "docs"]
 
 [[tool.poetry.packages]]
 include = "%PARENT%"
@@ -16,8 +16,9 @@ from = "src"
 [tool.poetry.dependencies]
 python = "^3.7"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 tox = "*"
+
 
 [tool.tox]
 legacy_tox_ini = """
@@ -39,10 +40,9 @@ commands = mypy src
 [testenv:flake8]
 skip_install = true
 deps =
-    flake8
+    pyproject-flake8
     flake8-bugbear
     flake8-isort
-    pyproject-flake8
 commands = pflake8 src tests
 
 [testenv:isort]
@@ -52,8 +52,8 @@ commands = isort src tests
 
 [testenv:docs]
 deps =
-  sphinx
-  furo
+    sphinx
+    furo
 commands = sphinx-build -a docs build/docs
 """
 
@@ -66,6 +66,8 @@ addopts = "-ra -v"
 ignore_missing_imports = true
 check_untyped_defs = true
 namespace_packages = true
+install_types = true
+non_interactive = true
 
 
 [tool.flake8]

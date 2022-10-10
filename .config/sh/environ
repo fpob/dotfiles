@@ -10,8 +10,8 @@ PATH_add () {
 }
 
 PATH_add "$HOME/.local/bin"
-PATH_add "$HOME/bin"
 
+export TERMINAL=kitty
 export EDITOR=nvim
 export PAGER=less
 
@@ -35,8 +35,8 @@ export PIP_REQUIRE_VIRTUALENV='true'
 # Change jq colors, see `man jq`
 export JQ_COLORS='1;31:1;35:1;35:0;39:0;32:1;39:1;39'
 
-# 16 colors theme.
-export BAT_THEME=base16
+# ANSI colors
+export BAT_THEME=ansi
 
 # https://stackoverflow.com/questions/51504367
 export GPG_TTY="$(tty)"
@@ -51,11 +51,12 @@ export LESS_TERMCAP_ue='[0m'
 export LESS_TERMCAP_so='[30;43m'  # stand-out/reverse
 export LESS_TERMCAP_se='[0m'
 
-export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 # Nix
 if [ -e /nix ] ; then
     export NIX_PAGER='less -FRK'
+    export NIX_SHELL_PRESERVE_PROMPT=true
 
     # home-manager
     if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] ; then

@@ -5,6 +5,8 @@ emulate sh -c '. ~/.config/sh/aliases'
 
 bindkey -e
 
+[[ -e /etc/zinputrc ]] && . /etc/zinputrc
+
 # Edit the command line in $EDITOR.
 autoload -U edit-command-line
 zle -N edit-command-line
@@ -99,23 +101,20 @@ zle -N down-line-or-beginning-search
 
 bindkey '^p' up-line-or-beginning-search  # Alt+P
 bindkey '^P' up-line-or-beginning-search  # Ctrl+P
-bindkey "$key[Up]" up-line-or-beginning-search
+[[ -n "$key[Up]" ]] && bindkey "$key[Up]" up-line-or-beginning-search
 
 bindkey '^n' down-line-or-beginning-search  # Alt+N
 bindkey '^N' down-line-or-beginning-search  # Ctrl+N
-bindkey "$key[Down]" down-line-or-beginning-search
+[[ -n "$key[Down]" ]] && bindkey "$key[Down]" down-line-or-beginning-search
 
-# Terminal title -----------------------------------------------------------{{{1
+# Kitty integration --------------------------------------------------------{{{1
 
-function term_title_precmd {
-    # https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html
-    print -Pn "\e]1;zsh: %.\a"
-    print -Pn "\e]2;zsh: %.\a"
-}
-
-# Run before showing the prompt
-autoload -U add-zsh-hook
-add-zsh-hook precmd term_title_precmd
+if [[ -n $KITTY_INSTALLATION_DIR ]] ; then
+    export KITTY_SHELL_INTEGRATION=enabled
+    autoload -Uz -- "$KITTY_INSTALLATION_DIR/shell-integration/zsh/kitty-integration"
+    kitty-integration
+    unfunction kitty-integration
+fi
 
 # Plugins ------------------------------------------------------------------{{{1
 
@@ -125,17 +124,10 @@ ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=magenta'
 
 function {
     local plugin
-    for plugin ("$XDG_CONFIG_HOME"/zsh/plugins/*(/N)) ; do
-        source "$plugin/${plugin:t}.zsh"
+    for plugin ("$XDG_CONFIG_HOME"/zsh/plugins/*.zsh(N)) ; do
+        [[ -e $plugin ]] && source "$plugin"
     done
 }
-
-source /usr/share/doc/fzf/examples/completion.zsh
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-
-source /etc/grc.zsh
-unset 'functions[ls]'
-unset 'functions[mtr]'
 
 eval "$(direnv hook zsh)"
 
@@ -155,7 +147,15 @@ fi
 # Ranger -------------------------------------------------------------------{{{1
 
 function ranger_cd {
-    source "$commands[ranger]" </dev/tty >/dev/tty
+    local temp_file=$(mktemp -t ranger_cd.XXXXXX)
+
+    ranger --choosedir=$temp_file </dev/tty >/dev/tty
+
+    local chosen_dir=$(cat -- "$temp_file")
+    if [[ -n $chosen_dir && $chosen_dir != $PWD ]] ; then
+        cd -- "$chosen_dir"
+    fi
+    rm -f -- "$temp_file"
 
     local fn
     for fn (chpwd $chpwd_functions precmd $precmd_functions); do

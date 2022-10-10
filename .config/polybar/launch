@@ -1,22 +1,13 @@
 #!/usr/bin/env bash
 
-POLYBAR_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/polybar"
-mkdir -p "$POLYBAR_STATE_DIR"
-
-YADM_CLASS=$(yadm config --get local.class)
-
-if [[ $YADM_CLASS == desktop ]] ; then
-    export TEMPERATURE_PATH=/sys/devices/platform/nct6775.2592/hwmon/hwmon2/temp1_input
-fi
-
 export WLAN_INTERFACE=$(ip -br link show | awk '/^wl/ { print $1 ; nextfile }')
 
 # Terminate already running bar instances.
-killall -q polybar
+pkill -U $UID polybar
 
 # Start polybar on all monitors.
 polybar --list-monitors | while read line ; do
     export MONITOR=$(echo $line | cut -d":" -f1)
     export BAR=$(echo $line | grep -q primary && echo primary || echo secondary)
-    polybar --reload $BAR &
-done &> "$POLYBAR_STATE_DIR/log"
+    systemd-cat -t polybar/$MONITOR polybar --reload $BAR &
+done

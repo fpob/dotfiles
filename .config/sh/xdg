@@ -30,6 +30,10 @@ export PSPG_CONF="$XDG_CONFIG_HOME/pspg/config"
 export PSPG_HISTORY="$XDG_STATE_HOME/pspg/history"
 mkdir -p "$XDG_STATE_HOME/pspg"
 
+# sqlite
+export SQLITE_HISTORY="$XDG_STATE_HOME/sqlite/history"
+mkdir -p "$XDG_STATE_HOME/sqlite"
+
 # tig (defaults to ~/.tig_history if XDG data dir doesn't exist)
 mkdir -p "$XDG_DATA_HOME/tig"
 
@@ -39,3 +43,6 @@ export VAGRANT_ALIAS_FILE="$VAGRANT_HOME/aliases"
 
 # wget
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
+
+# X
+export XCOMPOSECACHE="$XDG_CACHE_HOME/compose"

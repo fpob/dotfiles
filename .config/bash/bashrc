@@ -10,7 +10,24 @@ export SAVEHIST=$HISTSIZE
 
 # Prompt -------------------------------------------------------------------{{{1
 
-PS1='\[\e[01;34m\]\w\[\e[00m\] \[\e[01;37m\]\$\[\e[00m\] '
-PS2='\[\e[01;37m\]>\[\e[00m\] '
+_prompt () {
+    PS1='\[\e[01;34m\]\w \[\e[01;37m\]\$\[\e[00m\] '
+    PS2='\[\e[01;37m\]>\[\e[00m\] '
 
-unset PROMPT_COMMAND
+    if [[ -n "$SSH_CONNECTION" ]] ; then
+        PS1="\[\e[01;32m\]\h $PS1"
+    fi
+
+    if [[ -n "$IN_NIX_SHELL" ]] ; then
+        PS1="\[\e[37m\]($name) $PS1"
+    fi
+}
+
+PROMPT_COMMAND=_prompt
+
+# Kitty integration --------------------------------------------------------{{{1
+
+if [[ -n $KITTY_INSTALLATION_DIR ]] ; then
+    export KITTY_SHELL_INTEGRATION=enabled
+    . "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"
+fi

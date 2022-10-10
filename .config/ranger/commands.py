@@ -8,6 +8,15 @@ from ranger.api.commands import Command
 from ranger.core.loader import CommandLoader
 
 
+class kitty(Command):
+    escape_macros_for_shell = True
+
+    def execute(self):
+        if os.getenv('TERM') != 'xterm-kitty':
+            return self.fm.notify('Not in Kitty', bad=True)
+        self.fm.execute_command(self.line)
+
+
 class fzf_cd(Command):
     """
     :fzf_cd
@@ -15,7 +24,7 @@ class fzf_cd(Command):
     Use fzf to change current directory.
     """
     def execute(self):
-        cmd = 'fdfind --type d --strip-cwd-prefix --follow'
+        cmd = 'fd --type d --strip-cwd-prefix --follow'
         if self.fm.settings.show_hidden:
             cmd += ' --hidden'
         cmd += ' | fzf'
@@ -40,15 +49,6 @@ class unar(Command):
             obj = CommandLoader(args=command + [file.path], descr=f'unar {file.path}')
             obj.signal_bind('after', lambda _: self.fm.thisdir.load_content())
             self.fm.loader.add(obj)
-
-
-class tmux(Command):
-    escape_macros_for_shell = True
-
-    def execute(self):
-        if 'TMUX' not in os.environ:
-            return self.fm.notify('Not in tmux', bad=True)
-        self.fm.execute_command(self.line)
 
 
 class trash(Command):

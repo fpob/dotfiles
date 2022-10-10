@@ -11,8 +11,6 @@ icon_position = off
 width = 320
 origin = top-right
 offset = 5x30
-# The transparency of the window.
-transparency = 10
 # Draw a line between two # notifications.
 separator_height = 1
 # Define a color for the separator.
@@ -29,7 +27,7 @@ monitor = 0
 # ignored.
 follow = keyboard
 # dmenu commands.
-dmenu = /usr/bin/rofi -dmenu -p dunst:
+dmenu = rofi -dmenu -p dunst:
 
 # Don't show notification over focused fullscreen windows.
 [fullscreen_pushback_all]

@@ -1,17 +1,7 @@
 #!/bin/sh
 
 # https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
-alias sudo='sudo '
-
-# "Rename" back commands that are renamed in Debian packages because of
-# conflicts with some other commands.
-if ( . /etc/os-release && [ "$ID" = debian ] ) ; then
-    alias bat=batcat
-    alias fd=fdfind
-fi
-
-alias :q='exit 0'
-alias :new='kitty --detach '
+alias sudo='sudo -E '
 
 alias e='$EDITOR'
 alias f='ranger'
@@ -49,37 +39,22 @@ alias co='xsel -ob'
 
 alias bc='bc -ql'
 
-# GPG with CLI pinentry mode in a terminal
-alias gpg='gpg --pinentry-mode loopback'
-
 # Enable colors and aliasses expansion.
 alias watch='watch --color '
 alias grcwatch='watch --color grc --colour=on '
-
-alias t='todo-txt'
 
 alias pa='pueue add -- '
 
 alias py='python3'
 alias pydoc='pydoc3'
-alias ipy='ipython3 --pdb --'   # start debugger on uncaught exception
-
-alias a='ansible'
-alias ap='ansible-playbook'
-alias av='ansible-vault'
-alias ad='ansible-doc'
-alias adl='ansible-doc -t lookup'
-alias ag='ansible-galaxy'
 
 # Extra aliasses in Kitty terminal
 if [ "$TERM" = xterm-kitty ] ; then
-    # SSH kitten is just wrapper around ssh command that fixes terminfo.
-    # *Required* because kitty is not in ncurses database, see discussion on
-    # https://github.com/kovidgoyal/kitty/issues/879
+    alias :new='kitty --detach '
+    # SSH kitten is wrapper around ssh command that fixes terminfo and adds some
+    # extra features.
     #alias ssh='kitty +kitten ssh'
     alias ssh='TERM=xterm-256color ssh'
-    # To fix 'vagrant ssh'
-    alias vagrant='TERM=xterm-256color vagrant'
     # cat image
     alias icat='kitty +kitten icat'
 fi

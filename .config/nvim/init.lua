@@ -13,6 +13,7 @@ vim.o.number = true
 vim.o.expandtab = true  -- expand tab to spaces
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
+vim.o.foldcolumn = "auto:9"
 vim.o.foldmethod = "marker"
 vim.o.title = true  -- set terminal title
 vim.o.titlestring = "nvim: %t %r%m"
@@ -27,10 +28,11 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.textwidth = 80
 vim.o.mouse = "a"  -- enable mouse
+vim.o.mousemodel = "extend"  -- disable right click popup
 vim.o.wrap = true
 vim.o.linebreak = true  -- don't wrap words in the middle, see 'breakat'
 vim.o.breakindent = true
-vim.o.showbreak = "↳"
+vim.o.showbreak = "↳ "
 vim.o.showmode = false  -- handled by plugin 'mini.statusline'
 vim.o.lazyredraw = true
 vim.o.clipboard = "unnamedplus"  -- use '+' register for all y/d/c operations
@@ -63,6 +65,13 @@ end
 -- Mappings ----------------------------------------------------------------{{{1
 
 vim.g.mapleader = ","
+vim.g.maplocalleader = "\\"
+
+-- Movement in insert mode (alt)
+map("i", "<M-h>", "<Left>")
+map("i", "<M-j>", "<Down>")
+map("i", "<M-k>", "<Up>")
+map("i", "<M-l>", "<Right>")
 
 -- Keep selection when indenting/outdenting
 map("v", "<", "<gv")
@@ -98,6 +107,12 @@ map("n", "<Leader>tl", "<Cmd>vnew +terminal<CR>")
 -- Un-highlight search, update diff and refresh screen
 map("n", "<F5>", "<Cmd>nohlsearch<Bar>diffupdate<CR>")
 
+-- Sort & deduplicate
+map("v", "<Leader>s", ":'<,'>!sort -u<CR>")
+
+-- Toggle relative line numbers
+map("n", "<Leader>r", "<Cmd>set relativenumber!<CR>")
+
 -- Autocommands ------------------------------------------------------------{{{1
 
 vim.cmd [[
@@ -130,20 +145,21 @@ local function lsp_on_attach(client, bufnr)
   map('n', 'K', vim.lsp.buf.hover)
   map('n', 'gi', vim.lsp.buf.implementation)
   map('n', '<C-k>', vim.lsp.buf.signature_help)
-  map('n', '<Leader>wa', vim.lsp.buf.add_workspace_folder)
-  map('n', '<Leader>wr', vim.lsp.buf.remove_workspace_folder)
-  map('n', '<Leader>wl', function()
+  map('n', '<LocalLeader>wa', vim.lsp.buf.add_workspace_folder)
+  map('n', '<LocalLeader>wr', vim.lsp.buf.remove_workspace_folder)
+  map('n', '<LocalLeader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end)
-  map('n', '<Leader>D', vim.lsp.buf.type_definition)
-  map('n', '<Leader>r', vim.lsp.buf.rename)
-  map('n', '<Leader>a', vim.lsp.buf.code_action)
+  map('n', '<LocalLeader>D', vim.lsp.buf.type_definition)
+  map('n', '<LocalLeader>r', vim.lsp.buf.rename)
+  map('n', '<LocalLeader>a', vim.lsp.buf.code_action)
   map('n', 'gr', vim.lsp.buf.references)
-  map('n', '<Leader>F', vim.lsp.buf.formatting)
+  map('n', '<LocalLeader>F', vim.lsp.buf.formatting)
 end
 
 local lspconfig = require("lspconfig")
 lspconfig.jedi_language_server.setup { on_attach = lsp_on_attach }
+lspconfig.rust_analyzer.setup { on_attach = lsp_on_attach }
 lspconfig.gopls.setup { on_attach = lsp_on_attach }
 
 -- Plugins -----------------------------------------------------------------{{{1
@@ -198,7 +214,13 @@ require("nvim-tree").setup {
     signcolumn = "no",
   },
   renderer = {
-    special_files = {},
+    icons = {
+      git_placement = "after",
+    },
+    special_files = {
+      "Makefile", "Justfile", "justfile", "pyproject.toml", "Cargo.toml",
+      "shell.nix", "default.nix", "flake.nix",
+    },
   },
   filters = {
     custom = {
@@ -206,6 +228,8 @@ require("nvim-tree").setup {
     },
   },
 }
+
+vim.cmd "hi NvimTreeSpecialFile gui=bold"
 
 map("n", "<F8>", "<Cmd>NvimTreeToggle<CR>")
 
@@ -300,7 +324,7 @@ require("snippy").setup {
       ['<Tab>'] = 'expand_or_advance',
       ['<S-Tab>'] = 'previous',
     },
-    nx = {
+    x = {
       ['<Tab>'] = 'cut_text',
     },
   },
@@ -331,8 +355,8 @@ vim.g.templates_directory = { HOME .. "/.config/nvim/templates" }
 vim.g.templates_global_name_prefix = "template:"
 
 -- Change %USER% and %MAIL% value
-vim.g.username = sh("git config --includes user.name 2>/dev/null")
-vim.g.email = sh("git config --includes user.email 2>/dev/null")
+vim.g.username = sh "git config --includes user.name 2>/dev/null"
+vim.g.email = sh "git config --includes user.email 2>/dev/null"
 
 -- Custom variables, mapping variable-name -> value generator (function name)
 vim.g.templates_user_variables = {

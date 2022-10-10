@@ -1,0 +1,10 @@
+#compdef git-fzf
+
+_arguments -C ':command:->command' '*::options:->options'
+
+if [[ $state == command ]] ; then
+    local -a commands=(
+        $(sed -ne 's/^git-fzf-\([a-z-]\+\) .*$/\1/p' $commands[git-fzf])
+    )
+    _describe 'git-fzf' commands
+fi

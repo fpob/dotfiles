@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+find "${1:-.}" -type f -name '*.py[co]' -delete
+find "${1:-.}" -type d -name '__pycache__' -delete
+find "${1:-.}" -type d -name '.tox' -exec rm -rf '{}' +

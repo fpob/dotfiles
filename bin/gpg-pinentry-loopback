@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-# When using GPG in terminal ask for password in the terminal, don't create GUI
-# windows.
-exec gpg --pinentry-mode loopback "$@"

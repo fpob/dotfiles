@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Root window color
+xsetroot -solid '#363738'
+
+# Configure keyboard;
+#   layout: US, CZ-QUERTY
+#   Alt+CapsLock change layout
+#   swap CapsLock and Esc
+setxkbmap -layout us,cz -variant ,qwerty -option -option caps:swapescape,grp:alt_caps_toggle
+
+# Polybar
+~/.config/polybar/launch
+
+# Lock screen
+xss-lock --transfer-sleep-lock -- i3lock -c '#000000' &
+
+# Notification daemon
+dunst &
+
+# Network manager tray icon
+nm-applet &
+
+# SSH agent on specific socket
+ssh-agent -a "$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+# Password manager and freedesktop secret service
+keepassxc &
+
+# Local autostart
+if [[ -x ~/.config/i3/autostart.local ]] ; then
+    ~/.config/i3/autostart.local
+fi

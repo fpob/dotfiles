@@ -7,13 +7,15 @@ yadm submodule update --recursive --init
 echo '>>> Change Git push URL'
 yadm remote set-url --push origin 'git@gitlab.com:fpob/dotfiles.git'
 
-echo '>>> Configure mate/i3 desktop'
-~/.config/i3/mate-setup.sh || echo "Retry with running X-session-manager"
-
-echo '>>> Enable systemd user units'
-systemctl --user enable --now \
-    dunst.service cron@daily.timer
-
 echo '>>> Generate nvim helptags'
 find ~/.config/nvim/pack -maxdepth 4 -name doc -type d \
     -exec nvim -e -c 'helptags {}' -c q \; &>/dev/null
+
+
+if ( . /etc/os-release && [[ $ID = debian ]] ) ; then
+    echo '>>> Debian specific setup'
+    mkdir -p ~/.local/bin
+    ln -sf "$(which fdfind)" ~/.local/bin/fd
+    ln -sf "$(which batcat)" ~/.local/bin/bat
+    ln -sf ~/.xprofile ~/.xsessionrc
+fi
