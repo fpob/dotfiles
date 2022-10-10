@@ -11,7 +11,7 @@ $jobs\
 $git_branch\
 $git_status\
 $git_state\
-$custom\
+$nix_shell\
 $env_var\
 """
 
@@ -42,6 +42,10 @@ style = "black"
 [jobs]
 format = "[ $number]($style) "
 style = "blue"
+
+[nix_shell]
+format = "[ ]($style) "
+style = "white"
 
 [env_var.DIRENV_DIR]
 format = "[ ]($style) "

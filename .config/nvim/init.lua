@@ -166,7 +166,7 @@ onedark.load()
 require("nvim-treesitter.configs").setup {
   ensure_installed = {
     "lua", "python", "go", "bash", "json", "yaml", "toml", "rst", "make",
-    "just",
+    "nix", "just",
   },
   highlight = { enable = true },
   yati = { enable = true }

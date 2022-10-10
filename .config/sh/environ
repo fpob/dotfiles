@@ -45,6 +45,19 @@ export LESS_TERMCAP_se='[0m'
 
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
 
+# Nix
+export NIX_PAGER='less -FRK'
+
+# home-manager
+. "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+
+# Nix and home-manager on non-NixOS distros
+if ( . /etc/os-release && [ "$ID" != nixos ] ) ; then
+    export PATH="$HOME/.nix-profile/bin:$PATH"
+    export NIX_PATH="$HOME/.nix-defexpr/channels"
+    export TERMINFO_DIRS=/usr/share/terminfo:/lib/terminfo
+fi
+
 # Local environ
 if [ -f "$XDG_CONFIG_HOME/sh/environ.local" ] ; then
     . "$XDG_CONFIG_HOME/sh/environ.local"
