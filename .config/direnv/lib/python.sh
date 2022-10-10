@@ -2,24 +2,17 @@ layout_python() {
     local python="${1:-python3}"
     shift
 
-    # Resolve '$python' to its real path, in case it is symlink.
-    local python_path="$(realpath "$(which "$python")" 2>/dev/null)"
-    if [[ -z "$python_path" ]]; then
-        log_error "Python '$python' not found in PATH"
+    local python_version=$($python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
+    if [[ -z "$python_version" ]] ; then
+        log_error "Could not determine Python version."
         return 1
     fi
 
     unset PYTHONHOME
-    VIRTUAL_ENV="$(direnv_layout_dir)/$(basename "$python_path")"
-
-    local ve="$("$python_path" -c "import pkgutil as p; print('venv' if p.find_loader('venv') else ('virtualenv' if p.find_loader('virtualenv') else ''))")"
-    if [[ -z "$ve" ]] ; then
-        log_error "Neither 'venv' nor 'virtualenv' are available."
-        return 1
-    fi
+    VIRTUAL_ENV="$(direnv_layout_dir)/python$python_version"
 
     if [[ ! -d "$VIRTUAL_ENV" ]]; then
-        "$python_path" -m "$ve" "$@" "$VIRTUAL_ENV"
+        "$python" -m venv "$@" "$VIRTUAL_ENV"
     fi
 
     export VIRTUAL_ENV
