@@ -33,9 +33,9 @@ alias cp='cp --reflink=auto'
 alias rcp='rsync -hhh --info=progress2'
 
 # Human readable sizes
-alias du='du -khc'
-alias df='df -kTh'
-alias free='free -th'
+alias du='grc du -khc'
+alias df='grc df -kTh'
+alias free='grc free -th'
 
 alias rg='rg -S'
 alias rgl='rg -l'
