@@ -22,7 +22,7 @@ bindsym Print exec mate-screenshot --interactive
 bindsym Ctrl+Print exec mate-screenshot --window
 
 # Dropdown terminal (-y # == # height of polybar)
-bindsym F12 exec --no-startup-id tdrop -m -y 25 -h 50% kitty --class dropdown --config ~/.config/kitty/kitty-transparent.conf
+bindsym F12 exec --no-startup-id tdrop -a -m -x 5% -y 5% -w 90% -h 90% kitty --class dropdown
 
 # Window/layout bindings ---------------------------------------------------{{{1
 
@@ -177,7 +177,7 @@ client.urgent           #C72E2E #1A1B1C #C72E2E
 
 # Window settings ----------------------------------------------------------{{{1
 
-for_window [class="^dropdown$"] floating enable, border none, sticky enable
+for_window [class="^dropdown$"] floating enable, sticky enable
 
 for_window [class="(?i)firefox" title="(?i)picture-in-picture" floating] sticky enable
 for_window [class="mpv" instance="floating"] floating enable, sticky enable
