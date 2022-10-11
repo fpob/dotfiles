@@ -44,7 +44,7 @@ format = "[ $number]($style) "
 style = "blue"
 
 [nix_shell]
-format = "[ ]($style) "
+format = "[ $name]($style) "
 style = "white"
 
 [env_var.DIRENV_DIR]
