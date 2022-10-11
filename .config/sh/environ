@@ -2,7 +2,15 @@
 
 . ~/.config/sh/xdg
 
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+PATH_add () {
+    case ":$PATH:" in
+        *":$1:"*) : ;;
+        *) export PATH="$1:$PATH" ;;
+    esac
+}
+
+PATH_add "$HOME/.local/bin"
+PATH_add "$HOME/bin"
 
 export EDITOR=nvim
 export PAGER=less
@@ -53,7 +61,7 @@ export NIX_PAGER='less -FRK'
 
 # Nix and home-manager on non-NixOS distros
 if ( . /etc/os-release && [ "$ID" != nixos ] ) ; then
-    export PATH="$HOME/.nix-profile/bin:$PATH"
+    PATH_add "$HOME/.nix-profile/bin"
     export NIX_PATH="$HOME/.nix-defexpr/channels"
     export TERMINFO_DIRS=/usr/share/terminfo:/lib/terminfo
 fi
