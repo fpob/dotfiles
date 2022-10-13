@@ -55,3 +55,6 @@
 [submodule ".config/nvim/pack/plugins/start/tree-sitter-just"]
 	path = .config/nvim/pack/plugins/start/tree-sitter-just
 	url = https://github.com/IndianBoy42/tree-sitter-just.git
+[submodule ".config/nvim/pack/plugins/start/vim-template"]
+	path = .config/nvim/pack/plugins/start/vim-template
+	url = https://github.com/aperezdc/vim-template.git

@@ -321,3 +321,26 @@ local function cr()
 end
 
 map('i', '<Enter>', cr, { expr = true, noremap = true })
+
+-- vim-template --
+
+vim.g.templates_no_builtin_templates = 1
+
+-- Global templates config
+vim.g.templates_directory = { HOME .. "/.config/nvim/templates" }
+vim.g.templates_global_name_prefix = "template:"
+
+-- Change %USER% and %MAIL% value
+vim.g.username = sh("git config --includes user.name 2>/dev/null")
+vim.g.email = sh("git config --includes user.email 2>/dev/null")
+
+-- Custom variables, mapping variable-name -> value generator (function name)
+vim.g.templates_user_variables = {
+  { "PARENT", "TemplateVar_Parent" },
+}
+
+vim.cmd [[
+  function! TemplateVar_Parent()
+    return expand('%:p:h:t')
+  endfunction
+]]
