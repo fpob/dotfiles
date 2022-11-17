@@ -182,10 +182,10 @@ onedark.load()
 require("nvim-treesitter.configs").setup {
   ensure_installed = {
     "lua", "python", "go", "bash", "json", "yaml", "toml", "rst", "make",
-    "nix", "just",
+    "nix", "just", "norg",
   },
   highlight = { enable = true },
-  yati = { enable = true }
+  yati = { enable = true },
 }
 
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
@@ -337,14 +337,14 @@ autopairs.setup {
   map_cr = false,
 }
 
-local function cr()
+function CR()
   if vim.fn.pumvisible() ~= 0 then
     return autopairs.esc('<C-y>') .. autopairs.autopairs_cr()
   end
   return autopairs.autopairs_cr()
 end
 
-map('i', '<Enter>', cr, { expr = true, noremap = true })
+map('i', '<Enter>', 'v:lua.CR()', { expr = true, noremap = true })
 
 -- vim-template --
 
@@ -368,3 +368,33 @@ vim.cmd [[
     return expand('%:p:h:t')
   endfunction
 ]]
+
+-- neorg --
+
+require("neorg").setup {
+  load = {
+    ["core.defaults"] = {},
+    ["core.norg.news"] = {
+      config = {
+        check_news = false,  -- Disable news popup
+      },
+    },
+    ["core.keybinds"] = {
+      config = {
+        hook = function(keybinds)
+          keybinds.map("norg", "n", "<LocalLeader>e", "<Cmd>Neorg tangle current-file<CR>")
+        end,
+      },
+    },
+    ["core.norg.concealer"] = {
+      config = {
+        folds = false,
+        icons = {
+          todo = { enabled = false },
+          heading = { enabled = false },
+          delimiter = { enabled = false },
+        },
+      },
+    },
+  },
+}

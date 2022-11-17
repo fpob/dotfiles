@@ -58,3 +58,6 @@
 [submodule ".config/nvim/pack/plugins/start/vim-template"]
 	path = .config/nvim/pack/plugins/start/vim-template
 	url = https://github.com/aperezdc/vim-template.git
+[submodule ".config/nvim/pack/plugins/start/neorg"]
+	path = .config/nvim/pack/plugins/start/neorg
+	url = https://github.com/nvim-neorg/neorg.git
