@@ -11,7 +11,6 @@ echo '>>> Generate nvim helptags'
 find ~/.config/nvim/pack -maxdepth 4 -name doc -type d \
     -exec nvim -e -c 'helptags {}' -c q \; &>/dev/null
 
-
 if ( . /etc/os-release && [[ $ID = debian ]] ) ; then
     echo '>>> Debian specific setup'
     mkdir -p ~/.local/bin
