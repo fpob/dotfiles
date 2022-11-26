@@ -51,10 +51,11 @@ alias pydoc='pydoc3'
 # Extra aliasses in Kitty terminal
 if [ "$TERM" = xterm-kitty ] ; then
     alias :new='kitty --detach '
+
+    alias kitten='kitty +kitten'
     # SSH kitten is wrapper around ssh command that fixes terminfo and adds some
     # extra features.
-    #alias ssh='kitty +kitten ssh'
-    alias ssh='TERM=xterm-256color ssh'
-    # cat image
+    alias ssh='kitty +kitten ssh'
+    # cat image.
     alias icat='kitty +kitten icat'
 fi
