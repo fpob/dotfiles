@@ -239,6 +239,13 @@ require("mini.comment").setup {}
 
 require("mini.completion").setup {}
 
+require("mini.indentscope").setup {
+  symbol = "▕",
+  draw = {
+    animation = require("mini.indentscope").gen_animation("none"),
+  },
+}
+
 require("mini.statusline").setup {}
 
 require("mini.surround").setup {
